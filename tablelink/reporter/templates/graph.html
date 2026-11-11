@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline' 'unsafe-eval'; font-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>{{ title }}</title>
+  <style>{{ css|safe }}</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="brand-mark" aria-hidden="true">TL</div>
+      <div><h1>{{ title }}</h1><div class="subtitle">离线关联图谱 · 数据表 {{ stats.table_count }} · 关联边 {{ stats.association_count }} · 单文件可直接打开</div></div></div>
+    <div class="top-actions"><button class="ghost-btn" id="themeToggle" type="button">深色模式</button></div>
+  </header>
+  <main class="layout">
+    <section class="summary-strip" aria-label="图谱摘要">
+      <div class="stat"><div class="stat-label">表节点</div><div class="stat-value">{{ stats.table_count }}</div><div class="stat-note">已过滤孤立表</div></div>
+      <div class="stat"><div class="stat-label">字段节点</div><div class="stat-value">{{ stats.field_count }}</div><div class="stat-note">仅展示关联字段</div></div>
+      <div class="stat"><div class="stat-label">关联边</div><div class="stat-value">{{ stats.association_count }}</div><div class="stat-note">多来源已去重</div></div>
+      <div class="stat"><div class="stat-label">当前可见</div><div class="stat-value"><span id="visibleEdgeCount">0</span><span class="stat-note"> 条边</span></div><div class="stat-note"><span id="visibleNodeCount">0</span> 个节点</div></div>
+      <div class="stat"><div class="stat-label">增量变化</div><div class="stat-value" id="visibleChangeCount">0</div><div class="stat-note" id="removedHint">按条件筛选</div></div>
+    </section>
+
+    <section class="toolbar" aria-label="图谱筛选">
+      <div class="filter-row">
+        <span class="filter-title">关系类型</span>
+        <div class="filter-group">
+          <label class="check"><input type="checkbox" data-relation data-filter value="custom" checked> 人工规则</label>
+          <label class="check"><input type="checkbox" data-relation data-filter value="explicit_fk" checked> 原生外键</label>
+          <label class="check"><input type="checkbox" data-relation data-filter value="explicit_naming" checked> 命名匹配</label>
+          <label class="check"><input type="checkbox" data-relation data-filter value="value_overlap" checked> 值域重叠</label>
+          <label class="check"><input type="checkbox" data-relation data-filter value="functional_dependency" checked> 函数依赖</label>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="field"><label for="confidenceRange">最低置信度</label><input id="confidenceRange" data-filter type="range" min="0" max="1" step="0.01" value="0"><output id="confidenceOutput" for="confidenceRange">0.00</output></div>
+        <div class="field"><label for="tableFilter">表名</label><select id="tableFilter" data-filter><option value="">全部表</option></select></div>
+        <div class="field"><label for="changeFilter">变化筛选</label><select id="changeFilter" data-filter><option value="all">全部</option><option value="added">仅新增</option><option value="removed">仅失效</option><option value="confidence_changed">仅置信度变化</option></select></div>
+        <label class="check"><input id="structuralToggle" data-filter type="checkbox" checked> 显示表-字段结构边</label>
+        <button class="ghost-btn" id="resetFilters" type="button">重置筛选</button>
+      </div>
+      <div class="filter-row">
+        <div class="legend" aria-label="图例">
+          <span class="legend-item"><span class="swatch"></span>显式 / 人工</span>
+          <span class="legend-item"><span class="swatch overlap"></span>值域重叠</span>
+          <span class="legend-item"><span class="swatch fd"></span>函数依赖</span>
+          <span class="legend-item"><span class="swatch contains"></span>结构包含</span>
+          <span class="legend-item"><span class="swatch node-table"></span>表节点</span>
+          <span class="legend-item"><span class="swatch node-field"></span>字段节点</span>
+        </div>
+        <div class="change-legend" id="diffSummary">本次未执行增量对比</div>
+      </div>
+    </section>
+
+    <div class="split">
+      <section class="chart-panel" aria-label="关联图">
+        <div id="graph" role="img" aria-label="可拖拽、缩放和点击的关联网络图"></div>
+        <div class="empty-state" id="emptyState">当前筛选条件下没有可展示的关联。<br>请放宽置信度、关系类型或表名条件后重试。</div>
+      </section>
+      <aside class="detail-panel" id="detailPanel" aria-live="polite">
+        <h2>如何阅读</h2>
+        <p>拖拽节点调整布局，滚轮缩放，点击关联边查看类型、检测来源、置信度依据与匹配证据。虚线变化边使用状态色，并在详情中标注新增、失效或置信度变化。</p>
+        <dl class="detail-kv">
+          <dt>高置信度</dt><dd>{{ stats.by_relation_type.get("custom", 0) + stats.by_relation_type.get("explicit_fk", 0) }} 条显式/人工</dd>
+          <dt>值域关联</dt><dd>{{ stats.by_relation_type.get("value_overlap", 0) }} 条</dd>
+          <dt>函数依赖</dt><dd>{{ stats.by_relation_type.get("functional_dependency", 0) }} 条</dd>
+          <dt>输出时间</dt><dd>离线生成，无时间戳以提高可复现性</dd>
+        </dl>
+        <p class="detail-empty">所有节点与边均来自本地数据；本页面不加载任何外部资源。</p>
+      </aside>
+    </div>
+
+    <section class="table-view">
+      <details open>
+        <summary>关联数据表（可访问的无图视图）</summary>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead><tr><th>类型</th><th>源字段</th><th>目标字段</th><th>置信度</th><th>检测来源</th><th>变化</th></tr></thead>
+            <tbody id="edgeTableBody"></tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  </main>
+  <footer class="footer">表链测绘仪 · 纯离线运行 · 页面内已内嵌 ECharts 5.5.1 与全部样式脚本，无 CDN、无外部请求。</footer>
+  <noscript>本页面需要启用本地 JavaScript 才能渲染交互图谱；关联规则与 Markdown 报告仍可直接阅读。</noscript>
+  <script>{{ echarts_js|safe }}</script>
+  <script>window.__GRAPH__={{ graph_json|safe }};window.__DIFF__={{ diff_json|safe }};</script>
+  <script>{{ app_js|safe }}</script>
+</body>
+</html>

@@ -1,0 +1,13 @@
+device_id,device_name,room_id,device_type,install_date,status
+D001,温湿度传感器-01,R01,sensor,2024-01-05,online
+D002,温湿度传感器-02,R01,sensor,2024-01-08,online
+D003,烟感探测器-03,R02,sensor,2024-01-10,online
+D004,边缘网关-01,R02,gateway,2024-01-12,offline
+D005,摄像头-01,R03,camera,2024-02-01,online
+D006,门禁控制器-01,R03,controller,2024-02-03,online
+D007,温湿度传感器-07,R04,sensor,2024-02-05,offline
+D008,水浸传感器-08,R01,sensor,2024-02-07,online
+D009,烟感探测器-09,R02,sensor,2024-02-09,online
+D010,边缘网关-02,R03,gateway,2024-02-11,online
+D011,摄像头-02,R04,camera,2024-02-13,offline
+D012,门禁控制器-02,R04,controller,2024-02-15,online

@@ -1,0 +1,13 @@
+alarm_id,device_id,alarm_level,alarm_type,alarm_time,handled
+A001,D001,low,temperature,2024-03-02 09:00:00,true
+A002,D004,high,offline,2024-03-02 09:20:00,true
+A003,D007,medium,offline,2024-03-02 10:00:00,false
+A004,D008,high,water,2024-03-02 10:30:00,true
+A005,D003,medium,smoke,2024-03-02 11:00:00,false
+A006,D009,low,smoke,2024-03-02 11:30:00,false
+A007,D011,medium,offline,2024-03-02 12:00:00,true
+A008,D005,low,temperature,2024-03-02 12:30:00,false
+A009,D002,medium,humidity,2024-03-02 13:00:00,true
+A010,D006,high,offline,2024-03-02 13:30:00,true
+A011,D010,low,humidity,2024-03-02 14:00:00,false
+A012,D012,high,temperature,2024-03-02 14:30:00,true

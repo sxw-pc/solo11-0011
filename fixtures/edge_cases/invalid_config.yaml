@@ -1,0 +1,7 @@
+sources:
+  csv_dirs: []
+  sqlite_files: []
+overlap:
+  threshold: 2.0
+unknown_section:
+  enabled: true

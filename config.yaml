@@ -1,0 +1,91 @@
+project:
+  name: 表链测绘仪
+  version: "1.0.0"
+
+sources:
+  csv_dirs:
+    - fixtures/mock_csv
+  sqlite_files:
+    - fixtures/mock_sqlite/env_monitor.db
+  csv_encodings:
+    - utf-8-sig
+    - utf-8
+    - gbk
+  include_tables: []
+  exclude_tables:
+    - tmp_*
+    - temp_*
+    - sqlite_*
+  exclude_fields: []
+
+explicit:
+  naming:
+    enabled: true
+    suffixes:
+      - _id
+    min_overlap_ratio: 0.3
+    min_matched_values: 3
+    confidence: 0.84
+    table_name_confidence: 0.90
+    synonym_map:
+      device:
+        - sensor
+        - equipment
+        - terminal
+      room:
+        - area
+        - zone
+        - site
+      engineer:
+        - technician
+        - staff
+      alarm:
+        - alert
+        - warning
+  custom_rules_path: fixtures/custom_rules/user_rules.yaml
+
+overlap:
+  threshold: 0.70
+  same_table: false
+  min_matched_values: 3
+  max_cardinality_ratio: 0.80
+  allow_reference_high_cardinality: true
+  min_nonnull_ratio: 0.20
+  strict_type: true
+  weights:
+    value: 0.60
+    name: 0.25
+    synonym: 0.15
+  max_pairs: 5000
+  evidence_limit: 5
+
+fd:
+  enabled: true
+  min_rows: 10
+  confidence_threshold: 0.90
+  complete_threshold: 0.999
+  max_source_cardinality_ratio: 1.0
+  max_target_cardinality_ratio: 0.50
+  cross_table: true
+  max_per_table: 8
+
+incremental:
+  confidence_delta_threshold: 0.05
+  default_baseline: fixtures/expected_output/history_relations.json
+
+output:
+  directory: output
+  rules_json: relations.json
+  rules_yaml: relations.yaml
+  report_md: report.md
+  graph_html: graph.html
+  graph_json: graph.json
+
+report:
+  high_confidence: 0.90
+
+web:
+  host: 127.0.0.1
+  port: 5000
+  debug: false
+  auto_reload: true

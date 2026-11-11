@@ -1,0 +1,6003 @@
+{
+  "schema_version": "1.0",
+  "nodes": [
+    {
+      "id": "field:alarm_info.alarm_level",
+      "name": "alarm_info.alarm_level",
+      "node_type": "field",
+      "table": "alarm_info",
+      "field": "alarm_level",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 3,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 3
+    },
+    {
+      "id": "field:alarm_info.device_id",
+      "name": "alarm_info.device_id",
+      "node_type": "field",
+      "table": "alarm_info",
+      "field": "device_id",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 12,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 14
+    },
+    {
+      "id": "field:alarm_info.handled",
+      "name": "alarm_info.handled",
+      "node_type": "field",
+      "table": "alarm_info",
+      "field": "handled",
+      "category": 1,
+      "dtype": "boolean",
+      "cardinality": 2,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 3
+    },
+    {
+      "id": "field:device_base.device_id",
+      "name": "device_base.device_id",
+      "node_type": "field",
+      "table": "device_base",
+      "field": "device_id",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 12,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 17
+    },
+    {
+      "id": "field:device_base.device_type",
+      "name": "device_base.device_type",
+      "node_type": "field",
+      "table": "device_base",
+      "field": "device_type",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 4,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 8
+    },
+    {
+      "id": "field:device_base.room_id",
+      "name": "device_base.room_id",
+      "node_type": "field",
+      "table": "device_base",
+      "field": "room_id",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 4,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 9
+    },
+    {
+      "id": "field:device_base.status",
+      "name": "device_base.status",
+      "node_type": "field",
+      "table": "device_base",
+      "field": "status",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 2,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 7
+    },
+    {
+      "id": "field:device_registry.device_id",
+      "name": "device_registry.device_id",
+      "node_type": "field",
+      "table": "device_registry",
+      "field": "device_id",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 12,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 17
+    },
+    {
+      "id": "field:device_registry.device_type",
+      "name": "device_registry.device_type",
+      "node_type": "field",
+      "table": "device_registry",
+      "field": "device_type",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 4,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 8
+    },
+    {
+      "id": "field:device_registry.owner_team",
+      "name": "device_registry.owner_team",
+      "node_type": "field",
+      "table": "device_registry",
+      "field": "owner_team",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 3,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 8
+    },
+    {
+      "id": "field:device_registry.room_id",
+      "name": "device_registry.room_id",
+      "node_type": "field",
+      "table": "device_registry",
+      "field": "room_id",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 4,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 9
+    },
+    {
+      "id": "field:engineer_info.engineer_id",
+      "name": "engineer_info.engineer_id",
+      "node_type": "field",
+      "table": "engineer_info",
+      "field": "engineer_id",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 4,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 3
+    },
+    {
+      "id": "field:engineer_info.team",
+      "name": "engineer_info.team",
+      "node_type": "field",
+      "table": "engineer_info",
+      "field": "team",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 3,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 2
+    },
+    {
+      "id": "field:legacy_device.device_id",
+      "name": "legacy_device.device_id",
+      "node_type": "field",
+      "table": "legacy_device",
+      "field": "device_id",
+      "category": 1,
+      "dtype": "unknown",
+      "cardinality": 0,
+      "non_null_ratio": 0.0,
+      "ghost": true,
+      "degree": 1
+    },
+    {
+      "id": "field:maintain_record.device_id",
+      "name": "maintain_record.device_id",
+      "node_type": "field",
+      "table": "maintain_record",
+      "field": "device_id",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 10,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 16
+    },
+    {
+      "id": "field:maintain_record.engineer_id",
+      "name": "maintain_record.engineer_id",
+      "node_type": "field",
+      "table": "maintain_record",
+      "field": "engineer_id",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 4,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 5
+    },
+    {
+      "id": "field:room_info.room_id",
+      "name": "room_info.room_id",
+      "node_type": "field",
+      "table": "room_info",
+      "field": "room_id",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 4,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 4
+    },
+    {
+      "id": "field:sensor_calibration.device_id",
+      "name": "sensor_calibration.device_id",
+      "node_type": "field",
+      "table": "sensor_calibration",
+      "field": "device_id",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 12,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 16
+    },
+    {
+      "id": "field:sensor_calibration.operator_code",
+      "name": "sensor_calibration.operator_code",
+      "node_type": "field",
+      "table": "sensor_calibration",
+      "field": "operator_code",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 4,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 6
+    },
+    {
+      "id": "field:sensor_calibration.precision_value",
+      "name": "sensor_calibration.precision_value",
+      "node_type": "field",
+      "table": "sensor_calibration",
+      "field": "precision_value",
+      "category": 1,
+      "dtype": "number",
+      "cardinality": 4,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 2
+    },
+    {
+      "id": "field:sensor_metric.device_id",
+      "name": "sensor_metric.device_id",
+      "node_type": "field",
+      "table": "sensor_metric",
+      "field": "device_id",
+      "category": 1,
+      "dtype": "string",
+      "cardinality": 12,
+      "non_null_ratio": 1.0,
+      "ghost": false,
+      "degree": 14
+    },
+    {
+      "id": "table:alarm_info",
+      "name": "alarm_info",
+      "node_type": "table",
+      "table": "alarm_info",
+      "field": null,
+      "category": 0,
+      "row_count": 12,
+      "column_count": 6,
+      "ghost": false,
+      "degree": 3
+    },
+    {
+      "id": "table:device_base",
+      "name": "device_base",
+      "node_type": "table",
+      "table": "device_base",
+      "field": null,
+      "category": 0,
+      "row_count": 12,
+      "column_count": 6,
+      "ghost": false,
+      "degree": 4
+    },
+    {
+      "id": "table:device_registry",
+      "name": "device_registry",
+      "node_type": "table",
+      "table": "device_registry",
+      "field": null,
+      "category": 0,
+      "row_count": 12,
+      "column_count": 5,
+      "ghost": false,
+      "degree": 4
+    },
+    {
+      "id": "table:engineer_info",
+      "name": "engineer_info",
+      "node_type": "table",
+      "table": "engineer_info",
+      "field": null,
+      "category": 0,
+      "row_count": 4,
+      "column_count": 5,
+      "ghost": false,
+      "degree": 2
+    },
+    {
+      "id": "table:legacy_device",
+      "name": "legacy_device",
+      "node_type": "table",
+      "table": "legacy_device",
+      "field": null,
+      "category": 0,
+      "row_count": 0,
+      "column_count": 0,
+      "ghost": true,
+      "degree": 0
+    },
+    {
+      "id": "table:maintain_record",
+      "name": "maintain_record",
+      "node_type": "table",
+      "table": "maintain_record",
+      "field": null,
+      "category": 0,
+      "row_count": 10,
+      "column_count": 7,
+      "ghost": false,
+      "degree": 2
+    },
+    {
+      "id": "table:room_info",
+      "name": "room_info",
+      "node_type": "table",
+      "table": "room_info",
+      "field": null,
+      "category": 0,
+      "row_count": 4,
+      "column_count": 4,
+      "ghost": false,
+      "degree": 1
+    },
+    {
+      "id": "table:sensor_calibration",
+      "name": "sensor_calibration",
+      "node_type": "table",
+      "table": "sensor_calibration",
+      "field": null,
+      "category": 0,
+      "row_count": 12,
+      "column_count": 5,
+      "ghost": false,
+      "degree": 3
+    },
+    {
+      "id": "table:sensor_metric",
+      "name": "sensor_metric",
+      "node_type": "table",
+      "table": "sensor_metric",
+      "field": null,
+      "category": 0,
+      "row_count": 24,
+      "column_count": 6,
+      "ghost": false,
+      "degree": 1
+    }
+  ],
+  "edges": [
+    {
+      "id": "rel_0859fbcc416a",
+      "source": "field:alarm_info.device_id",
+      "target": "field:device_registry.room_id",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "R04"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_0c77b9b42697",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:device_base.status",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "status",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "offline"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "online"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 24,
+        "matched_rows": 24,
+        "source_cardinality": 12,
+        "target_cardinality": 2,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 24,
+            "matched_rows": 24,
+            "source_cardinality": 12,
+            "target_cardinality": 2,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_0cfac0c0dd6a",
+      "source": "field:maintain_record.device_id",
+      "target": "field:device_base.device_type",
+      "source_table": "maintain_record",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 10,
+        "matched_rows": 10,
+        "source_cardinality": 10,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 10,
+            "matched_rows": 10,
+            "source_cardinality": 10,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_0f0734cc6e6a",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:alarm_info.device_id",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "alarm_info",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 12,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 12,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_1179ddf49345",
+      "source": "field:device_registry.device_id",
+      "target": "field:device_registry.device_type",
+      "source_table": "device_registry",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "camera"
+        }
+      ],
+      "details": {
+        "scope": "same_table",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "same_table",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_12f68c347ca4",
+      "source": "field:sensor_calibration.device_id",
+      "target": "field:device_base.room_id",
+      "source_table": "sensor_calibration",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "R03"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_1713d1841940",
+      "source": "field:sensor_calibration.device_id",
+      "target": "field:sensor_calibration.operator_code",
+      "source_table": "sensor_calibration",
+      "source_field": "device_id",
+      "target_table": "sensor_calibration",
+      "target_field": "operator_code",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "E03"
+        }
+      ],
+      "details": {
+        "scope": "same_table",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "same_table",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_1768295429a1",
+      "source": "field:device_registry.device_id",
+      "target": "field:device_base.status",
+      "source_table": "device_registry",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "status",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "offline"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "online"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 2,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 2,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_1aff1ff9f137",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:device_base.device_id",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "explicit_naming",
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "naming_rule",
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 12,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "naming_rule",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 12,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_1cf57dd4f9c1",
+      "source": "field:maintain_record.device_id",
+      "target": "field:device_registry.device_type",
+      "source_table": "maintain_record",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 10,
+        "matched_rows": 10,
+        "source_cardinality": 10,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 10,
+            "matched_rows": 10,
+            "source_cardinality": 10,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_21eb12621ea3",
+      "source": "field:device_base.device_id",
+      "target": "field:device_registry.room_id",
+      "source_table": "device_base",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "R03"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_21f5ddfa8fab",
+      "source": "field:alarm_info.device_id",
+      "target": "field:device_base.status",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "status",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "offline"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "offline"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "online"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 2,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 2,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": "added",
+      "change_delta": null
+    },
+    {
+      "id": "rel_222784d3c6ce",
+      "source": "field:sensor_calibration.device_id",
+      "target": "field:device_registry.room_id",
+      "source_table": "sensor_calibration",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "R03"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_39501e3fb70d",
+      "source": "field:device_base.device_id",
+      "target": "field:maintain_record.engineer_id",
+      "source_table": "device_base",
+      "source_field": "device_id",
+      "target_table": "maintain_record",
+      "target_field": "engineer_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "E03"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D006",
+          "target_value": "E01"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "maintain_record.device_id",
+        "valid_rows": 10,
+        "matched_rows": 10,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "maintain_record.device_id",
+            "valid_rows": 10,
+            "matched_rows": 10,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_3e87d7c1a001",
+      "source": "field:device_base.device_type",
+      "target": "field:device_registry.device_type",
+      "source_table": "device_base",
+      "source_field": "device_type",
+      "target_table": "device_registry",
+      "target_field": "device_type",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "camera",
+          "target_value": "camera"
+        },
+        {
+          "source_value": "controller",
+          "target_value": "controller"
+        },
+        {
+          "source_value": "gateway",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "sensor",
+          "target_value": "sensor"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 4,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 4,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_3ebc4c442e02",
+      "source": "field:device_base.device_id",
+      "target": "field:device_base.device_type",
+      "source_table": "device_base",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "camera"
+        }
+      ],
+      "details": {
+        "scope": "same_table",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "same_table",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_4d15b6578915",
+      "source": "field:alarm_info.device_id",
+      "target": "field:device_registry.device_type",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_4e13ad6c01f0",
+      "source": "field:alarm_info.device_id",
+      "target": "field:device_base.room_id",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "R04"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_53823e40a0d3",
+      "source": "field:device_registry.device_id",
+      "target": "field:maintain_record.engineer_id",
+      "source_table": "device_registry",
+      "source_field": "device_id",
+      "target_table": "maintain_record",
+      "target_field": "engineer_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "E03"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D006",
+          "target_value": "E01"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "maintain_record.device_id",
+        "valid_rows": 10,
+        "matched_rows": 10,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "maintain_record.device_id",
+            "valid_rows": 10,
+            "matched_rows": 10,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_5d06f25d9bcd",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:device_registry.device_type",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "camera"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 24,
+        "matched_rows": 24,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 24,
+            "matched_rows": 24,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_63e1c79a80dd",
+      "source": "field:device_registry.device_id",
+      "target": "field:device_registry.owner_team",
+      "source_table": "device_registry",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "owner_team",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "网络组"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "安防组"
+        }
+      ],
+      "details": {
+        "scope": "same_table",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 3,
+        "dependency": "complete",
+        "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "same_table",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 3,
+            "dependency": "complete",
+            "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_65e0fa399e5b",
+      "source": "field:device_base.device_id",
+      "target": "field:device_base.room_id",
+      "source_table": "device_base",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "R03"
+        }
+      ],
+      "details": {
+        "scope": "same_table",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "same_table",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_6656b3ad70b2",
+      "source": "field:alarm_info.device_id",
+      "target": "field:device_registry.device_id",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "explicit_naming",
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "naming_rule",
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 12,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "naming_rule",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 12,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_6ab1546bf268",
+      "source": "field:device_base.device_id",
+      "target": "field:device_registry.owner_team",
+      "source_table": "device_base",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "owner_team",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "网络组"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "安防组"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 3,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 3,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_6e305f15ed5d",
+      "source": "field:device_base.device_id",
+      "target": "field:device_registry.device_id",
+      "source_table": "device_base",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "explicit_naming",
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "naming_rule",
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 12,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "naming_rule",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 12,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_6edb28f6aa86",
+      "source": "field:maintain_record.device_id",
+      "target": "field:device_base.room_id",
+      "source_table": "maintain_record",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "R04"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 10,
+        "matched_rows": 10,
+        "source_cardinality": 10,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 10,
+            "matched_rows": 10,
+            "source_cardinality": 10,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_723156a52706",
+      "source": "field:sensor_calibration.device_id",
+      "target": "field:device_base.device_type",
+      "source_table": "sensor_calibration",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "camera"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_76683d342a82",
+      "source": "field:maintain_record.device_id",
+      "target": "field:maintain_record.engineer_id",
+      "source_table": "maintain_record",
+      "source_field": "device_id",
+      "target_table": "maintain_record",
+      "target_field": "engineer_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "E03"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "E02"
+        }
+      ],
+      "details": {
+        "scope": "same_table",
+        "valid_rows": 10,
+        "matched_rows": 10,
+        "source_cardinality": 10,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "一致行数 / 有效行数 = 10 / 10"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "same_table",
+            "valid_rows": 10,
+            "matched_rows": 10,
+            "source_cardinality": 10,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "一致行数 / 有效行数 = 10 / 10"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_7a31a8c9a5d7",
+      "source": "field:sensor_calibration.device_id",
+      "target": "field:device_registry.owner_team",
+      "source_table": "sensor_calibration",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "owner_team",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "网络组"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "安防组"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 3,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 3,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_82e8b44cf335",
+      "source": "field:maintain_record.device_id",
+      "target": "field:device_registry.room_id",
+      "source_table": "maintain_record",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "R04"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 10,
+        "matched_rows": 10,
+        "source_cardinality": 10,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 10,
+            "matched_rows": 10,
+            "source_cardinality": 10,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_84e97dee3043",
+      "source": "field:sensor_calibration.device_id",
+      "target": "field:device_registry.device_type",
+      "source_table": "sensor_calibration",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "camera"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_8532147129c7",
+      "source": "field:device_registry.room_id",
+      "target": "field:room_info.room_id",
+      "source_table": "device_registry",
+      "source_field": "room_id",
+      "target_table": "room_info",
+      "target_field": "room_id",
+      "relation_type": "explicit_fk",
+      "relation_types": [
+        "explicit_fk",
+        "explicit_naming",
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "naming_rule",
+        "sqlite_foreign_key",
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "R01",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "R02",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "R03",
+          "target_value": "R03"
+        },
+        {
+          "source_value": "R04",
+          "target_value": "R04"
+        }
+      ],
+      "details": {
+        "constraint": "fk_device_room",
+        "matched_values": 4,
+        "message": "SQLite 原生外键约束"
+      },
+      "detections": [
+        {
+          "relation_type": "explicit_fk",
+          "source": "naming_rule",
+          "confidence": 1.0,
+          "details": {
+            "constraint": "fk_device_room",
+            "matched_values": 4,
+            "message": "SQLite 原生外键约束"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_8e6b4b784fde",
+      "source": "field:sensor_calibration.device_id",
+      "target": "field:sensor_calibration.precision_value",
+      "source_table": "sensor_calibration",
+      "source_field": "device_id",
+      "target_table": "sensor_calibration",
+      "target_field": "precision_value",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": 0.01
+        },
+        {
+          "source_value": "D002",
+          "target_value": 0.01
+        },
+        {
+          "source_value": "D003",
+          "target_value": 0.02
+        },
+        {
+          "source_value": "D004",
+          "target_value": 0.05
+        },
+        {
+          "source_value": "D005",
+          "target_value": 0.1
+        }
+      ],
+      "details": {
+        "scope": "same_table",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "same_table",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_92ed5926fb2d",
+      "source": "field:maintain_record.device_id",
+      "target": "field:device_registry.owner_team",
+      "source_table": "maintain_record",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "owner_team",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "网络组"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "动环组"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 10,
+        "matched_rows": 10,
+        "source_cardinality": 10,
+        "target_cardinality": 3,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 10,
+            "matched_rows": 10,
+            "source_cardinality": 10,
+            "target_cardinality": 3,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_94eaf7c60c3a",
+      "source": "field:device_base.device_id",
+      "target": "field:sensor_calibration.device_id",
+      "source_table": "device_base",
+      "source_field": "device_id",
+      "target_table": "sensor_calibration",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 12,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 12,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_9513d230d28c",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:alarm_info.alarm_level",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "alarm_info",
+      "target_field": "alarm_level",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "low"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "medium"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "medium"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "high"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "low"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "alarm_info.device_id",
+        "valid_rows": 24,
+        "matched_rows": 24,
+        "source_cardinality": 12,
+        "target_cardinality": 3,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "alarm_info.device_id",
+            "valid_rows": 24,
+            "matched_rows": 24,
+            "source_cardinality": 12,
+            "target_cardinality": 3,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_9891b702cc79",
+      "source": "field:device_registry.device_id",
+      "target": "field:device_registry.room_id",
+      "source_table": "device_registry",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "R03"
+        }
+      ],
+      "details": {
+        "scope": "same_table",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "same_table",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_a1d56a2d16c7",
+      "source": "field:alarm_info.device_id",
+      "target": "field:device_base.device_type",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_ad01e450b184",
+      "source": "field:device_base.device_id",
+      "target": "field:device_registry.device_type",
+      "source_table": "device_base",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "camera"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_ad77d76e0a10",
+      "source": "field:device_base.device_id",
+      "target": "field:device_base.status",
+      "source_table": "device_base",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "status",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "offline"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "online"
+        }
+      ],
+      "details": {
+        "scope": "same_table",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 2,
+        "dependency": "complete",
+        "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "same_table",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 2,
+            "dependency": "complete",
+            "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_ae3a13f4ca00",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:device_registry.room_id",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "R03"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 24,
+        "matched_rows": 24,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 24,
+            "matched_rows": 24,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_b5215b4fcb6e",
+      "source": "field:alarm_info.device_id",
+      "target": "field:device_base.device_id",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "device_id",
+      "relation_type": "custom",
+      "relation_types": [
+        "custom",
+        "explicit_naming",
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "custom_rule",
+        "naming_rule",
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "rule_index": 1,
+        "declared_relation": "foreign_key",
+        "note": "告警记录归属设备由值班人员人工确认",
+        "matched_values": 12,
+        "message": "人工规则，优先级最高"
+      },
+      "detections": [
+        {
+          "relation_type": "custom",
+          "source": "custom_rule",
+          "confidence": 1.0,
+          "details": {
+            "rule_index": 1,
+            "declared_relation": "foreign_key",
+            "note": "告警记录归属设备由值班人员人工确认",
+            "matched_values": 12,
+            "message": "人工规则，优先级最高"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_b7e49589e615",
+      "source": "field:device_base.device_id",
+      "target": "field:sensor_calibration.operator_code",
+      "source_table": "device_base",
+      "source_field": "device_id",
+      "target_table": "sensor_calibration",
+      "target_field": "operator_code",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "E03"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "sensor_calibration.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "sensor_calibration.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_b8419c2af06a",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:device_registry.device_id",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "explicit_naming",
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "naming_rule",
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 12,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "naming_rule",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 12,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_be85127685fe",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:alarm_info.handled",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "alarm_info",
+      "target_field": "handled",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": true
+        },
+        {
+          "source_value": "D002",
+          "target_value": true
+        },
+        {
+          "source_value": "D003",
+          "target_value": false
+        },
+        {
+          "source_value": "D004",
+          "target_value": true
+        },
+        {
+          "source_value": "D005",
+          "target_value": false
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "alarm_info.device_id",
+        "valid_rows": 24,
+        "matched_rows": 24,
+        "source_cardinality": 12,
+        "target_cardinality": 2,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "alarm_info.device_id",
+            "valid_rows": 24,
+            "matched_rows": 24,
+            "source_cardinality": 12,
+            "target_cardinality": 2,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_bf3300ed9f01",
+      "source": "field:device_registry.device_id",
+      "target": "field:sensor_calibration.operator_code",
+      "source_table": "device_registry",
+      "source_field": "device_id",
+      "target_table": "sensor_calibration",
+      "target_field": "operator_code",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "E03"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "sensor_calibration.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "sensor_calibration.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_c0f91214c8d3",
+      "source": "field:alarm_info.device_id",
+      "target": "field:alarm_info.handled",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "alarm_info",
+      "target_field": "handled",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": true
+        },
+        {
+          "source_value": "D004",
+          "target_value": true
+        },
+        {
+          "source_value": "D007",
+          "target_value": false
+        },
+        {
+          "source_value": "D008",
+          "target_value": true
+        },
+        {
+          "source_value": "D003",
+          "target_value": false
+        }
+      ],
+      "details": {
+        "scope": "same_table",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 2,
+        "dependency": "complete",
+        "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "same_table",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 2,
+            "dependency": "complete",
+            "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_c21cc215a5d1",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:device_base.room_id",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "R03"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 24,
+        "matched_rows": 24,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 24,
+            "matched_rows": 24,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_c6b89827bb99",
+      "source": "field:alarm_info.device_id",
+      "target": "field:alarm_info.alarm_level",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "alarm_info",
+      "target_field": "alarm_level",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "low"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "high"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "medium"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "high"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "medium"
+        }
+      ],
+      "details": {
+        "scope": "same_table",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 3,
+        "dependency": "complete",
+        "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "same_table",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 3,
+            "dependency": "complete",
+            "confidence_basis": "一致行数 / 有效行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": "confidence_changed",
+      "change_delta": 0.2
+    },
+    {
+      "id": "rel_c882baa94698",
+      "source": "field:device_base.room_id",
+      "target": "field:device_registry.room_id",
+      "source_table": "device_base",
+      "source_field": "room_id",
+      "target_table": "device_registry",
+      "target_field": "room_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "R01",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "R02",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "R03",
+          "target_value": "R03"
+        },
+        {
+          "source_value": "R04",
+          "target_value": "R04"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 4,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 4,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_ca7cdea35f28",
+      "source": "field:maintain_record.engineer_id",
+      "target": "field:engineer_info.engineer_id",
+      "source_table": "maintain_record",
+      "source_field": "engineer_id",
+      "target_table": "engineer_info",
+      "target_field": "engineer_id",
+      "relation_type": "custom",
+      "relation_types": [
+        "custom",
+        "explicit_naming",
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "custom_rule",
+        "naming_rule",
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "E01",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "E02",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "E03",
+          "target_value": "E03"
+        },
+        {
+          "source_value": "E04",
+          "target_value": "E04"
+        }
+      ],
+      "details": {
+        "rule_index": 0,
+        "declared_relation": "foreign_key",
+        "note": "运维记录中的工程师编号引用工程师主数据",
+        "matched_values": 4,
+        "message": "人工规则，优先级最高"
+      },
+      "detections": [
+        {
+          "relation_type": "custom",
+          "source": "custom_rule",
+          "confidence": 1.0,
+          "details": {
+            "rule_index": 0,
+            "declared_relation": "foreign_key",
+            "note": "运维记录中的工程师编号引用工程师主数据",
+            "matched_values": 4,
+            "message": "人工规则，优先级最高"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_ce72e9775a4a",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:device_registry.owner_team",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "owner_team",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "网络组"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "安防组"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 24,
+        "matched_rows": 24,
+        "source_cardinality": 12,
+        "target_cardinality": 3,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 24,
+            "matched_rows": 24,
+            "source_cardinality": 12,
+            "target_cardinality": 3,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_cebdf64e420f",
+      "source": "field:device_registry.device_id",
+      "target": "field:device_base.device_type",
+      "source_table": "device_registry",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "camera"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_e2e0a2a6249a",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:sensor_calibration.device_id",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "sensor_calibration",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 12,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 12,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_e42e16639b77",
+      "source": "field:alarm_info.device_id",
+      "target": "field:sensor_calibration.device_id",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "sensor_calibration",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 12,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 12,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_e53a0fe0478e",
+      "source": "field:device_registry.device_id",
+      "target": "field:sensor_calibration.device_id",
+      "source_table": "device_registry",
+      "source_field": "device_id",
+      "target_table": "sensor_calibration",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 12,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 12,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_e95c4570ff10",
+      "source": "field:device_registry.device_id",
+      "target": "field:device_base.room_id",
+      "source_table": "device_registry",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "room_id",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "R03"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_ebc793a4f6eb",
+      "source": "field:sensor_calibration.device_id",
+      "target": "field:device_base.status",
+      "source_table": "sensor_calibration",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "status",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "offline"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "online"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 2,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 2,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_f0d1f88f308d",
+      "source": "field:maintain_record.device_id",
+      "target": "field:device_base.status",
+      "source_table": "maintain_record",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "status",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "offline"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "offline"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "online"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "online"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 10,
+        "matched_rows": 10,
+        "source_cardinality": 10,
+        "target_cardinality": 2,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 10,
+            "matched_rows": 10,
+            "source_cardinality": 10,
+            "target_cardinality": 2,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_f4341083b001",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:device_base.device_type",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "device_type",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "sensor"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "gateway"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "camera"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_base.device_id",
+        "valid_rows": 24,
+        "matched_rows": 24,
+        "source_cardinality": 12,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_base.device_id",
+            "valid_rows": 24,
+            "matched_rows": 24,
+            "source_cardinality": 12,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 24 / 24"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_f5b794fde17f",
+      "source": "field:sensor_calibration.device_id",
+      "target": "field:device_registry.device_id",
+      "source_table": "sensor_calibration",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "device_id",
+      "relation_type": "explicit_fk",
+      "relation_types": [
+        "explicit_fk",
+        "explicit_naming"
+      ],
+      "detection_sources": [
+        "naming_rule",
+        "sqlite_foreign_key"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "constraint": "fk_sensor_calibration_0",
+        "matched_values": 12,
+        "message": "SQLite 原生外键约束"
+      },
+      "detections": [
+        {
+          "relation_type": "explicit_fk",
+          "source": "naming_rule",
+          "confidence": 1.0,
+          "details": {
+            "constraint": "fk_sensor_calibration_0",
+            "matched_values": 12,
+            "message": "SQLite 原生外键约束"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_f811ceb0abea",
+      "source": "field:device_base.room_id",
+      "target": "field:room_info.room_id",
+      "source_table": "device_base",
+      "source_field": "room_id",
+      "target_table": "room_info",
+      "target_field": "room_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "explicit_naming",
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "naming_rule",
+        "value_overlap"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "R01",
+          "target_value": "R01"
+        },
+        {
+          "source_value": "R02",
+          "target_value": "R02"
+        },
+        {
+          "source_value": "R03",
+          "target_value": "R03"
+        },
+        {
+          "source_value": "R04",
+          "target_value": "R04"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 4,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "naming_rule",
+          "confidence": 1.0,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 4,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_fdd8bbfe2071",
+      "source": "field:maintain_record.device_id",
+      "target": "field:sensor_calibration.operator_code",
+      "source_table": "maintain_record",
+      "source_field": "device_id",
+      "target_table": "sensor_calibration",
+      "target_field": "operator_code",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "E04"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "E02"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "sensor_calibration.device_id",
+        "valid_rows": 10,
+        "matched_rows": 10,
+        "source_cardinality": 10,
+        "target_cardinality": 4,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "sensor_calibration.device_id",
+            "valid_rows": 10,
+            "matched_rows": 10,
+            "source_cardinality": 10,
+            "target_cardinality": 4,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 10 / 10"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_fe26ff3100f0",
+      "source": "field:alarm_info.device_id",
+      "target": "field:device_registry.owner_team",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "owner_team",
+      "relation_type": "functional_dependency",
+      "relation_types": [
+        "functional_dependency"
+      ],
+      "detection_sources": [
+        "functional_dependency"
+      ],
+      "confidence": 1.0,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "网络组"
+        },
+        {
+          "source_value": "D007",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D008",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "动环组"
+        }
+      ],
+      "details": {
+        "scope": "cross_table",
+        "via": "device_registry.device_id",
+        "valid_rows": 12,
+        "matched_rows": 12,
+        "source_cardinality": 12,
+        "target_cardinality": 3,
+        "dependency": "complete",
+        "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+      },
+      "detections": [
+        {
+          "relation_type": "functional_dependency",
+          "source": "functional_dependency",
+          "confidence": 1.0,
+          "details": {
+            "scope": "cross_table",
+            "via": "device_registry.device_id",
+            "valid_rows": 12,
+            "matched_rows": 12,
+            "source_cardinality": 12,
+            "target_cardinality": 3,
+            "dependency": "complete",
+            "confidence_basis": "跨表连接后一致行数 / 匹配行数 = 12 / 12"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_a20ef11b53ac",
+      "source": "field:sensor_calibration.operator_code",
+      "target": "field:engineer_info.engineer_id",
+      "source_table": "sensor_calibration",
+      "source_field": "operator_code",
+      "target_table": "engineer_info",
+      "target_field": "engineer_id",
+      "relation_type": "custom",
+      "relation_types": [
+        "custom"
+      ],
+      "detection_sources": [
+        "custom_rule"
+      ],
+      "confidence": 0.99,
+      "evidence": [
+        {
+          "source_value": "E01",
+          "target_value": "E01"
+        },
+        {
+          "source_value": "E02",
+          "target_value": "E02"
+        },
+        {
+          "source_value": "E03",
+          "target_value": "E03"
+        },
+        {
+          "source_value": "E04",
+          "target_value": "E04"
+        }
+      ],
+      "details": {
+        "rule_index": 2,
+        "declared_relation": "reference",
+        "note": "校准操作员编码与工程师ID使用同一套人员编号",
+        "matched_values": 4,
+        "message": "人工规则，优先级最高"
+      },
+      "detections": [
+        {
+          "relation_type": "custom",
+          "source": "custom_rule",
+          "confidence": 0.99,
+          "details": {
+            "rule_index": 2,
+            "declared_relation": "reference",
+            "note": "校准操作员编码与工程师ID使用同一套人员编号",
+            "matched_values": 4,
+            "message": "人工规则，优先级最高"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_e5e577f70953",
+      "source": "field:device_registry.owner_team",
+      "target": "field:engineer_info.team",
+      "source_table": "device_registry",
+      "source_field": "owner_team",
+      "target_table": "engineer_info",
+      "target_field": "team",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 0.9038,
+      "evidence": [
+        {
+          "source_value": "动环组",
+          "target_value": "动环组"
+        },
+        {
+          "source_value": "安防组",
+          "target_value": "安防组"
+        },
+        {
+          "source_value": "网络组",
+          "target_value": "网络组"
+        }
+      ],
+      "details": {
+        "jaccard": 1.0,
+        "name_similarity": 0.6154,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 3,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 0.9038,
+          "details": {
+            "jaccard": 1.0,
+            "name_similarity": 0.6154,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 3,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_0fa1bd136949",
+      "source": "field:alarm_info.device_id",
+      "target": "field:maintain_record.device_id",
+      "source_table": "alarm_info",
+      "source_field": "device_id",
+      "target_table": "maintain_record",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D006",
+          "target_value": "D006"
+        }
+      ],
+      "details": {
+        "jaccard": 0.8333,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 10,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 0.9,
+          "details": {
+            "jaccard": 0.8333,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 10,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_17ffe0d0422a",
+      "source": "field:device_registry.device_id",
+      "target": "field:maintain_record.device_id",
+      "source_table": "device_registry",
+      "source_field": "device_id",
+      "target_table": "maintain_record",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D006",
+          "target_value": "D006"
+        }
+      ],
+      "details": {
+        "jaccard": 0.8333,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 10,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 0.9,
+          "details": {
+            "jaccard": 0.8333,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 10,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_2d69197a9f71",
+      "source": "field:device_registry.device_id",
+      "target": "field:device_base.device_id",
+      "source_table": "device_registry",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "device_id",
+      "relation_type": "explicit_naming",
+      "relation_types": [
+        "explicit_naming"
+      ],
+      "detection_sources": [
+        "naming_rule"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "rule": "same_field",
+        "matched_values": 12,
+        "match_ratio": 1.0,
+        "message": "字段命名规则命中且存在值域交集"
+      },
+      "detections": [
+        {
+          "relation_type": "explicit_naming",
+          "source": "naming_rule",
+          "confidence": 0.9,
+          "details": {
+            "rule": "same_field",
+            "matched_values": 12,
+            "match_ratio": 1.0,
+            "message": "字段命名规则命中且存在值域交集"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_4336d480dcb4",
+      "source": "field:maintain_record.device_id",
+      "target": "field:sensor_calibration.device_id",
+      "source_table": "maintain_record",
+      "source_field": "device_id",
+      "target_table": "sensor_calibration",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D006",
+          "target_value": "D006"
+        }
+      ],
+      "details": {
+        "jaccard": 0.8333,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 10,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 0.9,
+          "details": {
+            "jaccard": 0.8333,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 10,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_46e1d82a3fd7",
+      "source": "field:sensor_metric.device_id",
+      "target": "field:maintain_record.device_id",
+      "source_table": "sensor_metric",
+      "source_field": "device_id",
+      "target_table": "maintain_record",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D006",
+          "target_value": "D006"
+        }
+      ],
+      "details": {
+        "jaccard": 0.8333,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 10,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 0.9,
+          "details": {
+            "jaccard": 0.8333,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 10,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_5f437794ea83",
+      "source": "field:maintain_record.device_id",
+      "target": "field:device_registry.device_id",
+      "source_table": "maintain_record",
+      "source_field": "device_id",
+      "target_table": "device_registry",
+      "target_field": "device_id",
+      "relation_type": "explicit_naming",
+      "relation_types": [
+        "explicit_naming"
+      ],
+      "detection_sources": [
+        "naming_rule"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D006",
+          "target_value": "D006"
+        }
+      ],
+      "details": {
+        "rule": "same_field",
+        "matched_values": 10,
+        "match_ratio": 1.0,
+        "message": "字段命名规则命中且存在值域交集"
+      },
+      "detections": [
+        {
+          "relation_type": "explicit_naming",
+          "source": "naming_rule",
+          "confidence": 0.9,
+          "details": {
+            "rule": "same_field",
+            "matched_values": 10,
+            "match_ratio": 1.0,
+            "message": "字段命名规则命中且存在值域交集"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_efdf2bbd173e",
+      "source": "field:device_base.device_id",
+      "target": "field:maintain_record.device_id",
+      "source_table": "device_base",
+      "source_field": "device_id",
+      "target_table": "maintain_record",
+      "target_field": "device_id",
+      "relation_type": "value_overlap",
+      "relation_types": [
+        "value_overlap"
+      ],
+      "detection_sources": [
+        "value_overlap"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D006",
+          "target_value": "D006"
+        }
+      ],
+      "details": {
+        "jaccard": 0.8333,
+        "name_similarity": 1.0,
+        "synonym_score": 1.0,
+        "weights": {
+          "value": 0.6,
+          "name": 0.25,
+          "synonym": 0.15
+        },
+        "matched_values": 10,
+        "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+      },
+      "detections": [
+        {
+          "relation_type": "value_overlap",
+          "source": "value_overlap",
+          "confidence": 0.9,
+          "details": {
+            "jaccard": 0.8333,
+            "name_similarity": 1.0,
+            "synonym_score": 1.0,
+            "weights": {
+              "value": 0.6,
+              "name": 0.25,
+              "synonym": 0.15
+            },
+            "matched_values": 10,
+            "confidence_basis": "加权和: 值域 0.6 / 名称 0.25 / 同义词 0.15"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_f95a6dbb48ac",
+      "source": "field:sensor_calibration.device_id",
+      "target": "field:device_base.device_id",
+      "source_table": "sensor_calibration",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "device_id",
+      "relation_type": "explicit_naming",
+      "relation_types": [
+        "explicit_naming"
+      ],
+      "detection_sources": [
+        "naming_rule"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D005",
+          "target_value": "D005"
+        }
+      ],
+      "details": {
+        "rule": "same_field",
+        "matched_values": 12,
+        "match_ratio": 1.0,
+        "message": "字段命名规则命中且存在值域交集"
+      },
+      "detections": [
+        {
+          "relation_type": "explicit_naming",
+          "source": "naming_rule",
+          "confidence": 0.9,
+          "details": {
+            "rule": "same_field",
+            "matched_values": 12,
+            "match_ratio": 1.0,
+            "message": "字段命名规则命中且存在值域交集"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "rel_fe6f674cc322",
+      "source": "field:maintain_record.device_id",
+      "target": "field:device_base.device_id",
+      "source_table": "maintain_record",
+      "source_field": "device_id",
+      "target_table": "device_base",
+      "target_field": "device_id",
+      "relation_type": "explicit_naming",
+      "relation_types": [
+        "explicit_naming"
+      ],
+      "detection_sources": [
+        "naming_rule"
+      ],
+      "confidence": 0.9,
+      "evidence": [
+        {
+          "source_value": "D001",
+          "target_value": "D001"
+        },
+        {
+          "source_value": "D002",
+          "target_value": "D002"
+        },
+        {
+          "source_value": "D003",
+          "target_value": "D003"
+        },
+        {
+          "source_value": "D004",
+          "target_value": "D004"
+        },
+        {
+          "source_value": "D006",
+          "target_value": "D006"
+        }
+      ],
+      "details": {
+        "rule": "same_field",
+        "matched_values": 10,
+        "match_ratio": 1.0,
+        "message": "字段命名规则命中且存在值域交集"
+      },
+      "detections": [
+        {
+          "relation_type": "explicit_naming",
+          "source": "naming_rule",
+          "confidence": 0.9,
+          "details": {
+            "rule": "same_field",
+            "matched_values": 10,
+            "match_ratio": 1.0,
+            "message": "字段命名规则命中且存在值域交集"
+          }
+        }
+      ],
+      "structural": false,
+      "change": null,
+      "change_delta": null
+    },
+    {
+      "id": "removed_8e792d2b2307",
+      "source": "field:legacy_device.device_id",
+      "target": "field:room_info.room_id",
+      "source_table": "legacy_device",
+      "source_field": "device_id",
+      "target_table": "room_info",
+      "target_field": "room_id",
+      "relation_type": "explicit_naming",
+      "relation_types": [
+        "explicit_naming"
+      ],
+      "detection_sources": [
+        "history"
+      ],
+      "confidence": 0.6,
+      "evidence": [],
+      "details": {},
+      "detections": [],
+      "structural": false,
+      "change": "removed",
+      "change_delta": null
+    },
+    {
+      "id": "contains_0ba37332fa",
+      "source": "table:room_info",
+      "target": "field:room_info.room_id",
+      "source_table": "room_info",
+      "source_field": null,
+      "target_table": "room_info",
+      "target_field": "room_id",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_0c5e9c39db",
+      "source": "table:device_base",
+      "target": "field:device_base.room_id",
+      "source_table": "device_base",
+      "source_field": null,
+      "target_table": "device_base",
+      "target_field": "room_id",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_1f6c934ae2",
+      "source": "table:sensor_calibration",
+      "target": "field:sensor_calibration.precision_value",
+      "source_table": "sensor_calibration",
+      "source_field": null,
+      "target_table": "sensor_calibration",
+      "target_field": "precision_value",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_2393ed913a",
+      "source": "table:alarm_info",
+      "target": "field:alarm_info.handled",
+      "source_table": "alarm_info",
+      "source_field": null,
+      "target_table": "alarm_info",
+      "target_field": "handled",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_3a0078956b",
+      "source": "table:alarm_info",
+      "target": "field:alarm_info.device_id",
+      "source_table": "alarm_info",
+      "source_field": null,
+      "target_table": "alarm_info",
+      "target_field": "device_id",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_3bc4ca9f8b",
+      "source": "table:device_registry",
+      "target": "field:device_registry.room_id",
+      "source_table": "device_registry",
+      "source_field": null,
+      "target_table": "device_registry",
+      "target_field": "room_id",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_3c968dfd9c",
+      "source": "table:sensor_calibration",
+      "target": "field:sensor_calibration.operator_code",
+      "source_table": "sensor_calibration",
+      "source_field": null,
+      "target_table": "sensor_calibration",
+      "target_field": "operator_code",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_7aabb74108",
+      "source": "table:device_base",
+      "target": "field:device_base.status",
+      "source_table": "device_base",
+      "source_field": null,
+      "target_table": "device_base",
+      "target_field": "status",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_8463c674dd",
+      "source": "table:engineer_info",
+      "target": "field:engineer_info.engineer_id",
+      "source_table": "engineer_info",
+      "source_field": null,
+      "target_table": "engineer_info",
+      "target_field": "engineer_id",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_88a86488a4",
+      "source": "table:sensor_calibration",
+      "target": "field:sensor_calibration.device_id",
+      "source_table": "sensor_calibration",
+      "source_field": null,
+      "target_table": "sensor_calibration",
+      "target_field": "device_id",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_88df766091",
+      "source": "table:maintain_record",
+      "target": "field:maintain_record.engineer_id",
+      "source_table": "maintain_record",
+      "source_field": null,
+      "target_table": "maintain_record",
+      "target_field": "engineer_id",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_8c38fb1528",
+      "source": "table:device_registry",
+      "target": "field:device_registry.device_id",
+      "source_table": "device_registry",
+      "source_field": null,
+      "target_table": "device_registry",
+      "target_field": "device_id",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_8d1956e50b",
+      "source": "table:sensor_metric",
+      "target": "field:sensor_metric.device_id",
+      "source_table": "sensor_metric",
+      "source_field": null,
+      "target_table": "sensor_metric",
+      "target_field": "device_id",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_9e8f15f10e",
+      "source": "table:device_registry",
+      "target": "field:device_registry.device_type",
+      "source_table": "device_registry",
+      "source_field": null,
+      "target_table": "device_registry",
+      "target_field": "device_type",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_af496cbe4d",
+      "source": "table:device_base",
+      "target": "field:device_base.device_id",
+      "source_table": "device_base",
+      "source_field": null,
+      "target_table": "device_base",
+      "target_field": "device_id",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_b50fd746be",
+      "source": "table:maintain_record",
+      "target": "field:maintain_record.device_id",
+      "source_table": "maintain_record",
+      "source_field": null,
+      "target_table": "maintain_record",
+      "target_field": "device_id",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_c64e292d98",
+      "source": "table:device_registry",
+      "target": "field:device_registry.owner_team",
+      "source_table": "device_registry",
+      "source_field": null,
+      "target_table": "device_registry",
+      "target_field": "owner_team",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_ce6f822bf1",
+      "source": "table:alarm_info",
+      "target": "field:alarm_info.alarm_level",
+      "source_table": "alarm_info",
+      "source_field": null,
+      "target_table": "alarm_info",
+      "target_field": "alarm_level",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_dec26f8456",
+      "source": "table:engineer_info",
+      "target": "field:engineer_info.team",
+      "source_table": "engineer_info",
+      "source_field": null,
+      "target_table": "engineer_info",
+      "target_field": "team",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    },
+    {
+      "id": "contains_e072410eda",
+      "source": "table:device_base",
+      "target": "field:device_base.device_type",
+      "source_table": "device_base",
+      "source_field": null,
+      "target_table": "device_base",
+      "target_field": "device_type",
+      "relation_type": "contains",
+      "relation_types": [
+        "contains"
+      ],
+      "detection_sources": [
+        "schema"
+      ],
+      "confidence": 1.0,
+      "evidence": [],
+      "details": {},
+      "structural": true,
+      "change": null
+    }
+  ],
+  "stats": {
+    "table_count": 9,
+    "field_count": 21,
+    "association_count": 75,
+    "structural_edge_count": 20,
+    "by_relation_type": {
+      "custom": 3,
+      "explicit_fk": 2,
+      "explicit_naming": 4,
+      "functional_dependency": 48,
+      "value_overlap": 18
+    },
+    "by_detection_source": {
+      "custom_rule": 3,
+      "functional_dependency": 48,
+      "naming_rule": 13,
+      "sqlite_foreign_key": 2,
+      "value_overlap": 21
+    },
+    "changes": {
+      "added": 1,
+      "removed": 1,
+      "confidence_changed": 1
+    }
+  }
+}

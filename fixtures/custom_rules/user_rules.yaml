@@ -1,0 +1,18 @@
+version: 1
+description: 人工确认的关联规则示例，优先级高于自动检测结果
+rules:
+  - source: maintain_record.engineer_id
+    target: engineer_info.engineer_id
+    relation: foreign_key
+    confidence: 1.0
+    note: 运维记录中的工程师编号引用工程师主数据
+  - source: alarm_info.device_id
+    target: device_base.device_id
+    relation: foreign_key
+    confidence: 1.0
+    note: 告警记录归属设备由值班人员人工确认
+  - source: sensor_calibration.operator_code
+    target: engineer_info.engineer_id
+    relation: reference
+    confidence: 0.99
+    note: 校准操作员编码与工程师ID使用同一套人员编号
