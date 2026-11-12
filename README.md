@@ -34,7 +34,7 @@ python run_web.py                  # 本地控制台：http://127.0.0.1:5000
 pytest tests/ -v                   # 全量测试（含覆盖率门槛）
 ```
 
-`output/` 包含 `relations.json`、`relations.yaml`、`report.md`、`graph.json`、`graph.html`。`graph.html` 内嵌 ECharts 与全部样式脚本，可直接双击离线查看；支持拖拽、缩放、关系/置信度/表名/变化筛选，点击边查看检测来源、置信度依据与匹配证据。Web 控制台可执行扫描、热加载配置、查看图谱与下载全部产物。
+`output/` 包含 `relations.json`、`relations.yaml`、`report.md`、`graph.json`、`graph.html`；开启端点归并时额外生成 `endpoint_map.json`。`graph.html` 内嵌 ECharts 与全部样式脚本，可直接双击离线查看；支持拖拽、缩放、关系/置信度/表名/变化筛选，点击边查看检测来源、置信度依据与匹配证据。Web 控制台可执行扫描、热加载配置、查看图谱与下载全部产物。
 
 ## 4. 自定义数据源
 
@@ -77,6 +77,9 @@ rules:
 | `fd` | `min_rows`, `confidence_threshold`, `complete_threshold` | 默认 10 行、0.90、0.999 |
 | `fd` | `cross_table`, `max_per_table` | 跨表函数依赖与单表输出上限 |
 | `incremental` | `confidence_delta_threshold`, `default_baseline` | 置信度变化阈值 0.05；默认历史文件 |
+| `merge` | `enabled`, `strip_source_suffix`, `token_order_insensitive` | 端点归并总开关（默认关）；来源后缀剥离与表名 token 顺序无关召回 |
+| `merge` | `verify_values`, `value_jaccard_threshold`, `min_matched_values` | 主键值域守卫阈值（默认 0.5、3 个交集值）；`false` 时仅按结构指纹判定 |
+| `merge` | `mapping_export`, `mapping_file` | 是否输出映射清单及文件名，默认 `endpoint_map.json` |
 | `output` | `directory`, 各文件名 | 所有产物目录与文件名 |
 | `report` | `high_confidence` | 报告高置信度阈值 0.90 |
 | `web` | `host`, `port`, `auto_reload` | 仅允许 `127.0.0.1`、`localhost`、`::1`；热加载默认开启 |
@@ -106,6 +109,23 @@ python run_demo.py --baseline history/relations.json
 
 结果写入 JSON 的 `incremental`、Markdown 第 7 节和 HTML 的增量筛选/状态色。建议每次人工确认后将新结果归档为下一期基线。
 
+### 7.1 跨来源端点归并（可选）
+
+当几十个 CSV 与 SQLite 库中存在同名表、`__csv`/`__sqlite` 来源后缀或表名 token 顺序不同（如 `info_engineer` 与 `engineer_info`）时，同一业务端点会被拆成多条链路。开启 `merge.enabled` 后，流水线在检测完成、增量对比之前执行一次归并：
+
+1. **召回**：表名去掉加载器追加的 `__<来源类型>[_N]` 后缀，并按 token 排序（`info_engineer` → `engineer_info`）。
+2. **判定**：候选组内按**结构指纹**（字段名有序集合 + 推断主键）判同构。字段集合或推断主键不一致时不合并。
+3. **守卫**：结构一致后，用共同主键字段的**值域 Jaccard 交集**复核；低于 `value_jaccard_threshold` 或交集值少于 `min_matched_values` 时不合并。这一步专门拦截「同名同结构但其实不是同一主键体系」的表。
+4. **重写**：关系端点改写到统一端点后**重新去重**，检测来源、关系类型、证据全部取并集，置信度取各检测明细的最高值并记录依据；关系 `id` 按统一端点重新计算。
+5. **降级**：来源缺失、字段集合不一致、值域交集不足时保留原始端点，并在映射清单 `fallbacks` 与报告「异常关联提示」中注明原因。
+6. **增量**：旧版 `relations.json` 里的原始端点会先按映射表改写到统一端点再比较，因此不会把历史 `removed` 误判为 `added`；旧基线中不存在的统一端点才算 `added`。
+
+统一端点命名取「去后缀后字典序最小的成员名」，冲突时追加固定序号，排序与内容完全由输入决定，两次运行字节级一致。`endpoint_map.json` 逐条记录原始表 → 统一表、字段级映射、归一化名称、字段集合、推断主键、结构摘要和值域守卫结果，便于人工复核。
+
+**取舍说明**：实现选择「结构指纹为主、值域守卫为辅」而不是「按值域交集比例动态判定」。结构指纹稳定、可解释、与行数/采样无关，适合作为基线对齐的主键；纯值域比例会随数据增量变化，同一对表在数据更新后可能今天合并、明天拆开，直接破坏增量可比性。值域只作为否决条件（guard），不做合并的充分条件，因此数据漂移只会让归并在降级路径上变保守，不会悄悄改变历史端点的归属。需要放宽时可设 `merge.verify_values: false` 仅按结构判定，或在映射清单中逐条复核后调整阈值。
+
+关闭 `merge.enabled`（默认）时流水线不执行任何归并，产物与旧版逐字节一致，也不会生成映射清单。
+
 ## 8. 常见问题（FAQ）
 
 **Q：CSV 中文乱码或加载失败？** 按 `utf-8-sig`、`utf-8`、`gbk` 顺序自动尝试；仍失败时检查文件损坏或 NUL 字节，错误会显示具体文件名。  
@@ -115,7 +135,7 @@ python run_demo.py --baseline history/relations.json
 **Q：Web 服务能对局域网开放吗？** 不能。配置校验和启动脚本都只允许回环地址；服务端还会拒绝非本机 `remote_addr`。  
 **Q：可以删除 `output/` 吗？** 可以，它只包含运行产物；下次运行会安全重建。  
 **Q：如何重置演示数据？** 删除 `output/` 后执行 `python run_demo.py`；SQLite 演示库可用 `python fixtures/build_mock_sqlite.py` 重建。  
-**Q：为何每个 Python 文件不超过 300 行？** 便于审计与维护；本仓库测试会校验单文件行数和总行数预算。
+**Q：为何每个 Python 文件不超过 300 行？** 便于审计与维护；本仓库测试会校验单文件行数和总行数预算（`tests/test_offline_compliance.py` 中为 2500–5600 行，已随端点归并子系统上调）。
 
 ## 9. 合规声明
 

@@ -9,7 +9,8 @@ from ..exceptions import TableLinkError
 from ..pipeline import run_pipeline
 PROJECT_ROOT = str(Path(__file__).resolve().parents[2])
 STATIC_DIR = os.path.join(PROJECT_ROOT, "static")
-ALLOWED_DOWNLOADS = {"rules_json", "rules_yaml", "report_md", "graph_html", "graph_json"}
+ALLOWED_DOWNLOADS = {"rules_json", "rules_yaml", "report_md", "graph_html",
+                     "graph_json", "endpoint_map"}
 LOOPBACK_ADDRESSES = {"127.0.0.1", "::1", "localhost"}
 def create_app(config_path=None, base_dir=None):
     """应用工厂；测试与 run_web 共用。"""

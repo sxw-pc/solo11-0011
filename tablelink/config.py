@@ -57,6 +57,16 @@ DEFAULT_CONFIG = {
         "confidence_delta_threshold": 0.05,
         "default_baseline": "fixtures/expected_output/history_relations.json",
     },
+    "merge": {
+        "enabled": False,
+        "strip_source_suffix": True,
+        "token_order_insensitive": True,
+        "verify_values": True,
+        "value_jaccard_threshold": 0.5,
+        "min_matched_values": 3,
+        "mapping_export": True,
+        "mapping_file": "endpoint_map.json",
+    },
     "output": {
         "directory": "output",
         "rules_json": "relations.json",
@@ -122,7 +132,8 @@ def validate_config(config, path="<default>"):
     """校验完整配置；不合法时抛出带位置和修复建议的 ConfigError。"""
     _dict(path, "", config)
     _keys(path, config, "", DEFAULT_CONFIG.keys())
-    for section in ("project", "sources", "explicit", "overlap", "fd", "incremental", "output", "report", "web"):
+    for section in ("project", "sources", "explicit", "overlap", "fd",
+                    "incremental", "merge", "output", "report", "web"):
         _dict(path, section, config.get(section))
     _keys(path, config["project"], "project.", ("name", "version"))
     _string(path, "project.name", config["project"].get("name"))
@@ -190,6 +201,14 @@ def validate_config(config, path="<default>"):
     _number(path, "incremental.confidence_delta_threshold", inc.get("confidence_delta_threshold"), 0, 1)
     if inc.get("default_baseline") is not None:
         _string(path, "incremental.default_baseline", inc.get("default_baseline"), allow_empty=True)
+    merge = config["merge"]
+    _keys(path, merge, "merge.", DEFAULT_CONFIG["merge"].keys())
+    for key in ("enabled", "strip_source_suffix", "token_order_insensitive",
+                "verify_values", "mapping_export"):
+        _boolean(path, "merge." + key, merge.get(key))
+    _number(path, "merge.value_jaccard_threshold", merge.get("value_jaccard_threshold"), 0, 1)
+    _number(path, "merge.min_matched_values", merge.get("min_matched_values"), 1)
+    _string(path, "merge.mapping_file", merge.get("mapping_file"))
     out = config["output"]
     _keys(path, out, "output.", DEFAULT_CONFIG["output"].keys())
     _string(path, "output.directory", out.get("directory"))

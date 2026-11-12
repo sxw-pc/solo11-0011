@@ -1,0 +1,5 @@
+record_id,engineer_id,device_id,duration_min
+MR001,E01,D001,30
+MR002,E02,D004,90
+MR003,E03,D007,45
+MR004,E04,D008,60

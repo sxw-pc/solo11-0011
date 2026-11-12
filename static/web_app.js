@@ -54,8 +54,13 @@
       '<div class="diff-row"><span>失效</span><b>' + esc(summary.diff.removed) + "</b></div>" +
       '<div class="diff-row"><span>置信度变化</span><b>' + esc(summary.diff.confidence_changed) + "</b></div>" +
       '<div class="diff-row"><span>未变化</span><b>' + esc(summary.diff.unchanged) + "</b></div></div>";
+    if (summary.merge) diff.innerHTML += '<div class="diff-list">' +
+      '<div class="diff-row"><span>统一端点</span><b>' + esc(summary.merge.cluster_count) + "</b></div>" +
+      '<div class="diff-row"><span>归并原始端点</span><b>' + esc(summary.merge.merged_endpoint_count) + "</b></div>" +
+      '<div class="diff-row"><span>降级保留</span><b>' + esc(summary.merge.fallback_count) + "</b></div></div>";
     var links = [["rules_json", "规则 JSON"], ["rules_yaml", "规则 YAML"], ["report_md", "Markdown 报告"],
       ["graph_json", "图数据 JSON"], ["graph_html", "单文件图谱"]];
+    if (summary.merge) links.push(["endpoint_map", "端点归并清单"]);
     document.getElementById("downloads").innerHTML = links.map(function (pair) {
       return '<a href="/files/' + pair[0] + '"' + (pair[0] === "graph_html" ? ' target="_blank" rel="noopener"' : "") + ">" + pair[1] + "</a>";
     }).join("");

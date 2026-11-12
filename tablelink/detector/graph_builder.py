@@ -10,6 +10,17 @@ from .graph_common import (
     graph_stats,
     merge_associations,
 )
+def _resolver(dataset, merge_plan):
+    """统一表名 → 代表表元数据；未归并表直接使用原表。"""
+    if not merge_plan:
+        return lambda name: dataset.tables.get(name)
+    clusters = {item["name"]: item for item in merge_plan["clusters"]}
+    def resolve(name):
+        cluster = clusters.get(name)
+        if cluster is not None:
+            return cluster["representative"]
+        return dataset.tables.get(name)
+    return resolve
 def graph_to_dict(graph, associations=None):
     if associations is None:
         associations = [
@@ -28,21 +39,22 @@ def graph_to_dict(graph, associations=None):
         "edges": edges,
         "stats": graph_stats(graph, associations),
     }
-def build_graph(dataset, associations, diff=None):
+def build_graph(dataset, associations, diff=None, merge_plan=None):
     """构建含表节点、字段节点和关联边的有向图，可选标注增量差异。"""
     merged = merge_associations(associations)
+    resolve = _resolver(dataset, merge_plan)
     graph = nx.DiGraph()
     for item in merged:
         source_node = add_field_node(
             graph, item["source_table"], item["source_field"],
-            dataset.tables.get(item["source_table"]),
+            resolve(item["source_table"]),
         )
         target_node = add_field_node(
             graph, item["target_table"], item["target_field"],
-            dataset.tables.get(item["target_table"]),
+            resolve(item["target_table"]),
         )
-        add_table_node(graph, item["source_table"], dataset)
-        add_table_node(graph, item["target_table"], dataset)
+        add_table_node(graph, item["source_table"], dataset, table=resolve(item["source_table"]))
+        add_table_node(graph, item["target_table"], dataset, table=resolve(item["target_table"]))
         edge = edge_from_assoc(item)
         if graph.has_edge(source_node, target_node):
             previous = graph.get_edge_data(source_node, target_node)

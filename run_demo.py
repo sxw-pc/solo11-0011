@@ -51,6 +51,9 @@ def main():
         ))
     else:
         print("增量对比: 未提供历史规则")
+    if summary["merge"]:
+        print("端点归并: 统一端点 {cluster_count} 个 / 归并原始端点 {merged_endpoint_count} 个"
+              " / 降级保留 {fallback_count} 个".format(**summary["merge"]))
     print("")
     print("输出文件:")
     for key in ("rules_json", "rules_yaml", "report_md", "graph_json", "graph_html"):

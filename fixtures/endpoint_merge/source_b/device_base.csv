@@ -1,0 +1,6 @@
+device_id,room_id,device_type
+D001,R01,sensor
+D002,R01,sensor
+D004,R02,gateway
+D007,R03,sensor
+D008,R04,sensor

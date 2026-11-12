@@ -1,0 +1,5 @@
+alarm_id,device_id,alarm_level
+A001,D001,low
+A002,D004,high
+A003,D007,medium
+A004,D008,high

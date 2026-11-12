@@ -68,6 +68,11 @@ def test_reload_change_and_removed(tmp_path):
 ({"output": {"directory": ""}}, "非空字符串"), ({"report": {"high_confidence": 1.1}}, "不能大于"),
 ({"web": {"host": "0.0.0.0"}}, "回环地址"), ({"web": {"port": 0}}, "不能小于"),
 ({"overlap": {"max_pairs": "all"}}, "应为数字"),
+({"merge": {"enabled": "yes"}}, "布尔值"),
+({"merge": {"value_jaccard_threshold": 2}}, "不能大于"),
+({"merge": {"min_matched_values": 0}}, "不能小于"),
+({"merge": {"bogus": 1}}, "未知配置项"),
+({"merge": {"mapping_file": ""}}, "非空字符串"),
 ])
 def test_schema_validation(payload, message):
     with pytest.raises(ConfigError) as exc:

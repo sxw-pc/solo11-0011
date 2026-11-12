@@ -45,7 +45,7 @@ def _isolated_tables(dataset, associations):
         involved.add(item["source_table"])
         involved.add(item["target_table"])
     return [name for name in sorted(dataset.tables) if name not in involved]
-def _anomalies(dataset, associations, config):
+def _anomalies(dataset, associations, config, merge=None):
     notes = []
     for item in dataset.errors:
         notes.append("加载提示：{0}（{1}）".format(
@@ -93,8 +93,47 @@ def _anomalies(dataset, associations, config):
         notes.append("检测到双向关联 {0} 组，例如：{1}。请按业务口径确认方向。".format(
             len(reciprocal), "；".join(reciprocal[:5])
         ))
+    if merge:
+        notes.extend(_merge_notes(merge))
     return notes or ["未发现异常项。"]
-def build_markdown(dataset, associations, graph, config, diff=None):
+def _merge_notes(merge):
+    """端点归并的降级/人工复核提示，追加到异常关联提示。"""
+    notes = []
+    merged = [item for item in merge.get("clusters", []) if len(item["members"]) > 1]
+    if merged:
+        names = "；".join(
+            "{0}←{1}".format(
+                item["unified_table"], ", ".join(
+                    member for member in item["members"]
+                    if member != item["unified_table"]
+                )
+            )
+            for item in merged[:5]
+        )
+        notes.append("端点归并：{0} 个原始端点已合并为统一端点（{1}），"
+                     "证据与置信度按统一端点重算。".format(
+                         sum(len(item["members"]) for item in merged), names))
+    fallbacks = merge.get("fallbacks", [])
+    if fallbacks:
+        reasons = {
+            "source_missing": "来源缺失",
+            "field_set_mismatch": "字段集合不一致",
+            "primary_key_mismatch": "推断主键不一致",
+            "value_domain_too_low": "主键值域交集不足",
+            "kept_separate": "结构不同",
+            "not_merged": "未满足归并条件",
+        }
+        detail = "；".join(
+            "`{0}`（{1}）".format(
+                item["original_table"],
+                reasons.get(item["reason"], item["reason"]),
+            )
+            for item in fallbacks[:6]
+        )
+        notes.append("端点归并降级：{0} 项保留原始端点，需人工复核（{1}）。".format(
+            len(fallbacks), detail))
+    return notes
+def build_markdown(dataset, associations, graph, config, diff=None, merge=None):
     """生成确定性的 Markdown 报告文本。"""
     explicit_like = [item for item in associations
                      if item["relation_type"] != "functional_dependency"]
@@ -127,6 +166,19 @@ def build_markdown(dataset, associations, graph, config, diff=None):
         [[name, table.source_type, table.row_count, len(table.columns)]
          for name, table in sorted(dataset.tables.items())],
     ))
+    if merge:
+        merged = [item for item in merge.get("clusters", []) if len(item["members"]) > 1]
+        if merged:
+            lines.extend(["", "端点归并后的统一端点：", ""])
+            lines.extend(_table(
+                ["统一端点", "原始端点", "代表表", "归并依据"],
+                [[item["unified_table"], ", ".join(item["members"]),
+                  item["representative"],
+                  "字段集合 {0} / 主键 {1}".format(
+                      len(item["basis"]["field_set"]),
+                      ",".join(item["basis"]["inferred_primary_keys"]) or "-")]
+                 for item in merged],
+            ))
     lines.extend(["", "## 2. 关联类型统计", ""])
     stat_rows = [[key, value] for key, value in sorted(relation_counts.items())]
     lines.extend(_table(["关系类型", "数量"], stat_rows))
@@ -156,7 +208,7 @@ def build_markdown(dataset, associations, graph, config, diff=None):
     else:
         lines.append("没有低于高置信度阈值的显式或值域关联。")
     lines.extend(["", "## 5. 异常关联提示", ""])
-    for note in _anomalies(dataset, associations, config):
+    for note in _anomalies(dataset, associations, config, merge=merge):
         lines.append("- " + note)
     lines.extend(["", "## 6. 函数依赖清单", ""])
     if fds:
@@ -230,6 +282,14 @@ def build_markdown(dataset, associations, graph, config, diff=None):
             config["fd"]["complete_threshold"]
         ),
         "- 自定义规则优先于自动检测；同端点关联去重后保留最高置信度并记录全部来源。",
+    ])
+    if merge:
+        lines.append(
+            "- 端点归并：名称归一召回（去来源后缀 / token 排序）→ 结构指纹"
+            "（字段集合 + 推断主键）判定 → 主键值域 Jaccard 守卫；任一步不通过"
+            "即保留原始端点并登记降级原因，映射清单见 `endpoint_map.json`。"
+        )
+    lines.extend([
         "- 本项目无网络请求、无遥测、无外部资源引用。",
         "",
     ])

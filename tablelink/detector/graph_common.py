@@ -101,11 +101,11 @@ def add_field_node(graph, table_name, field_name, table, ghost=False):
         "ghost": ghost,
     })
     return node_id
-def add_table_node(graph, table_name, dataset, ghost=False):
+def add_table_node(graph, table_name, dataset, ghost=False, table=None):
     node_id = table_node_id(table_name)
     if graph.has_node(node_id):
         return node_id
-    table = dataset.tables.get(table_name) if dataset else None
+    table = table if table is not None else (dataset.tables.get(table_name) if dataset else None)
     graph.add_node(node_id, **{
         "id": node_id,
         "name": table_name,

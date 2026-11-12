@@ -73,6 +73,16 @@ incremental:
   confidence_delta_threshold: 0.05
   default_baseline: fixtures/expected_output/history_relations.json
 
+merge:
+  enabled: false
+  strip_source_suffix: true
+  token_order_insensitive: true
+  verify_values: true
+  value_jaccard_threshold: 0.5
+  min_matched_values: 3
+  mapping_export: true
+  mapping_file: endpoint_map.json
+
 output:
   directory: output
   rules_json: relations.json
