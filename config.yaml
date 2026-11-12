@@ -69,6 +69,27 @@ fd:
   cross_table: true
   max_per_table: 8
 
+# 组合键（多列复合外键）检测；默认关闭，开启后才产生 composite_key 关系
+composite:
+  enabled: false
+  max_width: 2            # 组合列数，可放宽到 3
+  max_width_ceiling: 3    # 兜底上限，防止宽表组合爆炸
+  min_matched_tuples: 3
+  threshold: 0.75
+  min_nonnull_ratio: 0.20
+  min_signal_overlap: 2
+  strict_type: true
+  weights:
+    coverage: 0.45
+    jaccard: 0.25
+    uniqueness: 0.15
+    naming: 0.15
+  max_eligible_columns: 12
+  max_candidate_groups: 400
+  max_evaluated_pairs: 2000
+  max_table_rows: 200000
+  evidence_limit: 5
+
 incremental:
   confidence_delta_threshold: 0.05
   default_baseline: fixtures/expected_output/history_relations.json

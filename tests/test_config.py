@@ -68,6 +68,15 @@ def test_reload_change_and_removed(tmp_path):
 ({"output": {"directory": ""}}, "非空字符串"), ({"report": {"high_confidence": 1.1}}, "不能大于"),
 ({"web": {"host": "0.0.0.0"}}, "回环地址"), ({"web": {"port": 0}}, "不能小于"),
 ({"overlap": {"max_pairs": "all"}}, "应为数字"),
+({"composite": {"enabled": "yes"}}, "布尔值"),
+({"composite": {"max_width": 4}}, "不能大于"),
+({"composite": {"max_width_ceiling": 1}}, "不能大于"),
+({"composite": {"max_width": 1}}, "不能小于"),
+({"composite": {"threshold": 2}}, "不能大于"),
+({"composite": {"min_matched_tuples": 0}}, "不能小于"),
+({"composite": {"max_evaluated_pairs": 0}}, "不能小于"),
+({"composite": {"weights": {"coverage": 0, "jaccard": 0, "uniqueness": 0, "naming": 0}}}, "权重之和"),
+({"composite": {"bogus": 1}}, "未知配置项"),
 ])
 def test_schema_validation(payload, message):
     with pytest.raises(ConfigError) as exc:

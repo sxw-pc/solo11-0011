@@ -6,6 +6,7 @@ RELATION_PRIORITY = {
     "custom": 5,
     "explicit_fk": 4,
     "explicit_naming": 3,
+    "composite_key": 3,
     "value_overlap": 2,
     "functional_dependency": 1,
 }

@@ -76,6 +76,9 @@ rules:
 | `overlap` | `max_cardinality_ratio`, `min_nonnull_ratio`, `strict_type` | 高基数/稀疏保护与类型兼容开关 |
 | `fd` | `min_rows`, `confidence_threshold`, `complete_threshold` | 默认 10 行、0.90、0.999 |
 | `fd` | `cross_table`, `max_per_table` | 跨表函数依赖与单表输出上限 |
+| `composite` | `enabled`, `max_width`, `max_width_ceiling` | 组合键检测默认关闭；默认 2 列、兜底上限 3 列 |
+| `composite` | `threshold`, `min_matched_tuples`, `weights` | 阈值 0.75、至少 3 个交集元组；权重见第 6 节 |
+| `composite` | `max_eligible_columns`, `max_candidate_groups`, `max_evaluated_pairs`, `max_table_rows` | 组合爆炸硬预算，触发即降级并在报告列明原因 |
 | `incremental` | `confidence_delta_threshold`, `default_baseline` | 置信度变化阈值 0.05；默认历史文件 |
 | `output` | `directory`, 各文件名 | 所有产物目录与文件名 |
 | `report` | `high_confidence` | 报告高置信度阈值 0.90 |
@@ -88,8 +91,13 @@ rules:
 1. **显式关联**：读取 SQLite `PRAGMA foreign_key_list` 原生外键；按 `_id` 后缀、同名字段、表名 token 与同义词映射匹配目标键，并要求值域交集比例达标；自定义规则覆盖自动检测。三类来源分别标注 `sqlite_foreign_key`、`naming_rule`、`custom_rule`。
 2. **隐式值域重叠**：字段值规范化后计算 Jaccard 交集；名称相似度用 `SequenceMatcher`，同义词命中单独计分，加权归一得到置信度。跳过全空、稀疏、低基数、高基数（引用型 `_id` 跨表豁免）和类型不兼容字段；至少保留 3 条匹配证据。
 3. **函数依赖**：按源字段分组校验目标唯一值，置信度 = 一致行数 / 有效行数；达到 0.999 记为 `complete`，否则 `partial`。跨表依赖沿检测到的键关联连接目标表，输出关联路径、行数与证据。小样本、常量目标与唯一代理键会被过滤。
-4. **图与去重**：networkx 有向图同时生成表节点、字段节点、结构包含边和关联边。同端点关联保留最高置信度，同时保留全部关系类型、检测来源、证据和检测明细；筛选后自动删除孤立表节点。
-5. **可复现**：输出不写入当前时间戳，排序稳定，因此相同输入和配置会生成字节级一致的 JSON/YAML/Markdown/图谱数据。
+4. **组合键关联**（`composite`，默认关闭，`enabled: true` 开启）：发现两列（`max_width` 可放宽到 3，受 `max_width_ceiling=3` 兜底）组合才唯一的表间引用，输出 `composite_key` 关系。复合端点用逗号拼接列名（如 `region_code,doc_no`），结构化列名同时存于 `details.source_fields/target_fields`。
+   - 剪枝：排除空/稀疏/低基数列与**唯一列**（单列即可定关系，不属于组合场景）；复用单列值域统计做信号预筛，至少一列命中交集才生成候选；逐位类型兼容，拒绝错位拼接。
+   - 硬预算：`max_eligible_columns`/`max_candidate_groups`/`max_evaluated_pairs`/`max_table_rows` 任一触发即停止该范围并记录降级原因，宽表宁可漏报也不跑挂或吃光内存。
+   - 不重复输出：表对已有单列关联且候选的全部成员列对都被单字段结果覆盖时，跳过该组合。
+   - 置信度语义（加权归一，四舍五入 4 位）：`coverage` 引用侧组合值落在被引用侧值域的比例（参照完整性，默认 0.45）；`jaccard` 两侧组合值域 Jaccard（0.25）；`uniqueness` 组合接近唯一键的程度，取两侧组合基数/行数的较小者（0.15）；`naming` 对应列名相似度均值（0.15）。达到 `threshold` 且交集元组数 ≥ `min_matched_tuples` 才输出；方向取值域较小的引用侧为源，与表遍历顺序无关。
+5. **图与去重**：networkx 有向图同时生成表节点、字段节点、结构包含边和关联边。同端点关联保留最高置信度，同时保留全部关系类型、检测来源、证据和检测明细；筛选后自动删除孤立表节点。
+6. **可复现**：输出不写入当前时间戳，排序稳定，因此相同输入和配置会生成字节级一致的 JSON/YAML/Markdown/图谱数据。组合键默认关闭，旧版单字段结果的格式、排序与历史基线对齐方式保持不变。
 
 ## 7. 增量对比指南
 
@@ -111,6 +119,7 @@ python run_demo.py --baseline history/relations.json
 **Q：CSV 中文乱码或加载失败？** 按 `utf-8-sig`、`utf-8`、`gbk` 顺序自动尝试；仍失败时检查文件损坏或 NUL 字节，错误会显示具体文件名。  
 **Q：为什么某个明显关系没被识别？** 检查字段是否高基数/稀疏、类型是否兼容、交集值是否少于 3 个，或提高 `overlap.threshold` 前先看证据。  
 **Q：为什么函数依赖的结果很多？** 键字段到低基数属性可能形成有效但业务价值较低的依赖；可提高 `confidence_threshold`、降低 `max_per_table`，或关闭 `cross_table`。  
+**Q：两列合起来才唯一的关联怎么发现？** 开启 `composite.enabled`（默认关闭以保持旧产物不变）；若被预算降级，报告第 6 节会写明触发的上限与表对，可按数据规模调大对应预算但不建议超过 `max_width_ceiling=3`。  
 **Q：空表、坏表会中断扫描吗？** 不会。单文件错误被隔离并在报告中列出，空表保留结构元数据但不产生关联。  
 **Q：Web 服务能对局域网开放吗？** 不能。配置校验和启动脚本都只允许回环地址；服务端还会拒绝非本机 `remote_addr`。  
 **Q：可以删除 `output/` 吗？** 可以，它只包含运行产物；下次运行会安全重建。  
