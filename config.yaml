@@ -73,6 +73,13 @@ incremental:
   confidence_delta_threshold: 0.05
   default_baseline: fixtures/expected_output/history_relations.json
 
+lineage:
+  enabled: true
+  directory: ""
+  snapshot_file: snapshot.json
+  audit_json: audit.json
+  audit_md: audit.md
+
 output:
   directory: output
   rules_json: relations.json

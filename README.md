@@ -34,7 +34,7 @@ python run_web.py                  # 本地控制台：http://127.0.0.1:5000
 pytest tests/ -v                   # 全量测试（含覆盖率门槛）
 ```
 
-`output/` 包含 `relations.json`、`relations.yaml`、`report.md`、`graph.json`、`graph.html`。`graph.html` 内嵌 ECharts 与全部样式脚本，可直接双击离线查看；支持拖拽、缩放、关系/置信度/表名/变化筛选，点击边查看检测来源、置信度依据与匹配证据。Web 控制台可执行扫描、热加载配置、查看图谱与下载全部产物。
+`output/` 包含 `relations.json`、`relations.yaml`、`report.md`、`graph.json`、`graph.html`，以及 `lineage/` 下的血缘快照与漂移审计（见第 8 节）。`graph.html` 内嵌 ECharts 与全部样式脚本，可直接双击离线查看；支持拖拽、缩放、关系/置信度/表名/变化筛选，点击边查看检测来源、置信度依据与匹配证据。Web 控制台可执行扫描、热加载配置、查看图谱与下载全部产物。
 
 ## 4. 自定义数据源
 
@@ -77,6 +77,7 @@ rules:
 | `fd` | `min_rows`, `confidence_threshold`, `complete_threshold` | 默认 10 行、0.90、0.999 |
 | `fd` | `cross_table`, `max_per_table` | 跨表函数依赖与单表输出上限 |
 | `incremental` | `confidence_delta_threshold`, `default_baseline` | 置信度变化阈值 0.05；默认历史文件 |
+| `lineage` | `enabled`, `directory`, 三个产物文件名 | 血缘快照与漂移审计开关；`directory` 为空时落在 `<输出目录>/lineage` |
 | `output` | `directory`, 各文件名 | 所有产物目录与文件名 |
 | `report` | `high_confidence` | 报告高置信度阈值 0.90 |
 | `web` | `host`, `port`, `auto_reload` | 仅允许 `127.0.0.1`、`localhost`、`::1`；热加载默认开启 |
@@ -106,7 +107,28 @@ python run_demo.py --baseline history/relations.json
 
 结果写入 JSON 的 `incremental`、Markdown 第 7 节和 HTML 的增量筛选/状态色。建议每次人工确认后将新结果归档为下一期基线。
 
-## 8. 常见问题（FAQ）
+## 8. 字段级血缘快照与结构漂移审计
+
+增量对比回答“哪些关系变了”，血缘快照回答“为什么变”。每次扫描在 `output/lineage/` 额外落三份产物：
+
+- `snapshot.json`：字段级血缘快照。内容寻址（`snapshot_id` 为内容 SHA-256），记录快照格式与版本标识（`snapshot_format` / `snapshot_version`）、生效配置分段指纹（`sources` / `explicit` / `overlap` / `fd` 及自定义规则文件内容）、每个来源文件的状态与字节指纹、每张表每个字段的类型/非空率/基数/值集指纹，以及每条关联的关系类型、检测来源、置信度与证据指纹。
+- `audit.json` / `audit.md`：与上一份快照比对得到的结构漂移审计（机器可读 + 人可读报告）。
+
+审计把变化分两层并逐条归因（`origin`：数据变化 / 配置变化 / 检测规则变化 / 混合 / 未知）：
+
+- **来源层**：来源文件新增/消失/降级/内容或编码变化；表与字段整体新增/消失；字段非空率、基数、类型变化（含类型兼容性是否破坏）。
+- **检测层**：同一端点关联的新增/失效，以及关系类型、检测来源、置信度、匹配证据与检测明细的变化。
+
+每条受影响的关联都回溯到具体字段与来源文件（`causes`：字段消失、表消失、字段统计突变、来源文件内容变化、检测配置变化、自定义规则变化、检测规则行为变化）。归因逻辑：来源文件指纹或状态变化记为数据侧；`sources` 配置段变化（目录、过滤、编码回退顺序）记为配置侧；检测配置段或自定义规则文件变化记为配置侧；数据与配置都未变而结果变了，归为检测规则实现变化。
+
+行为约定：
+
+- 首次运行（或历史快照被删除）只建立基线，审计状态为 `baseline_initialized`，不报任何漂移。
+- 历史快照损坏或版本不受支持时安全降级为 `baseline_reset` 并重建基线，不阻断扫描。
+- 坏 CSV / 缺失的 SQLite 只让对应来源条目降级为 `error` / `missing` 并写入 `degraded_sources`，其余表与字段照常落盘。
+- 快照与审计不含时间戳，相同输入两次运行字节级一致；Web 热加载配置后，下一次扫描的审计会把差异正确归类为配置影响。
+
+## 9. 常见问题（FAQ）
 
 **Q：CSV 中文乱码或加载失败？** 按 `utf-8-sig`、`utf-8`、`gbk` 顺序自动尝试；仍失败时检查文件损坏或 NUL 字节，错误会显示具体文件名。  
 **Q：为什么某个明显关系没被识别？** 检查字段是否高基数/稀疏、类型是否兼容、交集值是否少于 3 个，或提高 `overlap.threshold` 前先看证据。  
@@ -117,7 +139,7 @@ python run_demo.py --baseline history/relations.json
 **Q：如何重置演示数据？** 删除 `output/` 后执行 `python run_demo.py`；SQLite 演示库可用 `python fixtures/build_mock_sqlite.py` 重建。  
 **Q：为何每个 Python 文件不超过 300 行？** 便于审计与维护；本仓库测试会校验单文件行数和总行数预算。
 
-## 9. 合规声明
+## 10. 合规声明
 
 - 全程离线：加载、检测、导出、Web 页面与静态资源均来自本机，无外部网络请求、无 CDN、无遥感/遥测。
 - 数据不离开本机：不上传、不同步、不写入第三方系统；临时文件只落在配置指定的本地输出目录。

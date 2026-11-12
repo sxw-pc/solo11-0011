@@ -8,6 +8,7 @@ from .detector import build_graph, detect_explicit, detect_fd, detect_overlap
 from .detector.graph_common import merge_associations
 from .exceptions import IncrementalError
 from .incremental import compare, load_history, tag_current
+from .lineage import run_lineage_audit
 from .loader import load_dataset
 from .reporter import (
     build_markdown,
@@ -29,6 +30,7 @@ class PipelineResult:
     diff: Optional[Dict[str, Any]]
     outputs: Dict[str, str] = field(default_factory=dict)
     warnings: List[str] = field(default_factory=list)
+    lineage: Optional[Dict[str, Any]] = None
     def summary(self):
         return {
             "tables": len(self.dataset.tables),
@@ -37,6 +39,12 @@ class PipelineResult:
             "relation_types": self.graph["stats"]["by_relation_type"],
             "load_errors": len(self.dataset.errors),
             "diff": self.diff["summary"] if self.diff else None,
+            "lineage": {
+                "status": self.lineage["status"],
+                "origin": self.lineage["origin"],
+                "summary": self.lineage["summary"],
+                "warnings": self.lineage["warnings"],
+            } if self.lineage else None,
             "outputs": dict(self.outputs),
         }
 def _resolve(manager, value):
@@ -108,6 +116,13 @@ def run_pipeline(config_path=None, base_dir=None, baseline_path=None,
     markdown = build_markdown(dataset, current, graph, config, diff=diff)
     write_text(outputs["report_md"], markdown)
     generate_html_graph(graph, config, outputs["graph_html"], diff=diff)
+    lineage_info = None
+    if config["lineage"]["enabled"]:
+        LOGGER.info("生成字段级血缘快照与漂移审计")
+        lineage_info = run_lineage_audit(
+            dataset, current, config, manager.base_dir, outputs["directory"]
+        )
+        outputs.update(lineage_info["outputs"])
     return PipelineResult(
         config=config,
         manager=manager,
@@ -118,4 +133,5 @@ def run_pipeline(config_path=None, base_dir=None, baseline_path=None,
         diff=diff,
         outputs=outputs,
         warnings=warnings,
+        lineage=lineage_info,
     )

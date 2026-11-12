@@ -51,10 +51,22 @@ def main():
         ))
     else:
         print("增量对比: 未提供历史规则")
+    lineage = summary["lineage"]
+    if lineage:
+        counts = lineage["summary"]
+        print("血缘快照: {0}（归因: {1}；关系 +{2}/-{3}/~{4}）".format(
+            lineage["status"], lineage["origin"],
+            counts["associations_added"], counts["associations_removed"],
+            counts["associations_changed"],
+        ))
+        for note in lineage["warnings"]:
+            print("  " + note)
     print("")
     print("输出文件:")
-    for key in ("rules_json", "rules_yaml", "report_md", "graph_json", "graph_html"):
-        print("  {0:<12} {1}".format(key, result.outputs[key]))
+    for key in ("rules_json", "rules_yaml", "report_md", "graph_json", "graph_html",
+                "lineage_snapshot", "lineage_audit_json", "lineage_audit_md"):
+        if key in result.outputs:
+            print("  {0:<20} {1}".format(key, result.outputs[key]))
     print("")
     print("提示: 直接双击 graph.html 即可离线查看交互图谱。")
     return 0

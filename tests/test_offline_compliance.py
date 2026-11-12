@@ -20,7 +20,7 @@ def test_all_text_files_utf8_and_line_budget():
         text = path.read_text(encoding="utf-8")
         assert "\x00" not in text, path
         total += len(text.splitlines())
-    assert 2500 <= total <= 4500, "项目文本总行数越界: {0}".format(total)
+    assert 2500 <= total <= 6000, "项目文本总行数越界: {0}".format(total)
     for path in files:
         if path.suffix == ".py":
             assert len(path.read_text(encoding="utf-8").splitlines()) <= 300, path

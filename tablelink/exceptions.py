@@ -25,3 +25,5 @@ class ExportError(TableLinkError):
     """结果导出失败。"""
 class IncrementalError(TableLinkError):
     """历史规则读取或增量对比失败。"""
+class LineageError(TableLinkError):
+    """血缘快照或结构漂移审计失败。"""

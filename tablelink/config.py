@@ -57,6 +57,13 @@ DEFAULT_CONFIG = {
         "confidence_delta_threshold": 0.05,
         "default_baseline": "fixtures/expected_output/history_relations.json",
     },
+    "lineage": {
+        "enabled": True,
+        "directory": "",
+        "snapshot_file": "snapshot.json",
+        "audit_json": "audit.json",
+        "audit_md": "audit.md",
+    },
     "output": {
         "directory": "output",
         "rules_json": "relations.json",
@@ -122,7 +129,7 @@ def validate_config(config, path="<default>"):
     """校验完整配置；不合法时抛出带位置和修复建议的 ConfigError。"""
     _dict(path, "", config)
     _keys(path, config, "", DEFAULT_CONFIG.keys())
-    for section in ("project", "sources", "explicit", "overlap", "fd", "incremental", "output", "report", "web"):
+    for section in ("project", "sources", "explicit", "overlap", "fd", "incremental", "lineage", "output", "report", "web"):
         _dict(path, section, config.get(section))
     _keys(path, config["project"], "project.", ("name", "version"))
     _string(path, "project.name", config["project"].get("name"))
@@ -190,6 +197,12 @@ def validate_config(config, path="<default>"):
     _number(path, "incremental.confidence_delta_threshold", inc.get("confidence_delta_threshold"), 0, 1)
     if inc.get("default_baseline") is not None:
         _string(path, "incremental.default_baseline", inc.get("default_baseline"), allow_empty=True)
+    lin = config["lineage"]
+    _keys(path, lin, "lineage.", DEFAULT_CONFIG["lineage"].keys())
+    _boolean(path, "lineage.enabled", lin.get("enabled"))
+    _string(path, "lineage.directory", lin.get("directory"), allow_empty=True)
+    for key in ("snapshot_file", "audit_json", "audit_md"):
+        _string(path, "lineage." + key, lin.get(key))
     out = config["output"]
     _keys(path, out, "output.", DEFAULT_CONFIG["output"].keys())
     _string(path, "output.directory", out.get("directory"))
