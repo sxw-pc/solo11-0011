@@ -91,5 +91,34 @@ def build():
     finally:
         connection.close()
     return DB_PATH
+COMPOSITE_DIR = os.path.join(ROOT, "composite_sqlite")
+def _run_scripts(db_path, scripts):
+    if os.path.exists(db_path):
+        os.remove(db_path)
+    connection = sqlite3.connect(db_path)
+    try:
+        for script in scripts:
+            with open(script, "r", encoding="utf-8") as handle:
+                connection.executescript(handle.read())
+        connection.commit()
+    finally:
+        connection.close()
+    return db_path
+def build_composite():
+    """重建复合外键 / 非默认 schema 演示库，返回 (主库, 附加库) 路径。"""
+    os.makedirs(COMPOSITE_DIR, exist_ok=True)
+    def script(name):
+        return os.path.join(COMPOSITE_DIR, name)
+    main = _run_scripts(
+        os.path.join(COMPOSITE_DIR, "composite_main.db"),
+        [script("main_schema.sql"), script("main_seed.sql"),
+         script("main_legacy_rename.sql")],
+    )
+    aux = _run_scripts(
+        os.path.join(COMPOSITE_DIR, "composite_aux.db"),
+        [script("aux_schema.sql"), script("aux_seed.sql")],
+    )
+    return main, aux
 if __name__ == "__main__":
     print("SQLite fixture rebuilt: {0}".format(build()))
+    print("SQLite composite fixtures rebuilt: {0}".format(build_composite()))

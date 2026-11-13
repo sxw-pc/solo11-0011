@@ -3,7 +3,20 @@ import os
 import re
 import yaml
 from ..exceptions import ConfigError
-from .common import evidence_pairs, make_association, sort_associations, value_map
+from ..loader.fk_metadata import (
+    action_confidence,
+    join_fields,
+    normalize_action,
+    referred_key,
+)
+from .common import (
+    _json_scalar,
+    evidence_pairs,
+    make_association,
+    normalize_value,
+    sort_associations,
+    value_map,
+)
 _TOKEN_RE = re.compile(r"[^a-z0-9]+")
 def _tokens(name):
     return [item for item in _TOKEN_RE.split(str(name).lower()) if item]
@@ -36,14 +49,70 @@ def _key_fields(table):
         if table.row_count and column["cardinality"] == table.row_count:
             candidates.append((index, name))
     return [candidates[0][1]] if candidates else []
+def _tuple_map(table, fields):
+    """复合键的 规范化元组 -> 原始元组 映射。"""
+    if table.frame is None or any(field not in table.frame.columns for field in fields):
+        return {}
+    mapping = {}
+    for row in table.frame[list(fields)].dropna().itertuples(index=False, name=None):
+        key = tuple(normalize_value(value) for value in row)
+        if all(value is not None for value in key) and key not in mapping:
+            mapping[key] = row
+    return mapping
+def _composite_association(table, fk, target):
+    """复合外键作为一条整体记录；列序与行为动作取自结构化外键描述。"""
+    columns = list(fk["columns"])
+    referred = list(fk["referred_columns"])
+    left = _tuple_map(table, columns)
+    right = _tuple_map(target, referred)
+    shared = sorted(set(left).intersection(right))
+    evidence = [{
+        "source_value": [_json_scalar(value) for value in left[key]],
+        "target_value": [_json_scalar(value) for value in right[key]],
+    } for key in shared[:5]]
+    return make_association(
+        table.name, join_fields(columns), target.name, join_fields(referred),
+        "explicit_fk", action_confidence(fk.get("on_delete"), fk.get("on_update")),
+        "sqlite_foreign_key",
+        evidence=evidence,
+        details={
+            "constraint": fk.get("name", ""),
+            "composite": True,
+            "source_fields": columns,
+            "target_fields": referred,
+            "referred_schema": fk.get("referred_schema"),
+            "on_delete": normalize_action(fk.get("on_delete")),
+            "on_update": normalize_action(fk.get("on_update")),
+            "matched_values": len(shared),
+            "message": "SQLite 原生复合外键约束",
+        },
+    )
+def _warn_once(dataset, table, message):
+    """外键异常降级为提示且不重复记录，不中止整轮检测。"""
+    if not any(item["message"] == message and item["source"] == table.source_name
+               for item in dataset.errors):
+        dataset.add_error(table.source_name, message, kind="warning")
 def _native_associations(dataset):
     result = []
     for table in dataset.tables.values():
         for fk in table.foreign_keys:
-            target = dataset.tables.get(fk["referred_table"])
+            target = dataset.tables.get(referred_key(fk)) or \
+                dataset.tables.get(fk.get("referred_table") or "")
             if target is None:
+                _warn_once(dataset, table, "外键 {0} 引用的表 {1} 未加载，已跳过该约束".format(
+                    fk.get("name") or "<未命名>", referred_key(fk) or fk.get("referred_table")))
                 continue
-            for source_field, target_field in zip(fk["columns"], fk["referred_columns"]):
+            columns = list(fk.get("columns") or [])
+            referred = list(fk.get("referred_columns") or [])
+            if len(columns) > 1:
+                if len(columns) != len(referred):
+                    _warn_once(dataset, table, "外键 {0} 的列数与目标列数不一致，已跳过该约束".format(
+                        fk.get("name") or "<未命名>"))
+                elif all(table.column(name) and target.column(ref)
+                         for name, ref in zip(columns, referred)):
+                    result.append(_composite_association(table, fk, target))
+                continue
+            for source_field, target_field in zip(columns, referred):
                 if not table.column(source_field) or not target.column(target_field):
                     continue
                 evidence, matched = evidence_pairs(

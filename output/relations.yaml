@@ -365,6 +365,15 @@ dataset:
       referred_table: room_info
       referred_columns:
       - room_id
+      referred_schema: main
+      source_schema: main
+      composite: false
+      on_delete: NO ACTION
+      on_update: NO ACTION
+      deferrable: null
+      initially_deferred: null
+      match: null
+      referred_key: room_info
     columns:
     - name: device_id
       dtype: string
@@ -864,12 +873,21 @@ dataset:
     primary_keys:
     - calibration_id
     foreign_keys:
-    - name: fk_sensor_calibration_0
+    - name: fk_calibration_device
       columns:
       - device_id
       referred_table: device_registry
       referred_columns:
       - device_id
+      referred_schema: main
+      source_schema: main
+      composite: false
+      on_delete: NO ACTION
+      on_update: NO ACTION
+      deferrable: null
+      initially_deferred: null
+      match: null
+      referred_key: device_registry
     columns:
     - name: calibration_id
       dtype: string
@@ -3452,7 +3470,7 @@ associations:
   - source_value: D005
     target_value: D005
   details:
-    constraint: fk_sensor_calibration_0
+    constraint: fk_calibration_device
     matched_values: 12
     message: SQLite 原生外键约束
   detections:
@@ -3460,7 +3478,7 @@ associations:
     source: sqlite_foreign_key
     confidence: 1.0
     details:
-      constraint: fk_sensor_calibration_0
+      constraint: fk_calibration_device
       matched_values: 12
       message: SQLite 原生外键约束
   - relation_type: explicit_naming
