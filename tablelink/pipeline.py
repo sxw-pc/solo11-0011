@@ -6,6 +6,7 @@ from typing import Any, Dict, List, Optional
 from .config import ConfigManager
 from .detector import build_graph, detect_explicit, detect_fd, detect_overlap
 from .detector.graph_common import merge_associations
+from .domain import annotate_graph, build_domain_settings, partition_domains
 from .exceptions import IncrementalError
 from .incremental import compare, load_history, tag_current
 from .loader import load_dataset
@@ -27,6 +28,7 @@ class PipelineResult:
     graph: Dict[str, Any]
     payload: Dict[str, Any]
     diff: Optional[Dict[str, Any]]
+    domain_result: Optional[Dict[str, Any]] = None
     outputs: Dict[str, str] = field(default_factory=dict)
     warnings: List[str] = field(default_factory=list)
     def summary(self):
@@ -37,6 +39,7 @@ class PipelineResult:
             "relation_types": self.graph["stats"]["by_relation_type"],
             "load_errors": len(self.dataset.errors),
             "diff": self.diff["summary"] if self.diff else None,
+            "domains": self.domain_result["stats"] if self.domain_result else None,
             "outputs": dict(self.outputs),
         }
 def _resolve(manager, value):
@@ -98,14 +101,23 @@ def run_pipeline(config_path=None, base_dir=None, baseline_path=None,
     else:
         warnings.append("未提供历史规则，跳过增量对比")
     graph = build_graph(dataset, current, diff=diff)
-    payload = build_rules_payload(dataset, current, config, diff=diff, graph=graph)
+    domain_settings = build_domain_settings(config["domain"])
+    domain_result = None
+    if domain_settings["enabled"]:
+        LOGGER.info("执行主题域自动划分")
+        domain_result = partition_domains(
+            list(dataset.tables.keys()), current, domain_settings)
+        annotate_graph(graph, domain_result)
+    payload = build_rules_payload(dataset, current, config, diff=diff,
+                                  graph=graph, domain_result=domain_result)
     outputs = _output_paths(manager, config)
     os.makedirs(outputs["directory"], exist_ok=True)
     LOGGER.info("导出 JSON/YAML 关联规则")
     exported = export_rules(payload, outputs["rules_json"], outputs["rules_yaml"])
     outputs.update(exported)
     export_graph_json(graph, outputs["graph_json"])
-    markdown = build_markdown(dataset, current, graph, config, diff=diff)
+    markdown = build_markdown(dataset, current, graph, config, diff=diff,
+                              domain_result=domain_result)
     write_text(outputs["report_md"], markdown)
     generate_html_graph(graph, config, outputs["graph_html"], diff=diff)
     return PipelineResult(
@@ -116,6 +128,7 @@ def run_pipeline(config_path=None, base_dir=None, baseline_path=None,
         graph=graph,
         payload=payload,
         diff=diff,
+        domain_result=domain_result,
         outputs=outputs,
         warnings=warnings,
     )

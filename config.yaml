@@ -84,6 +84,26 @@ output:
 report:
   high_confidence: 0.90
 
+# 主题域自动划分（默认关闭，不影响任何既有产物）。
+# 开启后基于表级加权边做确定性聚类，输出域、跨域桥接表与未分组清单。
+domain:
+  enabled: false
+  # 表级边权重阈值：同表对关联边的 置信度×关系类型权重 之和达到该值才算强边
+  edge_weight_threshold: 0.55
+  # 单个主题域的最大表数量，超出后按最弱内边确定性切分
+  max_domain_size: 25
+  # 一张表的强邻接至少覆盖几个域级分量才会被判定为跨域边界表
+  bridge_min_domains: 2
+  # 次强域权重达到最强域的该比例才标注为桥接表，否则归入未分组，防止偶然弱边误判
+  bridge_balance_ratio: 0.65
+  # 关系类型权重：显式/人工关联权重最高，函数依赖仅作弱信号
+  relation_weights:
+    custom: 1.0
+    explicit_fk: 1.0
+    explicit_naming: 0.9
+    value_overlap: 0.7
+    functional_dependency: 0.3
+
 web:
   host: 127.0.0.1
   port: 5000

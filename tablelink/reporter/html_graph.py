@@ -34,7 +34,8 @@ def generate_html_graph(graph, config, output_path, diff=None):
     try:
         template = environment.get_template("graph.html")
         title = "{0} · 关联图谱".format(config.get("project", {}).get("name", "表链测绘仪"))
-        html = template.render(
+        domain_enabled = bool(graph.get("domain"))
+        render_kwargs = dict(
             title=title,
             stats=graph.get("stats", {}),
             css=Markup(_read_asset("graph_style.css")),
@@ -42,7 +43,11 @@ def generate_html_graph(graph, config, output_path, diff=None):
             echarts_js=_safe_script(_read_asset("echarts.min.js")),
             graph_json=_safe_json(graph),
             diff_json=_safe_json(diff),
+            domain_enabled=domain_enabled,
         )
+        if domain_enabled:
+            render_kwargs["domain_js"] = _safe_script(_read_asset("domain_ui.js"))
+        html = template.render(**render_kwargs)
     except (TemplateError, OSError) as exc:
         raise ExportError("HTML 图谱渲染失败: {0}".format(exc))
     return write_text(output_path, html)

@@ -1,5 +1,6 @@
 """Markdown 分析报告生成。"""
 from collections import Counter
+from .domain_report import build_domain_section
 def _cell(value):
     if value is None:
         return "-"
@@ -94,7 +95,7 @@ def _anomalies(dataset, associations, config):
             len(reciprocal), "；".join(reciprocal[:5])
         ))
     return notes or ["未发现异常项。"]
-def build_markdown(dataset, associations, graph, config, diff=None):
+def build_markdown(dataset, associations, graph, config, diff=None, domain_result=None):
     """生成确定性的 Markdown 报告文本。"""
     explicit_like = [item for item in associations
                      if item["relation_type"] != "functional_dependency"]
@@ -212,10 +213,12 @@ def build_markdown(dataset, associations, graph, config, diff=None):
             ))
         else:
             lines.append("无。")
+    if domain_result:
+        lines.extend(build_domain_section(domain_result))
     cfg = config["overlap"]
     lines.extend([
         "",
-        "## 8. 审计说明",
+        "## 9. 审计说明" if domain_result else "## 8. 审计说明",
         "",
         "- 值域关联：Jaccard 权重 {0}，名称相似度权重 {1}，同义词权重 {2}，阈值 {3:.2f}。".format(
             cfg["weights"]["value"], cfg["weights"]["name"],

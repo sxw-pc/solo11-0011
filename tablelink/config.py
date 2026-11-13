@@ -3,6 +3,7 @@ import copy
 import os
 import threading
 import yaml
+from .domain.config import DEFAULT_DOMAIN_CONFIG, validate_domain_config
 from .exceptions import ConfigError
 DEFAULT_CONFIG = {
     "project": {"name": "表链测绘仪", "version": "1.0.0"},
@@ -66,6 +67,7 @@ DEFAULT_CONFIG = {
         "graph_json": "graph.json",
     },
     "report": {"high_confidence": 0.90},
+    "domain": copy.deepcopy(DEFAULT_DOMAIN_CONFIG),
     "web": {
         "host": "127.0.0.1",
         "port": 5000,
@@ -122,7 +124,8 @@ def validate_config(config, path="<default>"):
     """校验完整配置；不合法时抛出带位置和修复建议的 ConfigError。"""
     _dict(path, "", config)
     _keys(path, config, "", DEFAULT_CONFIG.keys())
-    for section in ("project", "sources", "explicit", "overlap", "fd", "incremental", "output", "report", "web"):
+    for section in ("project", "sources", "explicit", "overlap", "fd",
+                    "incremental", "output", "report", "domain", "web"):
         _dict(path, section, config.get(section))
     _keys(path, config["project"], "project.", ("name", "version"))
     _string(path, "project.name", config["project"].get("name"))
@@ -198,6 +201,7 @@ def validate_config(config, path="<default>"):
     rep = config["report"]
     _keys(path, rep, "report.", DEFAULT_CONFIG["report"].keys())
     _number(path, "report.high_confidence", rep.get("high_confidence"), 0, 1)
+    validate_domain_config(config["domain"], path)
     web = config["web"]
     _keys(path, web, "web.", DEFAULT_CONFIG["web"].keys())
     host = _string(path, "web.host", web.get("host"))

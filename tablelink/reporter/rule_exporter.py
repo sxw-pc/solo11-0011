@@ -10,7 +10,8 @@ def _safe_associations(associations):
         copied = json.loads(json.dumps(item, ensure_ascii=False, default=str))
         result.append(copied)
     return result
-def build_rules_payload(dataset, associations, config, diff=None, graph=None):
+def build_rules_payload(dataset, associations, config, diff=None, graph=None,
+                        domain_result=None):
     """构造结构化规则文档，供导出、差分和 Web API 共用。"""
     table_dicts = dataset.table_dicts()
     relation_counts = Counter(item.get("relation_type", "unknown") for item in associations)
@@ -44,6 +45,8 @@ def build_rules_payload(dataset, associations, config, diff=None, graph=None):
         "associations": _safe_associations(associations),
         "incremental": diff,
     }
+    if domain_result is not None:
+        payload["domain"] = domain_result
     return payload
 def _atomic_write(path, text):
     directory = os.path.dirname(os.path.abspath(path))

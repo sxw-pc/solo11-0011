@@ -6,6 +6,8 @@
   var chart = echarts.init(chartNode);
   var state = { graph: null, summary: null };
   var REL_LABEL = { custom: "人工规则", explicit_fk: "原生外键", explicit_naming: "命名匹配", value_overlap: "值域重叠", functional_dependency: "函数依赖", contains: "结构" };
+  var DOM = window.TableLinkDomain || { hasDomain: function () { return false; }, colorOf: function () { return null; },
+    nodePasses: function () { return true; }, fillFilter: function () {}, labelOf: function () { return ""; } };
 
   function esc(value) {
     return String(value == null ? "" : value).replace(/[&<>"']/g, function (char) {
@@ -63,6 +65,8 @@
   function filteredGraph() {
     var min = parseFloat(document.getElementById("webConfidence").value || "0");
     var relation = document.getElementById("webRelation").value;
+    var domainControl = document.getElementById("webDomain");
+    var domain = domainControl ? domainControl.value : "all";
     var graph = state.graph;
     if (!graph) return null;
     var links = graph.edges.filter(function (edge) {
@@ -77,8 +81,20 @@
       tableIds["table:" + edge.source_table] = true;
       tableIds["table:" + edge.target_table] = true;
     });
+    if (DOM.hasDomain(graph) && domain !== "all") {
+      graph.nodes.forEach(function (node) {
+        if (node.node_type === "table" && !DOM.nodePasses(node, domain)) delete tableIds[node.id];
+      });
+      links = links.filter(function (edge) {
+        return tableIds["table:" + edge.source_table] && tableIds["table:" + edge.target_table];
+      });
+      fieldIds = {};
+      links.forEach(function (edge) { fieldIds[edge.source] = true; fieldIds[edge.target] = true; });
+    }
     var nodes = graph.nodes.filter(function (node) {
-      return node.node_type === "field" ? fieldIds[node.id] : tableIds[node.id];
+      if (node.node_type === "field") return fieldIds[node.id];
+      if (!tableIds[node.id]) return false;
+      return !(DOM.hasDomain(graph) && domain !== "all" && !DOM.nodePasses(node, domain));
     });
     var contains = graph.edges.filter(function (edge) {
       return edge.structural && fieldIds[edge.target] && tableIds[edge.source];
@@ -92,10 +108,13 @@
       series: [{ type: "graph", layout: "force", roam: true, draggable: true,
         data: view.nodes.map(function (node) {
           var table = node.node_type === "table";
+          var domainColor = DOM.colorOf(node);
           return { id: node.id, name: node.name, category: node.category, draggable: true,
             symbol: table ? "roundRect" : "circle", symbolSize: table ? [Math.max(88, node.name.length * 7.4 + 20), 29] : 13 + Math.min(node.degree || 0, 7),
-            itemStyle: table ? { color: dark ? "#c3c2b7" : "#52514e", borderWidth: 2, borderColor: dark ? "#1a1a19" : "#fcfcfb" }
-              : { color: dark ? "#1e3a5c" : "#dceafa", borderColor: css("--series-1"), borderWidth: 2 },
+            itemStyle: table ? { color: domainColor || (dark ? "#c3c2b7" : "#52514e"), borderWidth: 2,
+              borderType: node.domain_role === "bridge" ? "dashed" : "solid",
+              borderColor: dark ? "#1a1a19" : "#fcfcfb" }
+              : { color: dark ? "#1e3a5c" : "#dceafa", borderColor: domainColor || css("--series-1"), borderWidth: 2 },
             label: { show: true, fontSize: table ? 10 : 9, color: table ? "#fff" : css("--ink"), position: table ? "inside" : "right", distance: 5 } };
         }),
         links: view.links.map(function (edge) {
@@ -141,6 +160,7 @@
       renderSummary(payload.summary);
       var graphPayload = await api("/api/graph");
       state.graph = graphPayload.graph;
+      setupDomainFilter(state.graph);
       draw();
       setBusy(false, "扫描完成，结果已写入本地输出目录");
       notice("扫描完成：" + payload.summary.tables + " 张表，" + payload.summary.associations + " 条去重关联。", true);
@@ -148,6 +168,15 @@
       setBusy(false, "扫描失败", true);
       notice(error.message);
     }
+  }
+  function setupDomainFilter(graph) {
+    var field = document.getElementById("webDomainField");
+    var select = document.getElementById("webDomain");
+    select.innerHTML = '<option value="all">全部主题域</option>';
+    if (!DOM.hasDomain(graph)) { field.hidden = true; select.disabled = true; return; }
+    field.hidden = false;
+    select.disabled = false;
+    DOM.fillFilter("webDomain", graph, true);
   }
   document.getElementById("runScan").addEventListener("click", scan);
   document.getElementById("reloadConfig").addEventListener("click", async function () {
@@ -167,6 +196,7 @@
     draw();
   });
   document.getElementById("webRelation").addEventListener("change", draw);
+  document.getElementById("webDomain").addEventListener("change", draw);
   chart.on("click", function (params) {
     if (params.dataType === "edge" && params.data && params.data.id && state.graph) {
       var edge = state.graph.edges.find(function (item) { return item.id === params.data.id; });

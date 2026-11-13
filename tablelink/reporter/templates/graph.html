@@ -35,6 +35,9 @@
       <div class="filter-row">
         <div class="field"><label for="confidenceRange">最低置信度</label><input id="confidenceRange" data-filter type="range" min="0" max="1" step="0.01" value="0"><output id="confidenceOutput" for="confidenceRange">0.00</output></div>
         <div class="field"><label for="tableFilter">表名</label><select id="tableFilter" data-filter><option value="">全部表</option></select></div>
+        {% if domain_enabled %}
+        <div class="field" id="domainFilterField"><label for="domainFilter">主题域</label><select id="domainFilter" data-filter><option value="all">全部主题域</option></select></div>
+        {% endif %}
         <div class="field"><label for="changeFilter">变化筛选</label><select id="changeFilter" data-filter><option value="all">全部</option><option value="added">仅新增</option><option value="removed">仅失效</option><option value="confidence_changed">仅置信度变化</option></select></div>
         <label class="check"><input id="structuralToggle" data-filter type="checkbox" checked> 显示表-字段结构边</label>
         <button class="ghost-btn" id="resetFilters" type="button">重置筛选</button>
@@ -50,6 +53,12 @@
         </div>
         <div class="change-legend" id="diffSummary">本次未执行增量对比</div>
       </div>
+      {% if domain_enabled %}
+      <div class="filter-row" id="domainLegendRow">
+        <span class="filter-title">主题域</span>
+        <div class="legend" id="domainLegend" aria-label="主题域图例"></div>
+      </div>
+      {% endif %}
     </section>
 
     <div class="split">
@@ -86,6 +95,7 @@
   <noscript>本页面需要启用本地 JavaScript 才能渲染交互图谱；关联规则与 Markdown 报告仍可直接阅读。</noscript>
   <script>{{ echarts_js|safe }}</script>
   <script>window.__GRAPH__={{ graph_json|safe }};window.__DIFF__={{ diff_json|safe }};</script>
+  {% if domain_enabled %}<script>{{ domain_js|safe }}</script>{% endif %}
   <script>{{ app_js|safe }}</script>
 </body>
 </html>

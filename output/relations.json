@@ -1402,7 +1402,7 @@
         ],
         "foreign_keys": [
           {
-            "name": "fk_sensor_calibration_0",
+            "name": "fk_calibration_device",
             "columns": [
               "device_id"
             ],
@@ -5186,7 +5186,7 @@
         }
       ],
       "details": {
-        "constraint": "fk_sensor_calibration_0",
+        "constraint": "fk_calibration_device",
         "matched_values": 12,
         "message": "SQLite 原生外键约束"
       },
@@ -5196,7 +5196,7 @@
           "source": "sqlite_foreign_key",
           "confidence": 1.0,
           "details": {
-            "constraint": "fk_sensor_calibration_0",
+            "constraint": "fk_calibration_device",
             "matched_values": 12,
             "message": "SQLite 原生外键约束"
           }
