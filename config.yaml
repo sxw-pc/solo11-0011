@@ -80,6 +80,7 @@ output:
   report_md: report.md
   graph_html: graph.html
   graph_json: graph.json
+  shard_edges: false
 
 report:
   high_confidence: 0.90

@@ -64,6 +64,7 @@ DEFAULT_CONFIG = {
         "report_md": "report.md",
         "graph_html": "graph.html",
         "graph_json": "graph.json",
+        "shard_edges": False,
     },
     "report": {"high_confidence": 0.90},
     "web": {
@@ -195,6 +196,7 @@ def validate_config(config, path="<default>"):
     _string(path, "output.directory", out.get("directory"))
     for key in ("rules_json", "rules_yaml", "report_md", "graph_html", "graph_json"):
         _string(path, "output." + key, out.get(key))
+    _boolean(path, "output.shard_edges", out.get("shard_edges"))
     rep = config["report"]
     _keys(path, rep, "report.", DEFAULT_CONFIG["report"].keys())
     _number(path, "report.high_confidence", rep.get("high_confidence"), 0, 1)

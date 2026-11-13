@@ -85,3 +85,86 @@ def test_html_missing_asset(tmp_path, monkeypatch, artifacts, default_config):
     with pytest.raises(ExportError) as exc:
         generate_html_graph(graph, default_config, tmp_path / "x.html")
     assert "本地静态资源" in str(exc.value)
+
+def _sharded_config(default_config):
+    import copy
+    config = copy.deepcopy(default_config)
+    config["output"]["shard_edges"] = True
+    return config
+
+def test_sharded_export_is_deterministic_and_complete(tmp_path, artifacts, default_config):
+    import hashlib
+    _, graph, diff, _ = artifacts
+    config = _sharded_config(default_config)
+    first = tmp_path / "one"
+    second = tmp_path / "two"
+    first.mkdir(); second.mkdir()
+    path_a = generate_html_graph(graph, config, first / "graph.html", diff=diff)
+    path_b = generate_html_graph(graph, config, second / "graph.html", diff=diff)
+    names = ["graph.html", "graph.data.explicit.json", "graph.data.overlap.json",
+             "graph.data.fd.json", "graph.data.contains.json"]
+    assert sorted(p.name for p in first.iterdir()) == sorted(names)
+    for name in names:
+        digest_a = hashlib.sha256((first / name).read_bytes()).hexdigest()
+        digest_b = hashlib.sha256((second / name).read_bytes()).hexdigest()
+        assert digest_a == digest_b, name
+    html = open(path_a, encoding="utf-8").read()
+    assert "window.__GRAPH__" in html and "window.__DIFF__" in html
+    assert '"mode":"sharded"' in html and '"families"' in html
+    embedded = html.split("window.__GRAPH__=", 1)[1].split(";window.__DIFF__", 1)[0]
+    assert '"edges"' not in embedded and '"nodes"' in embedded
+    assert "connect-src 'self'" in html and "ECharts" in html
+    payloads = {}
+    for family in ("explicit", "overlap", "fd", "contains"):
+        payload = json.loads((first / ("graph.data.{0}.json".format(family))).read_text(encoding="utf-8"))
+        assert payload["family"] == family and payload["edge_count"] == len(payload["edges"])
+        payloads[family] = payload["edges"]
+    assert len(payloads["fd"]) + len(payloads["explicit"]) + len(payloads["overlap"]) + \
+        len(payloads["contains"]) >= len(graph["edges"])
+    for edges in payloads.values():
+        keys = [(bool(e.get("structural")), -e["confidence"], e["id"]) for e in edges]
+        assert keys == sorted(keys)
+
+def test_sharded_edges_preserve_audit_fields_and_change_filter(tmp_path, artifacts,
+                                                               default_dataset, default_config):
+    _, _, diff, _ = artifacts
+    from tablelink.detector import build_graph
+    graph = build_graph(default_dataset, artifacts[0], diff=diff)
+    config = _sharded_config(default_config)
+    directory = tmp_path / "out"
+    directory.mkdir()
+    generate_html_graph(graph, config, directory / "graph.html", diff=diff)
+    shard_edges = {}
+    for family in ("explicit", "overlap", "fd", "contains"):
+        payload = json.loads((directory / ("graph.data.{0}.json".format(family))).read_text(encoding="utf-8"))
+        for edge in payload["edges"]:
+            shard_edges[edge["id"]] = edge
+    for edge in graph["edges"]:
+        assert edge["id"] in shard_edges
+        if edge["structural"]:
+            continue
+        assert shard_edges[edge["id"]].get("detection_sources") is not None
+        assert "details" in shard_edges[edge["id"]]
+    removed = [edge for edge in graph["edges"] if edge.get("change") == "removed"]
+    assert removed and all(edge["id"] in shard_edges for edge in removed)
+
+def test_sharded_mode_does_not_touch_authoritative_json(tmp_path, artifacts, default_config):
+    import hashlib
+    _, graph, _, _ = artifacts
+    from tablelink.reporter import export_graph_json
+    graph_path = tmp_path / "graph.json"
+    export_graph_json(graph, graph_path)
+    before = hashlib.sha256(graph_path.read_bytes()).hexdigest()
+    directory = tmp_path / "out"
+    directory.mkdir()
+    generate_html_graph(graph, _sharded_config(default_config), directory / "graph.html")
+    assert hashlib.sha256(graph_path.read_bytes()).hexdigest() == before
+    assert json.loads(graph_path.read_text(encoding="utf-8")) == graph
+
+def test_shard_config_schema_default_off(default_config):
+    from tablelink.config import DEFAULT_CONFIG, validate_config
+    assert DEFAULT_CONFIG["output"]["shard_edges"] is False
+    config = json.loads(json.dumps(DEFAULT_CONFIG))
+    config["output"]["shard_edges"] = "yes"
+    with pytest.raises(Exception):
+        validate_config(config, "unit.yaml")

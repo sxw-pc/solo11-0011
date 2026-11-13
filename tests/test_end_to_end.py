@@ -54,3 +54,42 @@ def test_pipeline_missing_baseline(tmp_path, default_config):
     with pytest.raises(IncrementalError):
         run_pipeline(config_path=config_path, base_dir=str(ROOT),
                      baseline_path=str(tmp_path / "none.json"))
+
+def test_pipeline_sharded_mode_writes_companion_files(tmp_path, default_config):
+    import hashlib
+    config_path = write_config(
+        tmp_path, default_config,
+        **{"output.directory": str(tmp_path / "out"),
+           "output.shard_edges": True,
+           "incremental.default_baseline": ""}
+    )
+    run_pipeline(config_path=config_path, base_dir=str(ROOT), use_default_baseline=False)
+    out = tmp_path / "out"
+    families = ("explicit", "overlap", "fd", "contains")
+    for family in families:
+        assert (out / ("graph.data.{0}.json".format(family))).is_file()
+    names = ["graph.html", "graph.json", "relations.json"] + \
+        ["graph.data.{0}.json".format(f) for f in families]
+    before = {name: _digest(out / name) for name in names}
+    run_pipeline(config_path=config_path, base_dir=str(ROOT), use_default_baseline=False)
+    assert before == {name: _digest(out / name) for name in names}
+    graph = json.loads((out / "graph.json").read_text(encoding="utf-8"))
+    assert "edges" in graph and graph["edges"]
+    total_shard = sum(len(json.loads((out / ("graph.data.{0}.json".format(f))).read_text(
+        encoding="utf-8"))["edges"]) for f in families)
+    assert total_shard >= len(graph["edges"])
+    html = (out / "graph.html").read_text(encoding="utf-8")
+    assert '"mode":"sharded"' in html and "graph.data.explicit.json" in html
+
+def test_pipeline_default_mode_ignores_shard_files(tmp_path, default_config):
+    config_path = write_config(
+        tmp_path, default_config,
+        **{"output.directory": str(tmp_path / "out"),
+           "output.shard_edges": False,
+           "incremental.default_baseline": ""}
+    )
+    run_pipeline(config_path=config_path, base_dir=str(ROOT), use_default_baseline=False)
+    assert sorted(p.name for p in (tmp_path / "out").iterdir()) == sorted(
+        ["graph.html", "graph.json", "relations.json", "relations.yaml", "report.md"])
+    html = (tmp_path / "out" / "graph.html").read_text(encoding="utf-8")
+    assert '"mode":"sharded"' not in html and "connect-src 'none'" in html

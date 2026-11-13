@@ -57,7 +57,8 @@
     var links = [["rules_json", "规则 JSON"], ["rules_yaml", "规则 YAML"], ["report_md", "Markdown 报告"],
       ["graph_json", "图数据 JSON"], ["graph_html", "单文件图谱"]];
     document.getElementById("downloads").innerHTML = links.map(function (pair) {
-      return '<a href="/files/' + pair[0] + '"' + (pair[0] === "graph_html" ? ' target="_blank" rel="noopener"' : "") + ">" + pair[1] + "</a>";
+      var href = pair[0] === "graph_html" ? "/graph/index.html" : "/files/" + pair[0];
+      return '<a href="' + href + '"' + (pair[0] === "graph_html" ? ' target="_blank" rel="noopener"' : "") + ">" + pair[1] + "</a>";
     }).join("");
   }
   function filteredGraph() {

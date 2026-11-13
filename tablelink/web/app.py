@@ -106,4 +106,30 @@ def create_app(config_path=None, base_dir=None):
         if not path or not os.path.isfile(path):
             return jsonify({"ok": False, "error": "输出文件不存在"}), 404
         return send_file(path, as_attachment=False)
+    @app.get("/graph/index.html")
+    def graph_view():
+        state = app.extensions["tablelink"]
+        if state["result"] is None:
+            return jsonify({"ok": False, "error": "尚未执行扫描"}), 404
+        path = state["result"].outputs.get("graph_html")
+        if not path or not os.path.isfile(path):
+            return jsonify({"ok": False, "error": "输出文件不存在"}), 404
+        return send_file(path, as_attachment=False, mimetype="text/html")
+    @app.get("/graph/<name>")
+    def shard(name):
+        """仅允许下载当前结果清单内的分片，避免任意路径读取。"""
+        state = app.extensions["tablelink"]
+        if state["result"] is None:
+            return jsonify({"ok": False, "error": "尚未执行扫描"}), 404
+        html_path = state["result"].outputs.get("graph_html")
+        allowed = set()
+        if html_path:
+            from ..reporter.graph_shards import FAMILIES, shard_filename
+            allowed = {shard_filename(html_path, family) for family in FAMILIES}
+        if name not in allowed:
+            return jsonify({"ok": False, "error": "不允许的分片文件"}), 404
+        path = os.path.join(os.path.dirname(html_path), name)
+        if not os.path.isfile(path):
+            return jsonify({"ok": False, "error": "分片文件不存在"}), 404
+        return send_file(path, as_attachment=False, mimetype="application/json")
     return app

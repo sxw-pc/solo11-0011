@@ -61,3 +61,22 @@ def test_invalid_config_reload(client):
     path.write_text("web:\n  host: 8.8.8.8\n", encoding="utf-8")
     response = http.post("/api/config/reload")
     assert response.status_code == 400 and "回环" in response.get_json()["error"]
+
+def test_shard_download_is_scoped(tmp_path, default_config):
+    config_path = write_config(
+        tmp_path, default_config,
+        **{"output.directory": str(tmp_path / "out"),
+           "output.shard_edges": True,
+           "incremental.default_baseline": ""}
+    )
+    app = create_app(config_path, base_dir=str(ROOT))
+    http = app.test_client()
+    assert http.get("/graph/index.html").status_code == 404
+    assert http.get("/graph/graph.data.fd.json").status_code == 404
+    assert http.post("/api/scan", json={}).status_code == 200
+    page = http.get("/graph/index.html")
+    assert page.status_code == 200 and "sharded" in page.get_data(as_text=True)
+    shard = http.get("/graph/graph.data.fd.json")
+    assert shard.status_code == 200 and shard.get_json()["family"] == "fd"
+    assert http.get("/graph/../../config.yaml").status_code == 404
+    assert http.get("/graph/other.json").status_code == 404

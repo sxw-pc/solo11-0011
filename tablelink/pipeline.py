@@ -37,6 +37,7 @@ class PipelineResult:
             "relation_types": self.graph["stats"]["by_relation_type"],
             "load_errors": len(self.dataset.errors),
             "diff": self.diff["summary"] if self.diff else None,
+            "shard_edges": bool(self.config.get("output", {}).get("shard_edges")),
             "outputs": dict(self.outputs),
         }
 def _resolve(manager, value):

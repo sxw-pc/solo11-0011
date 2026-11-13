@@ -2,18 +2,20 @@
 <html lang="zh-CN" data-theme="light">
 <head>
   <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src data:; style-src 'unsafe-inline'; script-src 'unsafe-inline' 'unsafe-eval'; font-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'">
+  <meta http-equiv="Content-Security-Policy" content="{{ csp }}">
   <title>{{ title }}</title>
   <style>{{ css|safe }}</style>
+{% if sharded %}  <style>.shard-notice{margin:0 0 14px;padding:9px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--ink-2);font-size:12px}.shard-notice.error{border-color:var(--critical);color:var(--critical)}.shard-notice button{margin-left:10px}</style>{% endif %}
 </head>
 <body>
   <header class="topbar">
     <div class="brand"><div class="brand-mark" aria-hidden="true">TL</div>
-      <div><h1>{{ title }}</h1><div class="subtitle">离线关联图谱 · 数据表 {{ stats.table_count }} · 关联边 {{ stats.association_count }} · 单文件可直接打开</div></div></div>
+      <div><h1>{{ title }}</h1><div class="subtitle">离线关联图谱 · 数据表 {{ stats.table_count }} · 关联边 {{ stats.association_count }} · {{ subtitle_note }}</div></div></div>
     <div class="top-actions"><button class="ghost-btn" id="themeToggle" type="button">深色模式</button></div>
   </header>
   <main class="layout">
-    <section class="summary-strip" aria-label="图谱摘要">
+{% if sharded %}    <div class="shard-notice" id="shardNotice" role="alert" hidden></div>
+{% endif %}    <section class="summary-strip" aria-label="图谱摘要">
       <div class="stat"><div class="stat-label">表节点</div><div class="stat-value">{{ stats.table_count }}</div><div class="stat-note">已过滤孤立表</div></div>
       <div class="stat"><div class="stat-label">字段节点</div><div class="stat-value">{{ stats.field_count }}</div><div class="stat-note">仅展示关联字段</div></div>
       <div class="stat"><div class="stat-label">关联边</div><div class="stat-value">{{ stats.association_count }}</div><div class="stat-note">多来源已去重</div></div>
@@ -82,7 +84,7 @@
       </details>
     </section>
   </main>
-  <footer class="footer">表链测绘仪 · 纯离线运行 · 页面内已内嵌 ECharts 5.5.1 与全部样式脚本，无 CDN、无外部请求。</footer>
+  <footer class="footer">表链测绘仪 · 纯离线运行 · 页面内已内嵌 ECharts 5.5.1 与全部样式脚本，{{ footer_note }}</footer>
   <noscript>本页面需要启用本地 JavaScript 才能渲染交互图谱；关联规则与 Markdown 报告仍可直接阅读。</noscript>
   <script>{{ echarts_js|safe }}</script>
   <script>window.__GRAPH__={{ graph_json|safe }};window.__DIFF__={{ diff_json|safe }};</script>

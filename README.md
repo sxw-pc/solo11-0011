@@ -36,6 +36,8 @@ pytest tests/ -v                   # 全量测试（含覆盖率门槛）
 
 `output/` 包含 `relations.json`、`relations.yaml`、`report.md`、`graph.json`、`graph.html`。`graph.html` 内嵌 ECharts 与全部样式脚本，可直接双击离线查看；支持拖拽、缩放、关系/置信度/表名/变化筛选，点击边查看检测来源、置信度依据与匹配证据。Web 控制台可执行扫描、热加载配置、查看图谱与下载全部产物。
 
+数据量大时可开启 `output.shard_edges: true`（可选导出模式）：`graph.html` 变成骨架，继续内嵌 ECharts 与样式，节点、统计与分片清单仍在页面内；边数据按关系类型家族 `explicit` / `overlap` / `fd` / `contains` 拆成同目录的 `graph.data.<family>.json` 伴随文件。页面先渲染摘要，再按当前筛选条件懒加载所需分片，已加载分片在切换筛选时不重复请求。分片名、内部排序与数量（恒为 4 片，空家族也写空分片）均确定，相同输入两次导出字节一致且不含时间戳。该模式依赖浏览器读取同目录文件：`file://` 直开会被浏览器拦截并显示降级提示，建议经 Web 控制台或本地 HTTP 服务打开；单文件模式（默认）不受影响。`graph.json` 与 `relations.json` 始终是权威产物，分片只是 HTML 的消费副本。
+
 ## 4. 自定义数据源
 
 编辑 `config.yaml` 的 `sources`：
@@ -78,6 +80,7 @@ rules:
 | `fd` | `cross_table`, `max_per_table` | 跨表函数依赖与单表输出上限 |
 | `incremental` | `confidence_delta_threshold`, `default_baseline` | 置信度变化阈值 0.05；默认历史文件 |
 | `output` | `directory`, 各文件名 | 所有产物目录与文件名 |
+| `output` | `shard_edges` | 默认 `false`：`graph.html` 内嵌全部边数据、单文件可双击打开。`true`：骨架内嵌节点/统计/清单，边按 `explicit`/`overlap`/`fd`/`contains` 四片写入同目录 `graph.*.data.<family>.json`，按筛选懒加载；`graph.json`/`relations.json` 仍是权威产物且字节不变 |
 | `report` | `high_confidence` | 报告高置信度阈值 0.90 |
 | `web` | `host`, `port`, `auto_reload` | 仅允许 `127.0.0.1`、`localhost`、`::1`；热加载默认开启 |
 
@@ -115,7 +118,7 @@ python run_demo.py --baseline history/relations.json
 **Q：Web 服务能对局域网开放吗？** 不能。配置校验和启动脚本都只允许回环地址；服务端还会拒绝非本机 `remote_addr`。  
 **Q：可以删除 `output/` 吗？** 可以，它只包含运行产物；下次运行会安全重建。  
 **Q：如何重置演示数据？** 删除 `output/` 后执行 `python run_demo.py`；SQLite 演示库可用 `python fixtures/build_mock_sqlite.py` 重建。  
-**Q：为何每个 Python 文件不超过 300 行？** 便于审计与维护；本仓库测试会校验单文件行数和总行数预算。
+**Q：为何每个 Python 文件不超过 300 行？** 便于审计与维护；本仓库测试会校验单文件行数。`output.shard_edges` 开启后，`graph.html` 需要一份独立的分片前端（单文件模式必须保持字节级不变），因此交付文本总行数预算为 5400 行。
 
 ## 9. 合规声明
 
