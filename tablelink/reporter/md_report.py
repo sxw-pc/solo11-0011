@@ -94,7 +94,33 @@ def _anomalies(dataset, associations, config):
             len(reciprocal), "；".join(reciprocal[:5])
         ))
     return notes or ["未发现异常项。"]
-def build_markdown(dataset, associations, graph, config, diff=None):
+def _run_notes(run_info):
+    """构造运行态续跑说明；首次成功运行返回空列表，保持报告字节稳定。"""
+    if not run_info or not run_info.get("resumed"):
+        return []
+    lines = ["", "### 运行态与断点续跑", ""]
+    lines.append("- 运行编号：`{0}`（本次为断点续跑）。".format(
+        run_info.get("run_id", "-")
+    ))
+    skipped = run_info.get("skipped") or []
+    rerun = run_info.get("rerun") or []
+    lines.append("- 摘要校验通过、直接复用的阶段：{0}。".format(
+        "、".join(skipped) if skipped else "无"
+    ))
+    lines.append("- 本次重新执行的阶段：{0}。".format(
+        "、".join(rerun) if rerun else "无"
+    ))
+    failed_stage = run_info.get("failed_stage")
+    if failed_stage:
+        reason = run_info.get("failure_reason") or "未记录具体原因"
+        lines.append(
+            "- 上次运行在 `{0}` 阶段失败（原因：{1}），该阶段及其下游阶段已全部重跑，"
+            "正式产物在全部阶段通过前未被覆盖。".format(
+                failed_stage, _cell(reason)
+            )
+        )
+    return lines
+def build_markdown(dataset, associations, graph, config, diff=None, run_info=None):
     """生成确定性的 Markdown 报告文本。"""
     explicit_like = [item for item in associations
                      if item["relation_type"] != "functional_dependency"]
@@ -158,6 +184,7 @@ def build_markdown(dataset, associations, graph, config, diff=None):
     lines.extend(["", "## 5. 异常关联提示", ""])
     for note in _anomalies(dataset, associations, config):
         lines.append("- " + note)
+    lines.extend(_run_notes(run_info))
     lines.extend(["", "## 6. 函数依赖清单", ""])
     if fds:
         rows = []

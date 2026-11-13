@@ -63,7 +63,8 @@ def create_app(config_path=None, base_dir=None):
             return jsonify({"ok": False, "error": "已有扫描任务在执行"}), 409
         try:
             result = run_pipeline(
-                manager=state["manager"], baseline_path=baseline
+                manager=state["manager"], baseline_path=baseline,
+                managed=False,
             )
             state["result"] = result
             return jsonify({"ok": True, "summary": result.summary()})
