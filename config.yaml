@@ -58,6 +58,23 @@ overlap:
     synonym: 0.15
   max_pairs: 5000
   evidence_limit: 5
+  normalization:
+    enabled: false
+    min_side_coverage: 0.80
+    min_normalized_jaccard: 0.50
+    normalizers:
+      case_fold:
+        enabled: true
+        trust: 0.98
+      strip_delimiters:
+        enabled: true
+        trust: 0.95
+      numeric_unit:
+        enabled: true
+        trust: 0.85
+      date_unify:
+        enabled: true
+        trust: 0.90
 
 fd:
   enabled: true

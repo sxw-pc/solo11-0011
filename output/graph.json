@@ -4569,7 +4569,7 @@
         }
       ],
       "details": {
-        "constraint": "fk_sensor_calibration_0",
+        "constraint": "fk_calibration_device",
         "matched_values": 12,
         "message": "SQLite 原生外键约束"
       },
@@ -4579,7 +4579,7 @@
           "source": "naming_rule",
           "confidence": 1.0,
           "details": {
-            "constraint": "fk_sensor_calibration_0",
+            "constraint": "fk_calibration_device",
             "matched_values": 12,
             "message": "SQLite 原生外键约束"
           }

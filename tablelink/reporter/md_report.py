@@ -94,7 +94,7 @@ def _anomalies(dataset, associations, config):
             len(reciprocal), "；".join(reciprocal[:5])
         ))
     return notes or ["未发现异常项。"]
-def build_markdown(dataset, associations, graph, config, diff=None):
+def build_markdown(dataset, associations, graph, config, diff=None, overlap_diagnostics=None):
     """生成确定性的 Markdown 报告文本。"""
     explicit_like = [item for item in associations
                      if item["relation_type"] != "functional_dependency"]
@@ -225,6 +225,40 @@ def build_markdown(dataset, associations, graph, config, diff=None):
             cfg["max_cardinality_ratio"]
         ),
         "- 稀疏字段阈值：非空率 < {0:.0%} 时跳过。".format(cfg["min_nonnull_ratio"]),
+    ])
+    norm = cfg.get("normalization") or {}
+    if norm.get("enabled"):
+        lines.append(
+            "- 跨来源规范化：救援模式启用，仅在原始置信度未达阈值时尝试；"
+            "有效 Jaccard = 规范化 Jaccard × 链信任度（字段覆盖率 ≥ {0:.0%}，"
+            "规范化 Jaccard ≥ {1:.2f}）。".format(
+                norm["min_side_coverage"], norm["min_normalized_jaccard"]
+            )
+        )
+        rescued = [
+            item for item in associations
+            if (item.get("details") or {}).get("normalization", {}).get("applied")
+        ]
+        if rescued:
+            lines.append(
+                "- 规范化救援命中 {0} 条关联；各关联证据记录了原始/规范化交集与采用链。".format(
+                    len(rescued)
+                )
+            )
+        degraded = (overlap_diagnostics or {}).get("degraded") or []
+        if degraded:
+            names = "、".join(
+                "`{0}.{1}`（{2}，覆盖率 {3:.0%}）".format(
+                    item["table"], item["field"], item["chain"], item["coverage"]
+                )
+                for item in degraded[:10]
+            )
+            lines.append(
+                "- 规范化降级 {0} 项，坏值或形态无法推断，已回退原始值域比较：{1}".format(
+                    len(degraded), names
+                )
+            )
+    lines.extend([
         "- 函数依赖：最小样本 {0} 行，一致率 ≥ {1:.2f} 纳入；≥ {2:.3f} 记为完全依赖。".format(
             config["fd"]["min_rows"], config["fd"]["confidence_threshold"],
             config["fd"]["complete_threshold"]

@@ -29,6 +29,7 @@ class PipelineResult:
     diff: Optional[Dict[str, Any]]
     outputs: Dict[str, str] = field(default_factory=dict)
     warnings: List[str] = field(default_factory=list)
+    overlap_diagnostics: Dict[str, Any] = field(default_factory=dict)
     def summary(self):
         return {
             "tables": len(self.dataset.tables),
@@ -80,7 +81,8 @@ def run_pipeline(config_path=None, base_dir=None, baseline_path=None,
         warnings.append("{0}: {1}".format(item.get("source"), item.get("message")))
     LOGGER.info("检测显式关联与值域关联")
     explicit = detect_explicit(dataset, config, manager.base_dir)
-    overlap = detect_overlap(dataset, config)
+    overlap_diagnostics: Dict[str, Any] = {}
+    overlap = detect_overlap(dataset, config, diagnostics=overlap_diagnostics)
     LOGGER.info("检测函数依赖")
     functional = detect_fd(dataset, config, key_links=explicit + overlap)
     current = merge_associations(explicit + overlap + functional)
@@ -105,7 +107,8 @@ def run_pipeline(config_path=None, base_dir=None, baseline_path=None,
     exported = export_rules(payload, outputs["rules_json"], outputs["rules_yaml"])
     outputs.update(exported)
     export_graph_json(graph, outputs["graph_json"])
-    markdown = build_markdown(dataset, current, graph, config, diff=diff)
+    markdown = build_markdown(dataset, current, graph, config, diff=diff,
+                              overlap_diagnostics=overlap_diagnostics)
     write_text(outputs["report_md"], markdown)
     generate_html_graph(graph, config, outputs["graph_html"], diff=diff)
     return PipelineResult(
@@ -118,4 +121,5 @@ def run_pipeline(config_path=None, base_dir=None, baseline_path=None,
         diff=diff,
         outputs=outputs,
         warnings=warnings,
+        overlap_diagnostics=overlap_diagnostics,
     )

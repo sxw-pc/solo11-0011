@@ -42,6 +42,17 @@ DEFAULT_CONFIG = {
         "weights": {"value": 0.60, "name": 0.25, "synonym": 0.15},
         "max_pairs": 5000,
         "evidence_limit": 5,
+        "normalization": {
+            "enabled": False,
+            "min_side_coverage": 0.80,
+            "min_normalized_jaccard": 0.50,
+            "normalizers": {
+                "case_fold": {"enabled": True, "trust": 0.98},
+                "strip_delimiters": {"enabled": True, "trust": 0.95},
+                "numeric_unit": {"enabled": True, "trust": 0.85},
+                "date_unify": {"enabled": True, "trust": 0.90},
+            },
+        },
     },
     "fd": {
         "enabled": True,
@@ -175,6 +186,20 @@ def validate_config(config, path="<default>"):
         total += _number(path, "overlap.weights." + key, weights.get(key), 0, 1)
     if total <= 0:
         _fail(path, "overlap.weights", "权重之和必须大于 0", "至少给一个维度设置正数权重")
+    norm = _dict(path, "overlap.normalization", ov.get("normalization"))
+    _keys(path, norm, "overlap.normalization.", DEFAULT_CONFIG["overlap"]["normalization"].keys())
+    _boolean(path, "overlap.normalization.enabled", norm.get("enabled"))
+    _number(path, "overlap.normalization.min_side_coverage", norm.get("min_side_coverage"), 0, 1)
+    _number(path, "overlap.normalization.min_normalized_jaccard", norm.get("min_normalized_jaccard"), 0, 1)
+    normalizers = _dict(path, "overlap.normalization.normalizers", norm.get("normalizers"))
+    known = DEFAULT_CONFIG["overlap"]["normalization"]["normalizers"]
+    _keys(path, normalizers, "overlap.normalization.normalizers.", known.keys())
+    for name in normalizers:
+        prefix = "overlap.normalization.normalizers." + name
+        item = _dict(path, prefix, normalizers.get(name))
+        _keys(path, item, prefix + ".", ("enabled", "trust"))
+        _boolean(path, prefix + ".enabled", item.get("enabled"))
+        _number(path, prefix + ".trust", item.get("trust"), 0, 1)
     fd = config["fd"]
     _keys(path, fd, "fd.", DEFAULT_CONFIG["fd"].keys())
     _boolean(path, "fd.enabled", fd.get("enabled"))

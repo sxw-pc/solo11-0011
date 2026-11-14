@@ -34,18 +34,22 @@ def value_map(table, field):
         if key is not None and key not in mapping:
             mapping[key] = value
     return mapping
-def evidence_pairs(source_table, source_field, target_table, target_field, limit=5):
-    """取两边值域交集中的前若干条匹配证据。"""
-    left = value_map(source_table, source_field)
-    right = value_map(target_table, target_field)
-    shared = sorted(set(left).intersection(right))
+def evidence_from_maps(left_map, right_map, limit=5):
+    """由两侧 规范化键 -> 原始值 映射取交集中的前若干条匹配证据。"""
+    shared = sorted(set(left_map).intersection(right_map))
     return [
         {
-            "source_value": _json_scalar(left[key]),
-            "target_value": _json_scalar(right[key]),
+            "source_value": _json_scalar(left_map[key]),
+            "target_value": _json_scalar(right_map[key]),
         }
         for key in shared[:limit]
     ], len(shared)
+def evidence_pairs(source_table, source_field, target_table, target_field, limit=5):
+    """取两边值域交集中的前若干条匹配证据。"""
+    return evidence_from_maps(
+        value_map(source_table, source_field), value_map(target_table, target_field),
+        limit=limit,
+    )
 def _json_scalar(value):
     if hasattr(value, "item"):
         try:

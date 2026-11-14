@@ -175,6 +175,18 @@
     if (!rows) return '<p class="detail-empty">该规则未提供值域样例，请查看检测依据。</p>';
     return '<table class="evidence-table"><thead><tr><th>源值</th><th>目标值</th></tr></thead><tbody>' + rows + "</tbody></table>";
   }
+  function normalizationBlock(edge) {
+    var norm = edge.details && edge.details.normalization;
+    if (!norm || !norm.applied) return "";
+    return '<h2 style="margin-top:14px">跨来源规范化</h2><dl class="detail-kv">' +
+      "<dt>原始交集</dt><dd>" + esc(norm.raw_matched) + " 条</dd>" +
+      "<dt>规范化后交集</dt><dd>" + esc(norm.normalized_matched) + " 条</dd>" +
+      "<dt>源侧规范化链</dt><dd class=\"mono\">" + esc(norm.source_chain) + "</dd>" +
+      "<dt>目标侧规范化链</dt><dd class=\"mono\">" + esc(norm.target_chain) + "</dd>" +
+      "<dt>Jaccard</dt><dd>" + esc(norm.raw_jaccard) + " → " + esc(norm.normalized_jaccard) +
+      "（折算后 " + esc(norm.effective_jaccard) + "，链信任度 " + esc(norm.chain_trust) + "）</dd>" +
+      "<dt>置信度贡献</dt><dd>+" + esc(norm.confidence_gain) + "</dd></dl>";
+  }
   function showEdge(id) {
     var edge = edgeIndex[id];
     if (!edge || edge.structural) return;
@@ -187,7 +199,7 @@
       "<dt>置信度</dt><dd>" + Number(edge.confidence).toFixed(4) + "</dd>" +
       "<dt>变化</dt><dd>" + esc(edge.change ? CHANGE_LABELS[edge.change] : "未变化 / 未比较") + "</dd>" +
       "<dt>检测来源</dt><dd>" + (tags || "-") + "</dd></dl>" +
-      "<h2>匹配证据</h2>" + evidenceTable(edge) +
+      "<h2>匹配证据</h2>" + evidenceTable(edge) + normalizationBlock(edge) +
       '<h2 style="margin-top:14px">计算依据</h2><pre class="details-json">' +
       esc(JSON.stringify(edge.details || {}, null, 2)) + "</pre>" +
       '<h2 style="margin-top:14px">检测记录</h2><pre class="details-json">' +
