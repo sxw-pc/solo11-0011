@@ -77,9 +77,7 @@ def create_app(config_path=None, base_dir=None):
         return jsonify({"ok": True, "graph": state["result"].graph})
     @app.get("/api/config")
     def config_view():
-        return jsonify({"ok": True, "config": state_config()})
-    def state_config():
-        return app.extensions["tablelink"]["manager"].load()
+        return jsonify({"ok": True, "config": app.extensions["tablelink"]["manager"].load()})
     @app.post("/api/config/reload")
     def reload_config():
         try:

@@ -33,6 +33,10 @@
         </div>
       </div>
       <div class="filter-row">
+        <span class="filter-title">检测来源</span>
+        <div class="filter-group" id="sourceFilters"></div>
+      </div>
+      <div class="filter-row">
         <div class="field"><label for="confidenceRange">最低置信度</label><input id="confidenceRange" data-filter type="range" min="0" max="1" step="0.01" value="0"><output id="confidenceOutput" for="confidenceRange">0.00</output></div>
         <div class="field"><label for="tableFilter">表名</label><select id="tableFilter" data-filter><option value="">全部表</option></select></div>
         <div class="field"><label for="changeFilter">变化筛选</label><select id="changeFilter" data-filter><option value="all">全部</option><option value="added">仅新增</option><option value="removed">仅失效</option><option value="confidence_changed">仅置信度变化</option></select></div>

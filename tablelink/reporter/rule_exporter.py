@@ -19,7 +19,7 @@ def build_rules_payload(dataset, associations, config, diff=None, graph=None):
         for source in item.get("detection_sources", []):
             source_counts[source] += 1
     payload = {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "tool": "tablelink-mapper",
         "project": dict(config.get("project", {})),
         "dataset": {

@@ -5,32 +5,21 @@ ROOT = os.path.dirname(os.path.abspath(__file__))
 DB_PATH = os.path.join(ROOT, "mock_sqlite", "env_monitor.db")
 SCHEMA = """
 CREATE TABLE room_info (
-    room_id TEXT PRIMARY KEY,
-    room_name TEXT NOT NULL,
-    building TEXT NOT NULL,
-    floor INTEGER NOT NULL
+    room_id TEXT PRIMARY KEY, room_name TEXT NOT NULL,
+    building TEXT NOT NULL, floor INTEGER NOT NULL
 );
 CREATE TABLE device_registry (
-    device_id TEXT PRIMARY KEY,
-    room_id TEXT NOT NULL,
-    device_type TEXT NOT NULL,
-    firmware TEXT NOT NULL,
-    owner_team TEXT NOT NULL,
+    device_id TEXT PRIMARY KEY, room_id TEXT NOT NULL, device_type TEXT NOT NULL,
+    firmware TEXT NOT NULL, owner_team TEXT NOT NULL,
     CONSTRAINT fk_device_room FOREIGN KEY (room_id) REFERENCES room_info(room_id)
 );
 CREATE TABLE engineer_info (
-    engineer_id TEXT PRIMARY KEY,
-    engineer_name TEXT NOT NULL,
-    team TEXT NOT NULL,
-    contact TEXT,
-    active INTEGER NOT NULL
+    engineer_id TEXT PRIMARY KEY, engineer_name TEXT NOT NULL,
+    team TEXT NOT NULL, contact TEXT, active INTEGER NOT NULL
 );
 CREATE TABLE sensor_calibration (
-    calibration_id TEXT PRIMARY KEY,
-    device_id TEXT NOT NULL,
-    calibrated_on TEXT NOT NULL,
-    precision_value REAL NOT NULL,
-    operator_code TEXT NOT NULL,
+    calibration_id TEXT PRIMARY KEY, device_id TEXT NOT NULL, calibrated_on TEXT NOT NULL,
+    precision_value REAL NOT NULL, operator_code TEXT NOT NULL,
     CONSTRAINT fk_calibration_device FOREIGN KEY (device_id)
         REFERENCES device_registry(device_id)
 );

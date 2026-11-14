@@ -2,6 +2,7 @@
 import json
 import os
 import yaml
+from .detector.graph_common import merge_associations
 from .exceptions import IncrementalError
 def _key(item):
     return (
@@ -30,9 +31,11 @@ def _normalize(item, index):
     normalized.setdefault("detection_sources", ["history"])
     normalized.setdefault("evidence", [])
     normalized.setdefault("details", {})
+    normalized.setdefault("detections", [])
+    normalized.setdefault("source_groups", [])
     return normalized
 def load_history(path):
-    """读取 JSON 或 YAML 历史规则，返回按端点去重后的关联列表。"""
+    """读取 JSON 或 YAML 历史规则，按端点合并为统一关联记录。"""
     if not path or not os.path.isfile(path):
         raise IncrementalError("历史规则文件不存在: {0}".format(path))
     try:
@@ -49,13 +52,9 @@ def load_history(path):
         items = payload["associations"]
     else:
         raise IncrementalError("历史规则需包含 associations 列表")
-    merged = {}
-    for index, raw in enumerate(items):
-        item = _normalize(raw, index)
-        key = _key(item)
-        if key not in merged or item["confidence"] > merged[key]["confidence"]:
-            merged[key] = item
-    return sorted(merged.values(), key=lambda item: _key(item))
+    return merge_associations(
+        [_normalize(raw, index) for index, raw in enumerate(items)]
+    )
 def _copy(item, change):
     result = dict(item)
     result["change"] = change
@@ -84,9 +83,6 @@ def compare(current, history, threshold=0.05):
                 changed.append(item)
             else:
                 unchanged += 1
-    added.sort(key=_key)
-    removed.sort(key=_key)
-    changed.sort(key=_key)
     return {
         "threshold": threshold,
         "summary": {

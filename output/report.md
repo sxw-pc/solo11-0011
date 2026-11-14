@@ -42,6 +42,20 @@
 | sqlite_foreign_key | 2 |
 | value_overlap | 21 |
 
+多来源命中（同一字段对，证据按来源分组）：
+
+| 方向 | 关系类型 | 检测来源 | 来源证据数 |
+| --- | --- | --- | --- |
+| `alarm_info.device_id` → `device_base.device_id` | custom + explicit_naming + value_overlap | custom_rule, naming_rule, value_overlap | custom_rule:5, naming_rule:5, value_overlap:5 |
+| `alarm_info.device_id` → `device_registry.device_id` | explicit_naming + value_overlap | naming_rule, value_overlap | naming_rule:5, value_overlap:5 |
+| `device_base.device_id` → `device_registry.device_id` | explicit_naming + value_overlap | naming_rule, value_overlap | naming_rule:5, value_overlap:5 |
+| `device_base.room_id` → `room_info.room_id` | explicit_naming + value_overlap | naming_rule, value_overlap | naming_rule:4, value_overlap:4 |
+| `device_registry.room_id` → `room_info.room_id` | explicit_fk + explicit_naming + value_overlap | naming_rule, sqlite_foreign_key, value_overlap | naming_rule:4, sqlite_foreign_key:4, value_overlap:4 |
+| `maintain_record.engineer_id` → `engineer_info.engineer_id` | custom + explicit_naming + value_overlap | custom_rule, naming_rule, value_overlap | custom_rule:4, naming_rule:4, value_overlap:4 |
+| `sensor_calibration.device_id` → `device_registry.device_id` | explicit_fk + explicit_naming | naming_rule, sqlite_foreign_key | naming_rule:5, sqlite_foreign_key:5 |
+| `sensor_metric.device_id` → `device_base.device_id` | explicit_naming + value_overlap | naming_rule, value_overlap | naming_rule:5, value_overlap:5 |
+| `sensor_metric.device_id` → `device_registry.device_id` | explicit_naming + value_overlap | naming_rule, value_overlap | naming_rule:5, value_overlap:5 |
+
 图谱节点：9 个表节点，21 个字段节点。
 
 ## 3. 高置信度关联清单
@@ -170,5 +184,5 @@
 - 高基数字段阈值：基数 > 行数的 80%；引用型 `_id` 字段可豁免。
 - 稀疏字段阈值：非空率 < 20% 时跳过。
 - 函数依赖：最小样本 10 行，一致率 ≥ 0.90 纳入；≥ 0.999 记为完全依赖。
-- 自定义规则优先于自动检测；同端点关联去重后保留最高置信度并记录全部来源。
+- 自定义规则优先于自动检测；同端点关联合并为单条边，保留全部来源与按来源分组的证据（零证据来源不计入分组）。
 - 本项目无网络请求、无遥测、无外部资源引用。

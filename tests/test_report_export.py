@@ -1,6 +1,7 @@
 """JSON/YAML 规则、Markdown 报告与单文件 HTML 图谱测试。"""
 import json, pytest, yaml
 from tablelink.detector import build_graph
+from tablelink.detector.graph_common import merge_associations
 from tablelink.exceptions import ExportError
 from tablelink.reporter import (
     build_markdown,
@@ -85,3 +86,15 @@ def test_html_missing_asset(tmp_path, monkeypatch, artifacts, default_config):
     with pytest.raises(ExportError) as exc:
         generate_html_graph(graph, default_config, tmp_path / "x.html")
     assert "本地静态资源" in str(exc.value)
+def test_source_groups_in_payload_markdown_and_html(tmp_path, artifacts, default_dataset, default_config):
+    associations, graph, diff, _ = artifacts
+    merged = merge_associations(associations)
+    multi = [item for item in merged if len(item["detection_sources"]) > 1]
+    assert multi and all(item["source_groups"] for item in multi)
+    payload = build_rules_payload(default_dataset, merged, default_config, graph=graph)
+    assert payload["associations"][0]["source_groups"] is not None
+    text = build_markdown(default_dataset, merged, graph, default_config, diff=diff)
+    assert "多来源命中" in text and "来源证据数" in text
+    page = open(generate_html_graph(graph, default_config, tmp_path / "g.html", diff=diff),
+                encoding="utf-8").read()
+    assert "sourceFilters" in page and "按来源分组证据" in page

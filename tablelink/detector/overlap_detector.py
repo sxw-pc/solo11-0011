@@ -53,22 +53,17 @@ def _eligible(dataset, table, column, config, id_names):
         return False
     if column["cardinality"] < overlap["min_matched_values"]:
         return False
-    high_cardinality = column["cardinality"] > overlap["max_cardinality_ratio"] * table.row_count
-    if high_cardinality:
-        exempt = overlap["allow_reference_high_cardinality"] and \
-            _high_cardinality_exempt(dataset, table, column, id_names)
-        if not exempt:
-            return False
-    return True
+    if column["cardinality"] <= overlap["max_cardinality_ratio"] * table.row_count:
+        return True
+    return overlap["allow_reference_high_cardinality"] and \
+        _high_cardinality_exempt(dataset, table, column, id_names)
 def _orientation(left, right, left_table, right_table):
     if left_table.row_count == 0 or right_table.row_count == 0:
         return True
     left_unique = left["cardinality"] == left_table.row_count
     right_unique = right["cardinality"] == right_table.row_count
-    if left_unique and not right_unique:
-        return False
-    if right_unique and not left_unique:
-        return True
+    if left_unique != right_unique:
+        return right_unique
     if left_table.name == right_table.name:
         return left["name"] <= right["name"]
     return (left_table.name, left["name"]) <= (right_table.name, right["name"])
@@ -139,8 +134,7 @@ def detect_overlap(dataset, config):
                     "weights": dict(weights),
                     "matched_values": matched,
                     "confidence_basis": "加权和: 值域 {0} / 名称 {1} / 同义词 {2}".format(
-                        weights["value"], weights["name"], weights["synonym"]
-                    ),
+                        weights["value"], weights["name"], weights["synonym"]),
                 },
             ))
     return sort_associations(result)

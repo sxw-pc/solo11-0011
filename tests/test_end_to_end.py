@@ -54,3 +54,20 @@ def test_pipeline_missing_baseline(tmp_path, default_config):
     with pytest.raises(IncrementalError):
         run_pipeline(config_path=config_path, base_dir=str(ROOT),
                      baseline_path=str(tmp_path / "none.json"))
+def test_graph_and_rules_share_grouped_evidence(tmp_path, default_config):
+    config_path = write_config(
+        tmp_path, default_config,
+        **{"output.directory": str(tmp_path / "out"),
+           "incremental.default_baseline": ""}
+    )
+    run_pipeline(config_path=config_path, base_dir=str(ROOT), use_default_baseline=False)
+    rules = json.loads((tmp_path / "out" / "relations.json").read_text(encoding="utf-8"))
+    graph = json.loads((tmp_path / "out" / "graph.json").read_text(encoding="utf-8"))
+    edges = {edge["id"]: edge for edge in graph["edges"] if not edge["structural"]}
+    assert rules["schema_version"] == "1.1" and graph["schema_version"] == "1.1"
+    for assoc in rules["associations"]:
+        edge = edges[assoc["id"]]
+        assert edge["detections"] == assoc["detections"]
+        assert edge["source_groups"] == assoc["source_groups"]
+        assert all(group["evidence"] for group in assoc["source_groups"])
+        assert set(assoc["detection_sources"]) >= {g["source"] for g in assoc["source_groups"]}

@@ -28,9 +28,7 @@ class CSVDirectoryLoader(BaseLoader):
                 return raw.decode(encoding), encoding
             except (UnicodeDecodeError, LookupError):
                 tried.append(encoding)
-        raise LoaderError(
-            path, "编码识别失败，已尝试 {0}".format(", ".join(tried))
-        )
+        raise LoaderError(path, "编码识别失败，已尝试 {0}".format(", ".join(tried)))
     @staticmethod
     def _validate_rows(text, path):
         try:
@@ -50,12 +48,8 @@ class CSVDirectoryLoader(BaseLoader):
         expected = len(header)
         for index, row in enumerate(rows[1:], start=2):
             if len(row) != expected:
-                raise LoaderError(
-                    path,
-                    "第 {0} 行字段数为 {1}，期望 {2}，文件已跳过".format(
-                        index, len(row), expected
-                    ),
-                )
+                raise LoaderError(path, "第 {0} 行字段数为 {1}，期望 {2}，文件已跳过".format(
+                    index, len(row), expected))
         return header
     def _load_file(self, path):
         text, encoding = self._decode(path)
@@ -65,13 +59,8 @@ class CSVDirectoryLoader(BaseLoader):
         except (pd.errors.ParserError, pd.errors.EmptyDataError, ValueError) as exc:
             raise LoaderError(path, "pandas 读取失败: {0}".format(exc))
         frame.columns = [str(col).strip() for col in frame.columns]
-        table_name = path.stem
-        table = self.make_table(
-            name=table_name,
-            frame=frame,
-            source_name=path.name,
-            source_type="csv",
-        )
+        table = self.make_table(name=path.stem, frame=frame,
+                                source_name=path.name, source_type="csv")
         table.encoding = encoding
         return table
     def load(self, dataset):
@@ -81,8 +70,7 @@ class CSVDirectoryLoader(BaseLoader):
         files = sorted(
             (item for item in self.directory.rglob("*")
              if item.is_file() and item.suffix.lower() == ".csv"),
-            key=lambda item: str(item).lower(),
-        )
+            key=lambda item: str(item).lower())
         if not files:
             dataset.add_error(self.directory, "CSV 目录下没有 .csv 文件", kind="warning")
         for path in files:
@@ -102,6 +90,6 @@ def discover_csv_files(directory):
     if not root.is_dir():
         return []
     return sorted(
-        [str(path) for path in root.iterdir()
-         if path.is_file() and os.path.splitext(path.name)[1].lower() == ".csv"]
+        str(path) for path in root.iterdir()
+        if path.is_file() and os.path.splitext(path.name)[1].lower() == ".csv"
     )

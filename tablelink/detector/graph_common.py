@@ -1,6 +1,7 @@
 """图构建共用件：节点标识、关联合并、差异标注与统计。"""
 import hashlib
 import json
+from collections import Counter
 from .common import RELATION_PRIORITY, association_key
 def field_node_id(table, field):
     return "field:{0}.{1}".format(table, field)
@@ -21,17 +22,45 @@ def _merge_evidence(existing, incoming, limit=8):
             break
     return merged
 def _detection(item):
+    """规范化单条检测明细；关联字典与既有检测记录均可作为输入。"""
     return {
         "relation_type": item.get("relation_type", "unknown"),
-        "source": (item.get("detection_sources") or ["unknown"])[0],
+        "source": item.get("source") or (item.get("detection_sources") or ["unknown"])[0],
         "confidence": round(float(item.get("confidence", 0)), 4),
         "details": dict(item.get("details", {})),
+        "evidence": list(item.get("evidence") or []),
     }
+def _source_groups(detections):
+    """按检测来源分组证据；零证据来源不计入来源集合。"""
+    grouped = {}
+    for det in detections:
+        grouped.setdefault(det["source"], []).append(det)
+    result = []
+    for source in sorted(grouped):
+        dets = grouped[source]
+        evidence = []
+        for det in dets:
+            evidence = _merge_evidence(evidence, det.get("evidence") or [])
+        if not evidence:
+            continue
+        best = max(dets, key=lambda det: (
+            det["confidence"], RELATION_PRIORITY.get(det["relation_type"], 0)))
+        result.append({
+            "source": source,
+            "relation_types": sorted({det["relation_type"] for det in dets},
+                                     key=lambda name: (-RELATION_PRIORITY.get(name, 0), name)),
+            "confidence": best["confidence"],
+            "evidence": evidence, "details": dict(best["details"]),
+        })
+    return result
 def merge_associations(associations):
-    """按字段端点合并重复关联，保留最高置信度与全部来源/证据。"""
+    """按字段端点合并重复关联，保留最高置信度与全部来源/证据。可重复调用。"""
     merged = {}
     for item in associations:
         key = association_key(item)
+        detections = [_detection(entry) for entry in item.get("detections") or []]
+        if not detections:
+            detections = [_detection(item)]
         if key not in merged:
             merged[key] = {
                 "id": item.get("id") or "",
@@ -43,24 +72,20 @@ def merge_associations(associations):
                 "relation_type": item.get("relation_type", "unknown"),
                 "relation_types": list(item.get("relation_types") or []),
                 "detection_sources": list(item.get("detection_sources") or []),
-                "evidence": list(item.get("evidence") or []),
                 "details": dict(item.get("details") or {}),
-                "detections": [_detection(item)],
+                "detections": detections,
                 "change": item.get("change"),
                 "change_delta": item.get("change_delta"),
             }
             continue
         current = merged[key]
-        current["detections"].append(_detection(item))
+        current["detections"].extend(detections)
         for source in item.get("detection_sources") or []:
             if source not in current["detection_sources"]:
                 current["detection_sources"].append(source)
         for relation in item.get("relation_types") or []:
             if relation not in current["relation_types"]:
                 current["relation_types"].append(relation)
-        current["evidence"] = _merge_evidence(
-            current["evidence"], item.get("evidence") or []
-        )
         if item.get("change") and not current.get("change"):
             current["change"] = item["change"]
             current["change_delta"] = item.get("change_delta")
@@ -74,11 +99,21 @@ def merge_associations(associations):
             current["id"] = item.get("id") or current["id"]
     result = list(merged.values())
     for item in result:
-        item["relation_types"].sort(key=lambda name: (-RELATION_PRIORITY.get(name, 0), name))
         item["detections"].sort(
             key=lambda det: (-det["confidence"], -RELATION_PRIORITY.get(det["relation_type"], 0))
         )
-        item["detection_sources"].sort()
+        item["detection_sources"] = sorted(
+            set(item["detection_sources"]) | {det["source"] for det in item["detections"]}
+        )
+        item["relation_types"] = sorted(
+            set(item["relation_types"]) | {det["relation_type"] for det in item["detections"]},
+            key=lambda name: (-RELATION_PRIORITY.get(name, 0), name),
+        )
+        evidence = []
+        for det in item["detections"]:
+            evidence = _merge_evidence(evidence, det["evidence"])
+        item["evidence"] = evidence
+        item["source_groups"] = _source_groups(item["detections"])
     return sorted(result, key=lambda item: (
         -item["confidence"], item["source_table"], item["source_field"],
         item["target_table"], item["target_field"],
@@ -135,33 +170,39 @@ def add_containment(graph, table_name, field_name):
         "confidence": 1.0,
         "evidence": [],
         "details": {},
+        "detections": [],
+        "source_groups": [],
         "structural": True,
         "change": None,
     })
-def edge_from_assoc(item):
-    source_node = field_node_id(item["source_table"], item["source_field"])
-    target_node = field_node_id(item["target_table"], item["target_field"])
+def _relation_edge(item, edge_id):
+    """由关联记录生成非结构边字典，构建与增量标注共用。"""
     return {
-        "id": item.get("id") or "rel_" + hashlib.sha1(
-            json.dumps(association_key(item)).encode("utf-8")
-        ).hexdigest()[:12],
-        "source": source_node,
-        "target": target_node,
+        "id": edge_id,
+        "source": field_node_id(item["source_table"], item["source_field"]),
+        "target": field_node_id(item["target_table"], item["target_field"]),
         "source_table": item["source_table"],
         "source_field": item["source_field"],
         "target_table": item["target_table"],
         "target_field": item["target_field"],
-        "relation_type": item["relation_type"],
-        "relation_types": list(item["relation_types"]),
-        "detection_sources": list(item["detection_sources"]),
+        "relation_type": item.get("relation_type", "unknown"),
+        "relation_types": list(item.get("relation_types") or []),
+        "detection_sources": list(item.get("detection_sources") or []),
         "confidence": item["confidence"],
-        "evidence": list(item["evidence"]),
-        "details": dict(item["details"]),
-        "detections": list(item.get("detections", [])),
+        "evidence": list(item.get("evidence") or []),
+        "details": dict(item.get("details") or {}),
+        "detections": list(item.get("detections") or []),
+        "source_groups": list(item.get("source_groups") or []),
         "structural": False,
         "change": item.get("change"),
         "change_delta": item.get("change_delta"),
     }
+def _edge_digest(item, prefix):
+    return prefix + hashlib.sha1(
+        json.dumps(association_key(item)).encode("utf-8")
+    ).hexdigest()[:12]
+def edge_from_assoc(item):
+    return _relation_edge(item, item.get("id") or _edge_digest(item, "rel_"))
 def assoc_from_edge(edge):
     return {
         "source_table": edge["source_table"],
@@ -184,25 +225,21 @@ def enrich_degrees(graph, dataset=None):
                 node["cardinality"] = column["cardinality"]
                 node["non_null_ratio"] = column["non_null_ratio"]
 def graph_stats(graph, associations):
-    by_relation = {}
-    by_source = {}
-    for item in associations:
-        by_relation[item["relation_type"]] = by_relation.get(item["relation_type"], 0) + 1
-        for source in item.get("detection_sources", []):
-            by_source[source] = by_source.get(source, 0) + 1
+    by_relation = Counter(item["relation_type"] for item in associations)
+    by_source = Counter(
+        source for item in associations for source in item.get("detection_sources", [])
+    )
     changes = {"added": 0, "removed": 0, "confidence_changed": 0}
     for _, _, edge in graph.edges(data=True):
-        if edge.get("structural"):
-            continue
-        if edge.get("change") in changes:
+        if not edge.get("structural") and edge.get("change") in changes:
             changes[edge["change"]] += 1
+    node_types = Counter(data["node_type"] for _, data in graph.nodes(data=True))
     return {
-        "table_count": len([n for n, d in graph.nodes(data=True) if d["node_type"] == "table"]),
-        "field_count": len([n for n, d in graph.nodes(data=True) if d["node_type"] == "field"]),
+        "table_count": node_types["table"],
+        "field_count": node_types["field"],
         "association_count": len(associations),
-        "structural_edge_count": len([
-            1 for _, _, d in graph.edges(data=True) if d.get("structural")
-        ]),
+        "structural_edge_count": sum(
+            1 for _, _, d in graph.edges(data=True) if d.get("structural")),
         "by_relation_type": dict(sorted(by_relation.items())),
         "by_detection_source": dict(sorted(by_source.items())),
         "changes": changes,
@@ -234,27 +271,11 @@ def annotate_diff(graph, diff):
         add_field_node(graph, target_table, item["target_field"], None, ghost=True)
         add_table_node(graph, source_table, None, ghost=True)
         add_table_node(graph, target_table, None, ghost=True)
-        edge = {
-            "id": item.get("id") or "removed_" + hashlib.sha1(
-                json.dumps(association_key(item)).encode("utf-8")
-            ).hexdigest()[:12],
-            "source": field_node_id(source_table, item["source_field"]),
-            "target": field_node_id(target_table, item["target_field"]),
-            "source_table": source_table,
-            "source_field": item["source_field"],
-            "target_table": target_table,
-            "target_field": item["target_field"],
-            "relation_type": item.get("relation_type", "historical"),
-            "relation_types": item.get("relation_types", ["historical"]),
-            "detection_sources": item.get("detection_sources", ["history"]),
-            "confidence": item["confidence"],
-            "evidence": item.get("evidence", []),
-            "details": item.get("details", {}),
-            "detections": item.get("detections", []),
-            "structural": False,
-            "change": "removed",
-            "change_delta": None,
-        }
+        edge = _relation_edge(item, item.get("id") or _edge_digest(item, "removed_"))
+        edge["relation_type"] = item.get("relation_type", "historical")
+        edge["relation_types"] = item.get("relation_types", ["historical"])
+        edge["detection_sources"] = item.get("detection_sources", ["history"])
+        edge["change"] = "removed"
         graph.add_edge(edge["source"], edge["target"], **edge)
     enrich_degrees(graph)
     return graph

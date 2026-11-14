@@ -45,6 +45,25 @@ def _isolated_tables(dataset, associations):
         involved.add(item["source_table"])
         involved.add(item["target_table"])
     return [name for name in sorted(dataset.tables) if name not in involved]
+def _multi_source_lines(associations):
+    """同一字段对被多个检测来源命中的分组证据明细。"""
+    multi = [item for item in associations if len(item.get("detection_sources", [])) > 1]
+    lines = ["", "多来源命中（同一字段对，证据按来源分组）：", ""]
+    if not multi:
+        lines.append("本次没有同一字段对被多个检测来源同时命中。")
+        return lines
+    rows = []
+    for item in multi:
+        counts = sorted((group["source"], len(group["evidence"]))
+                        for group in item.get("source_groups", []))
+        rows.append([
+            _direction(item),
+            " + ".join(item.get("relation_types", [])) or "-",
+            ", ".join(item["detection_sources"]),
+            ", ".join("{0}:{1}".format(source, count) for source, count in counts) or "-",
+        ])
+    lines.extend(_table(["方向", "关系类型", "检测来源", "来源证据数"], rows))
+    return lines
 def _anomalies(dataset, associations, config):
     notes = []
     for item in dataset.errors:
@@ -56,11 +75,9 @@ def _anomalies(dataset, associations, config):
         notes.append("空表：{0}，已参与结构读取但不参与有效关联统计。".format(
             ", ".join("`{0}`".format(name) for name in empty_tables)
         ))
-    empty_fields = []
-    for name, table in dataset.tables.items():
-        for column in table.columns:
-            if column["dtype"] == "empty":
-                empty_fields.append("{0}.{1}".format(name, column["name"]))
+    empty_fields = ["{0}.{1}".format(name, column["name"])
+                    for name, table in dataset.tables.items()
+                    for column in table.columns if column["dtype"] == "empty"]
     if empty_fields:
         notes.append("全空字段：{0}，值域检测已跳过。".format(
             ", ".join("`{0}`".format(item) for item in empty_fields)
@@ -135,6 +152,7 @@ def build_markdown(dataset, associations, graph, config, diff=None):
         ["检测来源", "贡献关联数"],
         [[key, value] for key, value in sorted(source_counts.items())],
     ))
+    lines.extend(_multi_source_lines(associations))
     lines.extend([
         "",
         "图谱节点：{0} 个表节点，{1} 个字段节点。".format(
@@ -229,7 +247,7 @@ def build_markdown(dataset, associations, graph, config, diff=None):
             config["fd"]["min_rows"], config["fd"]["confidence_threshold"],
             config["fd"]["complete_threshold"]
         ),
-        "- 自定义规则优先于自动检测；同端点关联去重后保留最高置信度并记录全部来源。",
+        "- 自定义规则优先于自动检测；同端点关联合并为单条边，保留全部来源与按来源分组的证据（零证据来源不计入分组）。",
         "- 本项目无网络请求、无遥测、无外部资源引用。",
         "",
     ])

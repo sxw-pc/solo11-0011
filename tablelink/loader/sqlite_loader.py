@@ -16,9 +16,7 @@ class SQLiteLoader(BaseLoader):
     def _foreign_keys(self, inspector, table_name, primary_keys):
         grouped = {}
         for item in inspector.get_foreign_keys(table_name):
-            key = item.get("name") or "fk_{0}_{1}".format(
-                table_name, item.get("id", len(grouped))
-            )
+            key = item.get("name") or "fk_{0}_{1}".format(table_name, item.get("id", len(grouped)))
             grouped.setdefault(key, []).append(item)
         result = []
         for name, items in grouped.items():
@@ -26,8 +24,7 @@ class SQLiteLoader(BaseLoader):
             referred = []
             for item in items:
                 constrained.extend(item.get("constrained_columns") or [])
-                columns = item.get("referred_columns") or primary_keys
-                referred.extend(columns)
+                referred.extend(item.get("referred_columns") or primary_keys)
             referred_table = items[0].get("referred_table")
             if not constrained or not referred_table or not referred:
                 continue
@@ -40,25 +37,15 @@ class SQLiteLoader(BaseLoader):
         return result
     def _load_table(self, connection, inspector, table_name):
         frame = pd.read_sql_query(
-            text("SELECT * FROM {0}".format(_quote_identifier(table_name))),
-            connection,
-        )
+            text("SELECT * FROM {0}".format(_quote_identifier(table_name))), connection)
         pk_info = inspector.get_pk_constraint(table_name) or {}
         primary_keys = pk_info.get("constrained_columns") or []
-        foreign_keys = self._foreign_keys(
-            inspector, table_name, primary_keys
-        )
+        foreign_keys = self._foreign_keys(inspector, table_name, primary_keys)
         if not self.table_allowed(table_name):
             return None
-        table = self.make_table(
-            name=table_name,
-            frame=frame,
-            source_name=self.database_path.name,
-            primary_keys=primary_keys,
-            foreign_keys=foreign_keys,
-            source_type="sqlite",
-        )
-        return table
+        return self.make_table(
+            name=table_name, frame=frame, source_name=self.database_path.name,
+            primary_keys=primary_keys, foreign_keys=foreign_keys, source_type="sqlite")
     def load(self, dataset):
         if not self.database_path.is_file():
             dataset.add_error(self.database_path, "SQLite 文件不存在，已跳过")
@@ -84,18 +71,13 @@ class SQLiteLoader(BaseLoader):
                         if table is not None:
                             dataset.add_table(table)
                         else:
-                            dataset.add_error(
-                                self.database_path,
-                                "按配置过滤表 {0}".format(table_name),
-                                kind="info",
-                            )
+                            dataset.add_error(self.database_path,
+                                              "按配置过滤表 {0}".format(table_name), kind="info")
                     except LoaderError as exc:
                         dataset.add_error(self.database_path, exc.message)
                     except (SQLAlchemyError, pd.errors.DatabaseError, ValueError) as exc:
-                        dataset.add_error(
-                            self.database_path,
-                            "表 {0} 加载失败: {1}".format(table_name, exc),
-                        )
+                        dataset.add_error(self.database_path,
+                                          "表 {0} 加载失败: {1}".format(table_name, exc))
         except LoaderError as exc:
             dataset.add_error(self.database_path, exc.message)
         except (SQLAlchemyError, OSError) as exc:

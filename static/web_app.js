@@ -6,7 +6,6 @@
   var chart = echarts.init(chartNode);
   var state = { graph: null, summary: null };
   var REL_LABEL = { custom: "人工规则", explicit_fk: "原生外键", explicit_naming: "命名匹配", value_overlap: "值域重叠", functional_dependency: "函数依赖", contains: "结构" };
-
   function esc(value) {
     return String(value == null ? "" : value).replace(/[&<>"']/g, function (char) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char];
@@ -20,8 +19,7 @@
     return css("--series-1");
   }
   function setBusy(busy, message, isError) {
-    var button = document.getElementById("runScan");
-    var status = document.getElementById("statusLine");
+    var button = document.getElementById("runScan"), status = document.getElementById("statusLine");
     button.disabled = busy;
     button.textContent = busy ? "扫描中…" : "运行全量扫描";
     if (message) status.textContent = message;
@@ -70,10 +68,9 @@
       if (edge.confidence < min) return false;
       return relation === "all" || edge.relation_type === relation;
     });
-    var fieldIds = {};
-    links.forEach(function (edge) { fieldIds[edge.source] = true; fieldIds[edge.target] = true; });
-    var tableIds = {};
+    var fieldIds = {}, tableIds = {};
     links.forEach(function (edge) {
+      fieldIds[edge.source] = true; fieldIds[edge.target] = true;
       tableIds["table:" + edge.source_table] = true;
       tableIds["table:" + edge.target_table] = true;
     });
@@ -133,10 +130,8 @@
     setBusy(true, "正在读取本地数据并执行检测…");
     notice("");
     try {
-      var payload = await api("/api/scan", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ baseline: document.getElementById("baselinePath").value.trim() || null })
-      });
+      var payload = await api("/api/scan", { method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ baseline: document.getElementById("baselinePath").value.trim() || null }) });
       state.summary = payload.summary;
       renderSummary(payload.summary);
       var graphPayload = await api("/api/graph");

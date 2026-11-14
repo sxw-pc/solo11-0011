@@ -47,13 +47,9 @@ def _select_baseline(manager, config, baseline_path, use_default_baseline):
         if not os.path.isfile(path):
             raise IncrementalError("指定的历史规则文件不存在: {0}".format(path))
         return path
-    if not use_default_baseline:
-        return None
-    default = config["incremental"].get("default_baseline")
-    if not default:
-        return None
-    path = _resolve(manager, default)
-    return path if os.path.isfile(path) else None
+    default = config["incremental"].get("default_baseline") if use_default_baseline else None
+    path = _resolve(manager, default) if default else None
+    return path if path and os.path.isfile(path) else None
 def _output_paths(manager, config):
     directory = _resolve(manager, config["output"]["directory"])
     return {

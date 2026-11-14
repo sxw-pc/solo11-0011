@@ -118,19 +118,56 @@ def _string_list(path, key, value, allow_empty=True):
     if not allow_empty and not value:
         _fail(path, key, "不能为空列表", "至少填写一个可用路径")
     return value
+def _walk(config, key):
+    value = config
+    for part in key.split("."):
+        value = value.get(part) if isinstance(value, dict) else None
+    return value
+_FIELD_RULES = [
+    ("project.name", _string, ()), ("project.version", _string, ()),
+    ("explicit.naming.enabled", _boolean, ()),
+    ("explicit.naming.suffixes", _string_list, (False,)),
+    ("explicit.naming.min_overlap_ratio", _number, (0, 1)),
+    ("explicit.naming.min_matched_values", _number, (1,)),
+    ("explicit.naming.confidence", _number, (0, 1)),
+    ("explicit.naming.table_name_confidence", _number, (0, 1)),
+    ("overlap.threshold", _number, (0, 1)), ("overlap.same_table", _boolean, ()),
+    ("overlap.allow_reference_high_cardinality", _boolean, ()),
+    ("overlap.strict_type", _boolean, ()),
+    ("overlap.min_matched_values", _number, (1,)),
+    ("overlap.max_cardinality_ratio", _number, (0, 1)),
+    ("overlap.min_nonnull_ratio", _number, (0, 1)),
+    ("overlap.max_pairs", _number, (1,)), ("overlap.evidence_limit", _number, (1,)),
+    ("overlap.weights.value", _number, (0, 1)),
+    ("overlap.weights.name", _number, (0, 1)),
+    ("overlap.weights.synonym", _number, (0, 1)),
+    ("fd.enabled", _boolean, ()), ("fd.cross_table", _boolean, ()),
+    ("fd.min_rows", _number, (1,)), ("fd.confidence_threshold", _number, (0, 1)),
+    ("fd.complete_threshold", _number, (0, 1)),
+    ("fd.max_source_cardinality_ratio", _number, (0, 1)),
+    ("fd.max_target_cardinality_ratio", _number, (0, 1)),
+    ("fd.max_per_table", _number, (1,)),
+    ("incremental.confidence_delta_threshold", _number, (0, 1)),
+    ("report.high_confidence", _number, (0, 1)),
+    ("web.host", _string, ()), ("web.port", _number, (1, 65535)),
+    ("web.debug", _boolean, ()), ("web.auto_reload", _boolean, ()),
+]
 def validate_config(config, path="<default>"):
     """校验完整配置；不合法时抛出带位置和修复建议的 ConfigError。"""
     _dict(path, "", config)
     _keys(path, config, "", DEFAULT_CONFIG.keys())
-    for section in ("project", "sources", "explicit", "overlap", "fd", "incremental", "output", "report", "web"):
+    for section in DEFAULT_CONFIG:
         _dict(path, section, config.get(section))
-    _keys(path, config["project"], "project.", ("name", "version"))
-    _string(path, "project.name", config["project"].get("name"))
-    _string(path, "project.version", config["project"].get("version"))
+        _keys(path, config[section], section + ".", DEFAULT_CONFIG[section].keys())
+    naming = _dict(path, "explicit.naming", config["explicit"].get("naming"))
+    _keys(path, naming, "explicit.naming.", DEFAULT_CONFIG["explicit"]["naming"].keys())
+    weights = _dict(path, "overlap.weights", config["overlap"].get("weights"))
+    _keys(path, weights, "overlap.weights.", ("value", "name", "synonym"))
     src = config["sources"]
-    _keys(path, src, "sources.", DEFAULT_CONFIG["sources"].keys())
-    for key in ("csv_dirs", "sqlite_files", "csv_encodings", "include_tables", "exclude_tables", "exclude_fields"):
+    for key in DEFAULT_CONFIG["sources"]:
         _string_list(path, "sources." + key, src.get(key))
+    for key, validator, args in _FIELD_RULES:
+        validator(path, key, _walk(config, key), *args)
     if not src.get("csv_dirs") and not src.get("sqlite_files"):
         _fail(path, "sources", "至少需要配置一个 CSV 目录或 SQLite 文件", "填写 csv_dirs 或 sqlite_files")
     if not src.get("csv_encodings"):
@@ -140,72 +177,19 @@ def validate_config(config, path="<default>"):
             "".encode(enc)
         except LookupError:
             _fail(path, "sources.csv_encodings", "未知编码 {0}".format(enc), "使用 utf-8 或 gbk")
-    exp = config["explicit"]
-    _keys(path, exp, "explicit.", DEFAULT_CONFIG["explicit"].keys())
-    naming = _dict(path, "explicit.naming", exp.get("naming"))
-    _keys(path, naming, "explicit.naming.", DEFAULT_CONFIG["explicit"]["naming"].keys())
-    _boolean(path, "explicit.naming.enabled", naming.get("enabled"))
-    _string_list(path, "explicit.naming.suffixes", naming.get("suffixes"), allow_empty=False)
-    _number(path, "explicit.naming.min_overlap_ratio", naming.get("min_overlap_ratio"), 0, 1)
-    _number(path, "explicit.naming.min_matched_values", naming.get("min_matched_values"), 1)
-    _number(path, "explicit.naming.confidence", naming.get("confidence"), 0, 1)
-    _number(path, "explicit.naming.table_name_confidence", naming.get("table_name_confidence"), 0, 1)
-    syn = _dict(path, "explicit.naming.synonym_map", naming.get("synonym_map"))
-    for left, values in syn.items():
+    for left, values in _dict(path, "explicit.naming.synonym_map", naming.get("synonym_map")).items():
         _string(path, "explicit.naming.synonym_map key", left)
         _string_list(path, "explicit.naming.synonym_map." + left, values)
-    custom = exp.get("custom_rules_path")
-    if custom is not None:
-        _string(path, "explicit.custom_rules_path", custom, allow_empty=True)
-    ov = config["overlap"]
-    _keys(path, ov, "overlap.", DEFAULT_CONFIG["overlap"].keys())
-    _number(path, "overlap.threshold", ov.get("threshold"), 0, 1)
-    _boolean(path, "overlap.same_table", ov.get("same_table"))
-    _boolean(path, "overlap.allow_reference_high_cardinality", ov.get("allow_reference_high_cardinality"))
-    _boolean(path, "overlap.strict_type", ov.get("strict_type"))
-    _number(path, "overlap.min_matched_values", ov.get("min_matched_values"), 1)
-    _number(path, "overlap.max_cardinality_ratio", ov.get("max_cardinality_ratio"), 0, 1)
-    _number(path, "overlap.min_nonnull_ratio", ov.get("min_nonnull_ratio"), 0, 1)
-    _number(path, "overlap.max_pairs", ov.get("max_pairs"), 1)
-    _number(path, "overlap.evidence_limit", ov.get("evidence_limit"), 1)
-    weights = _dict(path, "overlap.weights", ov.get("weights"))
-    _keys(path, weights, "overlap.weights.", ("value", "name", "synonym"))
-    total = 0.0
-    for key in ("value", "name", "synonym"):
-        total += _number(path, "overlap.weights." + key, weights.get(key), 0, 1)
-    if total <= 0:
+    for key in ("explicit.custom_rules_path", "incremental.default_baseline"):
+        value = _walk(config, key)
+        if value is not None:
+            _string(path, key, value, allow_empty=True)
+    if sum(_walk(config, "overlap.weights." + key) for key in ("value", "name", "synonym")) <= 0:
         _fail(path, "overlap.weights", "权重之和必须大于 0", "至少给一个维度设置正数权重")
-    fd = config["fd"]
-    _keys(path, fd, "fd.", DEFAULT_CONFIG["fd"].keys())
-    _boolean(path, "fd.enabled", fd.get("enabled"))
-    _boolean(path, "fd.cross_table", fd.get("cross_table"))
-    _number(path, "fd.min_rows", fd.get("min_rows"), 1)
-    _number(path, "fd.confidence_threshold", fd.get("confidence_threshold"), 0, 1)
-    _number(path, "fd.complete_threshold", fd.get("complete_threshold"), 0, 1)
-    _number(path, "fd.max_source_cardinality_ratio", fd.get("max_source_cardinality_ratio"), 0, 1)
-    _number(path, "fd.max_target_cardinality_ratio", fd.get("max_target_cardinality_ratio"), 0, 1)
-    _number(path, "fd.max_per_table", fd.get("max_per_table"), 1)
-    inc = config["incremental"]
-    _keys(path, inc, "incremental.", DEFAULT_CONFIG["incremental"].keys())
-    _number(path, "incremental.confidence_delta_threshold", inc.get("confidence_delta_threshold"), 0, 1)
-    if inc.get("default_baseline") is not None:
-        _string(path, "incremental.default_baseline", inc.get("default_baseline"), allow_empty=True)
-    out = config["output"]
-    _keys(path, out, "output.", DEFAULT_CONFIG["output"].keys())
-    _string(path, "output.directory", out.get("directory"))
-    for key in ("rules_json", "rules_yaml", "report_md", "graph_html", "graph_json"):
-        _string(path, "output." + key, out.get(key))
-    rep = config["report"]
-    _keys(path, rep, "report.", DEFAULT_CONFIG["report"].keys())
-    _number(path, "report.high_confidence", rep.get("high_confidence"), 0, 1)
-    web = config["web"]
-    _keys(path, web, "web.", DEFAULT_CONFIG["web"].keys())
-    host = _string(path, "web.host", web.get("host"))
-    if host not in _LOOPBACK_HOSTS:
+    for key in DEFAULT_CONFIG["output"]:
+        _string(path, "output." + key, config["output"].get(key))
+    if _walk(config, "web.host") not in _LOOPBACK_HOSTS:
         _fail(path, "web.host", "仅允许回环地址", "填写 127.0.0.1、localhost 或 ::1")
-    _number(path, "web.port", web.get("port"), 1, 65535)
-    _boolean(path, "web.debug", web.get("debug"))
-    _boolean(path, "web.auto_reload", web.get("auto_reload"))
     return config
 class ConfigManager:
     """管理配置加载与基于文件签名的热加载。"""

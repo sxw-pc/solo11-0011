@@ -29,6 +29,22 @@ def test_merge_keeps_best_confidence_sources_and_evidence():
     assert item["detection_sources"] == ["custom_rule", "value_overlap"]
     assert item["relation_types"] == ["custom", "value_overlap"]
     assert len(item["evidence"]) == 2 and len(item["detections"]) == 3
+def test_merge_groups_evidence_by_source_and_remerges_idempotently():
+    fk = _assoc(("a", "x"), ("b", "y"), "explicit_fk", 1.0, "sqlite_foreign_key")
+    empty = dict(_assoc(("a", "x"), ("b", "y"), "custom", 0.6, "custom_rule"), evidence=[])
+    item = merge_associations([fk, empty])[0]
+    assert item["detection_sources"] == ["custom_rule", "sqlite_foreign_key"]
+    assert [group["source"] for group in item["source_groups"]] == ["sqlite_foreign_key"]
+    assert item["source_groups"][0]["evidence"] == [{"source_value": "x", "target_value": "y"}]
+    assert merge_associations([item]) == [item]
+def test_filter_by_detection_source(default_dataset):
+    graph = build_graph(default_dataset, [
+        _assoc(("device_base", "device_id"), ("room_info", "room_id"), "explicit_fk", 0.9, "sqlite_foreign_key"),
+        _assoc(("device_base", "device_id"), ("room_info", "room_id"), "value_overlap", 0.8, "value_overlap")])
+    assert len([edge for edge in graph["edges"] if not edge["structural"]]) == 1
+    assert filter_graph(graph, detection_sources=["value_overlap"])["stats"]["association_count"] == 1
+    assert not [e for e in filter_graph(graph, detection_sources=["custom_rule"])["edges"]
+                if not e["structural"]]
 def test_graph_diff_added_changed_and_removed(default_dataset):
     keep = _assoc(("device_base", "device_id"), ("alarm_info", "device_id"))
     change = _assoc(("sensor_metric", "device_id"), ("device_base", "device_id"), confidence=0.9)

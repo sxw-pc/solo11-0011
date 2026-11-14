@@ -7,10 +7,8 @@ from typing import Any, Dict, List, Optional
 import pandas as pd
 def json_value(value):
     """把 pandas / numpy 标量转成可 JSON 化的 Python 值。"""
-    if value is None:
-        return None
     try:
-        if pd.isna(value):
+        if value is None or pd.isna(value):
             return None
     except (TypeError, ValueError):
         pass
@@ -21,11 +19,9 @@ def json_value(value):
             pass
     if isinstance(value, pd.Timestamp):
         return value.isoformat()
-    if isinstance(value, (str, int, float, bool)) or value is None:
-        if isinstance(value, float) and (math.isnan(value) or math.isinf(value)):
-            return None
-        return value
-    return str(value)
+    if isinstance(value, float) and (math.isnan(value) or math.isinf(value)):
+        return None
+    return value if isinstance(value, (str, int, float, bool)) else str(value)
 _DATE_RE = re.compile(r"^\d{4}[-/]\d{1,2}[-/]\d{1,2}(?:[ T].*)?$")
 def infer_dtype(series):
     """推断稳定的业务类型，避免直接暴露 pandas 内部 dtype。"""

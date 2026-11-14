@@ -61,9 +61,7 @@ def make_association(source_table, source_field, target_table, target_field,
                      relation_type, confidence, detection_source,
                      evidence=None, details=None):
     """构造统一关联对象，确保关键字段齐全。"""
-    key = "{0}.{1}->{2}.{3}".format(
-        source_table, source_field, target_table, target_field
-    )
+    key = "{0}.{1}->{2}.{3}".format(source_table, source_field, target_table, target_field)
     digest = hashlib.sha1(key.encode("utf-8")).hexdigest()[:12]
     return {
         "id": "rel_" + digest,

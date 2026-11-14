@@ -40,6 +40,16 @@ def test_missing_and_unparsable_history(tmp_path):
     with pytest.raises(IncrementalError) as exc:
         load_history(str(path))
     assert "解析失败" in str(exc.value)
+def test_old_baseline_degrades_and_merges(tmp_path):
+    old = [_item("a", "b", 0.7, relation_type="value_overlap"),
+           _item("a", "b", 0.9, relation_type="explicit_fk")]
+    loaded = load_history(_write(tmp_path / "old.json", {"associations": old}))
+    assert len(loaded) == 1
+    item = loaded[0]
+    assert item["confidence"] == 0.9 and item["relation_type"] == "explicit_fk"
+    assert item["relation_types"] == ["explicit_fk", "value_overlap"]
+    assert item["detection_sources"] == ["history"] and item["evidence"] == []
+    assert item["source_groups"] == [] and len(item["detections"]) == 2
 def test_compare_and_tag_current():
     history = [_item("a", "b", 0.8), _item("c", "d", 0.7), _item("e", "f", 0.6)]
     current = [_item("a", "b", 0.9), _item("c", "d", 0.72), _item("g", "h", 0.5)]

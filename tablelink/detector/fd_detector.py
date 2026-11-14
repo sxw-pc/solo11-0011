@@ -28,10 +28,8 @@ def _intra_dependency(table, source, target, config):
     for value, group in frame.groupby(source, sort=False):
         targets = group[target].dropna().unique()
         if len(targets) == 1:
-            evidence.append({
-                "source_value": _json_scalar(value),
-                "target_value": _json_scalar(targets[0]),
-            })
+            evidence.append({"source_value": _json_scalar(value),
+                             "target_value": _json_scalar(targets[0])})
         if len(evidence) >= 5:
             break
     complete = confidence >= config["fd"]["complete_threshold"]
@@ -47,8 +45,7 @@ def _intra_dependency(table, source, target, config):
             "target_cardinality": int(frame[target].nunique()),
             "dependency": "complete" if complete else "partial",
             "confidence_basis": "一致行数 / 有效行数 = {0} / {1}".format(
-                matched_rows - bad_rows, matched_rows
-            ),
+                matched_rows - bad_rows, matched_rows),
         },
     )
 def _source_candidates(dataset, table, config):
@@ -148,8 +145,7 @@ def _cross_link(dataset, link, config):
                 "target_cardinality": target["cardinality"],
                 "dependency": "complete" if complete else "partial",
                 "confidence_basis": "跨表连接后一致行数 / 匹配行数 = {0} / {1}".format(
-                    consistent, matched
-                ),
+                    consistent, matched),
             },
         ))
     return result
@@ -162,8 +158,7 @@ def _cap_per_table(items, limit):
         rows = grouped[table_name]
         rows.sort(key=lambda item: (
             -item["confidence"],
-            -abs(item["details"].get("source_cardinality", 0)
-                 - item["details"].get("target_cardinality", 0)),
+            -abs(item["details"].get("source_cardinality", 0) - item["details"].get("target_cardinality", 0)),
             item["target_table"], item["target_field"],
         ))
         result.extend(rows[:limit])

@@ -23,7 +23,7 @@ def graph_to_dict(graph, associations=None):
         item.get("structural", False), -item.get("confidence", 0), item["id"]
     ))
     return {
-        "schema_version": "1.0",
+        "schema_version": "1.1",
         "nodes": nodes,
         "edges": edges,
         "stats": graph_stats(graph, associations),
@@ -43,12 +43,7 @@ def build_graph(dataset, associations, diff=None):
         )
         add_table_node(graph, item["source_table"], dataset)
         add_table_node(graph, item["target_table"], dataset)
-        edge = edge_from_assoc(item)
-        if graph.has_edge(source_node, target_node):
-            previous = graph.get_edge_data(source_node, target_node)
-            if previous.get("confidence", 0) >= edge["confidence"]:
-                continue
-        graph.add_edge(source_node, target_node, **edge)
+        graph.add_edge(source_node, target_node, **edge_from_assoc(item))
         add_containment(graph, item["source_table"], item["source_field"])
         add_containment(graph, item["target_table"], item["target_field"])
     for node_id in graph.nodes:

@@ -15,6 +15,8 @@
 
   var RELATION_LABELS = { custom: "人工规则", explicit_fk: "原生外键", explicit_naming: "命名匹配",
     value_overlap: "值域重叠", functional_dependency: "函数依赖", contains: "表-字段结构" };
+  var SOURCE_LABELS = { custom_rule: "人工规则", sqlite_foreign_key: "原生外键", naming_rule: "命名规则",
+    value_overlap: "值域重叠", functional_dependency: "函数依赖", history: "历史基线", unknown: "未知" };
   var CHANGE_LABELS = { added: "新增", removed: "失效", confidence_changed: "置信度变化" };
   var instance = null;
 
@@ -33,6 +35,7 @@
     return "explicit";
   }
   function relationLabel(type) { return RELATION_LABELS[type] || type; }
+  function sourceLabel(source) { return SOURCE_LABELS[source] || source; }
   function familyColor(type) {
     var fam = family(type);
     if (fam === "overlap") return css("--series-2");
@@ -58,16 +61,17 @@
   function typeText(edge) {
     return (edge.relation_types || [edge.relation_type]).map(relationLabel).join(" + ");
   }
-  function checkState() {
+  function checkState(selector) {
     var selected = {};
-    document.querySelectorAll("[data-relation]").forEach(function (box) {
+    document.querySelectorAll(selector).forEach(function (box) {
       selected[box.value] = box.checked;
     });
     return selected;
   }
   function filters() {
     return {
-      relations: checkState(),
+      relations: checkState("[data-relation]"),
+      sources: checkState("[data-source]"),
       confidence: parseFloat(document.getElementById("confidenceRange").value || "0"),
       table: document.getElementById("tableFilter").value.trim().toLowerCase(),
       change: document.getElementById("changeFilter").value,
@@ -88,6 +92,10 @@
     var types = edge.relation_types || [edge.relation_type];
     var relationOk = types.some(function (type) { return state.relations[type]; });
     if (!relationOk) return false;
+    var sourceKeys = Object.keys(state.sources);
+    if (sourceKeys.length && !(edge.detection_sources || []).some(function (source) {
+      return state.sources[source];
+    })) return false;
     if ((edge.confidence || 0) < state.confidence) return false;
     return tableMatches(edge, state.table);
   }
@@ -168,12 +176,28 @@
       esc(typeText(edge)) + " · 置信度 " + Number(edge.confidence).toFixed(4) + change +
       "<br>来源 " + esc(sourceText(edge));
   }
-  function evidenceTable(edge) {
-    var rows = (edge.evidence || []).slice(0, 5).map(function (item) {
+  function evidenceRows(evidence) {
+    return (evidence || []).slice(0, 5).map(function (item) {
       return "<tr><td>" + esc(item.source_value) + "</td><td>" + esc(item.target_value) + "</td></tr>";
     }).join("");
-    if (!rows) return '<p class="detail-empty">该规则未提供值域样例，请查看检测依据。</p>';
-    return '<table class="evidence-table"><thead><tr><th>源值</th><th>目标值</th></tr></thead><tbody>' + rows + "</tbody></table>";
+  }
+  function groupBlock(group) {
+    var rows = evidenceRows(group.evidence);
+    return '<div class="source-group"><h3><span class="tag">' + esc(sourceLabel(group.source)) + "</span> " +
+      esc((group.relation_types || []).map(relationLabel).join(" + ")) + " · 置信度 " +
+      Number(group.confidence).toFixed(4) + "</h3>" +
+      (rows ? '<table class="evidence-table"><thead><tr><th>源值</th><th>目标值</th></tr></thead><tbody>' + rows + "</tbody></table>"
+        : '<p class="detail-empty">该来源未提供值域样例。</p>') +
+      '<pre class="details-json">' + esc(JSON.stringify(group.details || {}, null, 2)) + "</pre></div>";
+  }
+  function sourceGroups(edge) {
+    var bySource = {};
+    (edge.source_groups || []).forEach(function (group) { bySource[group.source] = group; });
+    return (edge.detection_sources || []).map(function (source) {
+      return bySource[source] ? groupBlock(bySource[source])
+        : '<div class="source-group"><h3><span class="tag">' + esc(sourceLabel(source)) +
+          '</span></h3><p class="detail-empty">该来源未提供值域样例，详见检测记录。</p></div>';
+    }).join("") || '<p class="detail-empty">该规则未提供检测来源信息。</p>';
   }
   function showEdge(id) {
     var edge = edgeIndex[id];
@@ -187,9 +211,7 @@
       "<dt>置信度</dt><dd>" + Number(edge.confidence).toFixed(4) + "</dd>" +
       "<dt>变化</dt><dd>" + esc(edge.change ? CHANGE_LABELS[edge.change] : "未变化 / 未比较") + "</dd>" +
       "<dt>检测来源</dt><dd>" + (tags || "-") + "</dd></dl>" +
-      "<h2>匹配证据</h2>" + evidenceTable(edge) +
-      '<h2 style="margin-top:14px">计算依据</h2><pre class="details-json">' +
-      esc(JSON.stringify(edge.details || {}, null, 2)) + "</pre>" +
+      "<h2>按来源分组证据</h2>" + sourceGroups(edge) +
       '<h2 style="margin-top:14px">检测记录</h2><pre class="details-json">' +
       esc(JSON.stringify(edge.detections || [], null, 2)) + "</pre>";
   }
@@ -252,6 +274,18 @@
       select.appendChild(option);
     });
   }
+  function fillSourceFilter() {
+    var sources = [];
+    (GRAPH.edges || []).forEach(function (edge) {
+      (edge.detection_sources || []).forEach(function (source) {
+        if (source !== "schema" && sources.indexOf(source) < 0) sources.push(source);
+      });
+    });
+    document.getElementById("sourceFilters").innerHTML = sources.sort().map(function (source) {
+      return '<label class="check"><input type="checkbox" data-source data-filter value="' +
+        esc(source) + '" checked> ' + esc(sourceLabel(source)) + "</label>";
+    }).join("");
+  }
   function initDiff() {
     var select = document.getElementById("changeFilter");
     if (!DIFF) {
@@ -273,6 +307,7 @@
   function boot() {
     instance = echarts.init(chart, null, { renderer: "canvas" });
     fillTableFilter();
+    fillSourceFilter();
     initDiff();
     setTheme(window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
     document.querySelectorAll("[data-filter]").forEach(function (control) {
@@ -285,6 +320,7 @@
     });
     document.getElementById("resetFilters").addEventListener("click", function () {
       document.querySelectorAll("[data-relation]").forEach(function (box) { box.checked = true; });
+      document.querySelectorAll("[data-source]").forEach(function (box) { box.checked = true; });
       document.getElementById("confidenceRange").value = "0";
       document.getElementById("confidenceOutput").textContent = "0.00";
       document.getElementById("tableFilter").value = "";

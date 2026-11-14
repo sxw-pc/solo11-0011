@@ -46,18 +46,13 @@ def _native_associations(dataset):
             for source_field, target_field in zip(fk["columns"], fk["referred_columns"]):
                 if not table.column(source_field) or not target.column(target_field):
                     continue
-                evidence, matched = evidence_pairs(
-                    table, source_field, target, target_field, limit=5
-                )
+                evidence, matched = evidence_pairs(table, source_field, target, target_field, limit=5)
                 result.append(make_association(
                     table.name, source_field, target.name, target_field,
                     "explicit_fk", 1.0, "sqlite_foreign_key",
                     evidence=evidence,
-                    details={
-                        "constraint": fk.get("name", ""),
-                        "matched_values": matched,
-                        "message": "SQLite 原生外键约束",
-                    },
+                    details={"constraint": fk.get("name", ""),
+                             "matched_values": matched, "message": "SQLite 原生外键约束"},
                 ))
     return result
 def _naming_associations(dataset, config):
@@ -80,12 +75,10 @@ def _naming_associations(dataset, config):
                         continue
                     evidence, matched = evidence_pairs(
                         source, source_field, target, target_field,
-                        limit=config["overlap"]["evidence_limit"],
-                    )
+                        limit=config["overlap"]["evidence_limit"])
                     source_values = value_map(source, source_field)
                     ratio = matched / len(source_values) if source_values else 0.0
-                    if matched < naming["min_matched_values"] or \
-                            ratio < naming["min_overlap_ratio"]:
+                    if matched < naming["min_matched_values"] or ratio < naming["min_overlap_ratio"]:
                         continue
                     exact = source_field.lower() == target_field.lower()
                     table_match = _base_name(source_field) in _tokens(target.name)
@@ -96,12 +89,9 @@ def _naming_associations(dataset, config):
                         source.name, source_field, target.name, target_field,
                         "explicit_naming", confidence, "naming_rule",
                         evidence=evidence,
-                        details={
-                            "rule": "same_field" if exact else "table_or_synonym",
-                            "matched_values": matched,
-                            "match_ratio": round(ratio, 4),
-                            "message": "字段命名规则命中且存在值域交集",
-                        },
+                        details={"rule": "same_field" if exact else "table_or_synonym",
+                                 "matched_values": matched, "match_ratio": round(ratio, 4),
+                                 "message": "字段命名规则命中且存在值域交集"},
                     ))
     return result
 def _is_naming_match(source_field, target_table, target_field, synonym_map):
@@ -141,13 +131,10 @@ def _load_custom_rules(path, dataset):
             table.name, field, target_table.name, target_field,
             "custom", float(confidence), "custom_rule",
             evidence=evidence,
-            details={
-                "rule_index": index,
-                "declared_relation": str(rule.get("relation", "reference")),
-                "note": str(rule.get("note", "")),
-                "matched_values": matched,
-                "message": "人工规则，优先级最高",
-            },
+            details={"rule_index": index,
+                     "declared_relation": str(rule.get("relation", "reference")),
+                     "note": str(rule.get("note", "")),
+                     "matched_values": matched, "message": "人工规则，优先级最高"},
         ))
     return result
 def _split_field_rule(path, prefix, value, dataset):

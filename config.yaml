@@ -3,45 +3,26 @@ project:
   version: "1.0.0"
 
 sources:
-  csv_dirs:
-    - fixtures/mock_csv
-  sqlite_files:
-    - fixtures/mock_sqlite/env_monitor.db
-  csv_encodings:
-    - utf-8-sig
-    - utf-8
-    - gbk
+  csv_dirs: ["fixtures/mock_csv"]
+  sqlite_files: ["fixtures/mock_sqlite/env_monitor.db"]
+  csv_encodings: ["utf-8-sig", "utf-8", "gbk"]
   include_tables: []
-  exclude_tables:
-    - tmp_*
-    - temp_*
-    - sqlite_*
+  exclude_tables: ["tmp_*", "temp_*", "sqlite_*"]
   exclude_fields: []
 
 explicit:
   naming:
     enabled: true
-    suffixes:
-      - _id
+    suffixes: ["_id"]
     min_overlap_ratio: 0.3
     min_matched_values: 3
     confidence: 0.84
     table_name_confidence: 0.90
     synonym_map:
-      device:
-        - sensor
-        - equipment
-        - terminal
-      room:
-        - area
-        - zone
-        - site
-      engineer:
-        - technician
-        - staff
-      alarm:
-        - alert
-        - warning
+      device: ["sensor", "equipment", "terminal"]
+      room: ["area", "zone", "site"]
+      engineer: ["technician", "staff"]
+      alarm: ["alert", "warning"]
   custom_rules_path: fixtures/custom_rules/user_rules.yaml
 
 overlap:

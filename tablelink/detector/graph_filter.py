@@ -12,10 +12,12 @@ def _as_networkx(graph):
         result.add_edge(edge["source"], edge["target"], **dict(edge))
     return result
 def filter_graph(graph, relation_types=None, min_confidence=0.0,
-                 max_confidence=1.0, table=None, only_changes=False):
-    """按关系类型、置信度、表名筛选，并过滤筛选后孤立节点。"""
+                 max_confidence=1.0, table=None, only_changes=False,
+                 detection_sources=None):
+    """按关系类型、检测来源、置信度、表名筛选，并过滤筛选后孤立节点。"""
     graph = _as_networkx(graph)
     allowed = set(relation_types) if relation_types else None
+    sources = set(detection_sources) if detection_sources else None
     table_key = (table or "").strip().lower()
     kept = []
     for _, _, edge in graph.edges(data=True):
@@ -26,6 +28,8 @@ def filter_graph(graph, relation_types=None, min_confidence=0.0,
         if not only_changes and edge.get("change") == "removed":
             continue
         if allowed and not (set(edge.get("relation_types", [])) & allowed):
+            continue
+        if sources and not (set(edge.get("detection_sources", [])) & sources):
             continue
         if not min_confidence <= edge.get("confidence", 0) <= max_confidence:
             continue

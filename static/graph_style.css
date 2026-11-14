@@ -58,6 +58,8 @@ input[type="range"]  { width: 130px; accent-color: var(--series-1); }
 .detail-kv dt  { color: var(--muted); }
 .detail-kv dd  { margin: 0; word-break: break-word; }
 .tag  { display: inline-block; background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; margin: 0 4px 4px 0; font-size: 11px; }
+.source-group  { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin: 8px 0; }
+.source-group h3  { font-size: 12px; margin: 0 0 6px; font-weight: 600; }
 .evidence-table  { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 8px; }
 .evidence-table th, .evidence-table td  { border-bottom: 1px solid var(--line); padding: 5px 4px; text-align: left; }
 .evidence-table th  { color: var(--muted); font-weight: 500; }
